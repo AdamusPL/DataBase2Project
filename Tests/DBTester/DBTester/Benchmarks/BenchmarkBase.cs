@@ -39,7 +39,7 @@ public abstract class BenchmarkBase : IBenchmark
         var elapsed = CurrentTimestamp - start;
 
 
-        Console.WriteLine($"{name} ended after {elapsed / 1000_000_000} seconds");
+        Console.WriteLine($"{name} ended after {elapsed / 1000_000} seconds");
     }
 
     protected long CurrentTimestamp => DateTime.Now.ToFileTime();

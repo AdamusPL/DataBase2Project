@@ -7,35 +7,20 @@ public class SemesterSearch : BenchmarkBase
 {
     private int _numberOfSemesters = 1_000_000;
     private const int BatchSize = 2000;
+    private readonly DateTime _now;
 
     public SemesterSearch(TestingContext testingContext)
         : base(testingContext)
-    { }
+    {
+        _now = DateTime.Now;
+    }
 
     protected override async Task Benchmark()
     {
-        var now = DateTime.Now;
-
-        await _testingContext.AddAsync(new Semester
-        {
-            Id = RandomId,
-            StartDate = new DateTime(),
-            EndDate = new DateTime()
-        });
-
-        await _testingContext.AddAsync(new Semester
-        {
-            Id = RandomId,
-            StartDate = now,
-            EndDate = now
-        });
-
-        await _testingContext.SaveChangesAsync();
-
-        await RunTest("Search oldest", async () =>
+        await RunTest("Search newest", async () =>
         {
             var findEntity = await _testingContext.Semesters
-                .FirstOrDefaultAsync(x => x.StartDate == now);
+                .FirstOrDefaultAsync(x => x.StartDate == _now);
         });
 
         await RunTest("Search oldest", async () =>
@@ -49,6 +34,13 @@ public class SemesterSearch : BenchmarkBase
     protected override async Task PrepareData()
     {
         var rnd = new Random();
+
+        await _testingContext.AddAsync(new Semester
+        {
+            Id = RandomId,
+            StartDate = new DateTime(),
+            EndDate = new DateTime()
+        });
 
         for (int i = 0; i < _numberOfSemesters; ++i)
         {
@@ -68,6 +60,15 @@ public class SemesterSearch : BenchmarkBase
                 await _testingContext.SaveChangesAsync();
             }
         }
+
+        await _testingContext.AddAsync(new Semester
+        {
+            Id = RandomId,
+            StartDate = _now,
+            EndDate = _now
+        });
+
+        await _testingContext.SaveChangesAsync();
     }
 
     private string RandomId =>
