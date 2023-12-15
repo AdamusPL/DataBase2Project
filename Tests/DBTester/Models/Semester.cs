@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace DBTester.Db;
+namespace Models;
 
 [Table("Semester")]
 public class Semester

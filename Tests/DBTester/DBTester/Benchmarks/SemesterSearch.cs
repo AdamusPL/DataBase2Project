@@ -1,5 +1,6 @@
 ﻿using DBTester.Db;
 using Microsoft.EntityFrameworkCore;
+using Models;
 
 namespace DBTester.Benchmarks;
 
