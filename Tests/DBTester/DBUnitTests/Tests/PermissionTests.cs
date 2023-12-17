@@ -3,6 +3,7 @@ using Dapper;
 using FluentAssertions;
 using Microsoft.Data.SqlClient;
 using Models;
+using Shared;
 
 namespace DBUnitTests.Tests
 {
