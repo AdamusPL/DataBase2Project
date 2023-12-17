@@ -5,3 +5,7 @@ Tests/DBTester/DBUnitTests/bin
 Tests/DBTester/DBUnitTests/obj
 Tests/DBTester/Models/obj
 Tests/DBTester/Models/bin
+Tests/DBTester/DataProducer/bin
+Tests/DBTester/DataProducer/obj
+Tests/DBTester/Shared/bin
+Tests/DBTester/Shared/obj
