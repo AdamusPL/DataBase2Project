@@ -14,7 +14,7 @@ namespace Models
         public Faculty(string id, string name)
         {
             this.Id = id;
-            this.Name = name;
+            Name = name;
         }
     }
 }
