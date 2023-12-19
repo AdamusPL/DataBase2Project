@@ -12,7 +12,7 @@
 
         public UserExtended(string name, string surname, string email, string login, string password, string phone)
         {
-            this.Name = name;
+            Name = name;
             this.Surname = surname;
             this.Email = email;
             this.Login = login;
