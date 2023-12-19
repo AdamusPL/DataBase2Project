@@ -13,7 +13,7 @@ namespace Models
 
         public Faculty(string id, string name)
         {
-            this.Id = id;
+            Id = id;
             Name = name;
         }
     }
