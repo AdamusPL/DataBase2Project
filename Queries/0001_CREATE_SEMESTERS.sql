@@ -1,7 +1,7 @@
 CREATE TABLE Semester (
-    Id varchar(20) NOT NULL,
-    StartDate date NOT NULL,
-    EndDate date NOT NULL,
+    Id nvarchar(20) NOT NULL,
+    StartDate datetime2 NOT NULL,
+    EndDate datetime2 NOT NULL,
     PRIMARY KEY (Id)
 );
 CREATE INDEX Semester_StartDate ON Semester (StartDate DESC);

@@ -1,5 +1,3 @@
-USE [University-Main];
-
 GRANT SELECT, INSERT, UPDATE, DELETE ON dbo.Absence TO AdministrationRole;
 GRANT SELECT, INSERT, UPDATE, DELETE ON dbo.Course TO AdministrationRole;
 GRANT SELECT, INSERT, UPDATE, DELETE ON dbo.Email TO AdministrationRole;
@@ -20,7 +18,6 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON dbo.[User] TO AdministrationRole;
 GRANT SELECT, INSERT, UPDATE, DELETE ON dbo.UserLoginInformation TO AdministrationRole;
 GRANT SELECT, INSERT, UPDATE, DELETE ON dbo.WorkPhone TO AdministrationRole;
 GRANT SELECT, INSERT, UPDATE, DELETE ON dbo.Administrator TO AdministrationRole;
-GO
 
 --Student ma:
 --select na wszystko
@@ -46,7 +43,6 @@ GRANT SELECT ON dbo.Administrator TO StudentRole;
 --update na oceny i haslo
 GRANT SELECT, UPDATE ON dbo.Grade TO StudentRole;
 GRANT SELECT, UPDATE ON dbo.UserLoginInformation TO StudentRole;
-GO
 
 --prowadzacy ma
 --select na wszystko:
@@ -74,4 +70,3 @@ GRANT SELECT, INSERT ON dbo.Grade TO LecturerRole;
 
 --update na haslo
 GRANT SELECT, UPDATE ON dbo.UserLoginInformation TO LecturerRole;
-GO

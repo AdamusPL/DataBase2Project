@@ -1,5 +1,5 @@
 CREATE TABLE FieldOfStudy_Course (
-    FieldOfStudyId int NOT NULL FOREIGN KEY REFERENCES FieldOfStudy(Id),
-    CourseId int NOT NULL FOREIGN KEY REFERENCES Course(Id),
+    FieldOfStudyId int NOT NULL FOREIGN KEY REFERENCES FieldOfStudy(Id) ON DELETE CASCADE,
+    CourseId int NOT NULL FOREIGN KEY REFERENCES Course(Id) ON DELETE CASCADE,
     PRIMARY KEY (FieldOfStudyId, CourseId)
 );

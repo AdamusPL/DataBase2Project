@@ -1,6 +1,6 @@
 CREATE TABLE GroupType (
     Id int IDENTITY(1, 1) NOT NULL,
-    Name varchar(30) NOT NULL UNIQUE,
+    Name nvarchar(30) NOT NULL UNIQUE,
     PRIMARY KEY (Id)
 );
 INSERT INTO Regularity (Name) VALUES ('Lecture');
