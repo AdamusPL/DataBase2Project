@@ -1,6 +1,6 @@
 CREATE TABLE [Group] (
     Id nvarchar(20) NOT NULL,
-    DayOfTheWeek nvarchar(255) NOT NULL,
+    DayOfTheWeek int NOT NULL,
     StartTime time(5) NOT NULL,
     EndTime time(5) NOT NULL,
     Classroom nvarchar(255) NOT NULL,
