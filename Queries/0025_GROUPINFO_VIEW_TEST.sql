@@ -1,0 +1,1 @@
+SELECT LecturerName from [GroupInfo];
