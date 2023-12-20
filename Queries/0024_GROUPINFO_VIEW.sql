@@ -1,17 +1,17 @@
 CREATE VIEW GroupInfo AS
 SELECT 
-g.DayOfTheWeek, 
-g.StartTime, 
-g.EndTime,
-Group_Lecturer.GroupId, 
-g.Classroom, 
-Regularity.Name Regularity, 
-GroupType.Name GroupType,
-u.Surname LecturerSurname, 
-u.Name LecturerName, 
-l.Id LecturerId,
-Course.Name CourseName, 
-Course.ECTS
+    g.DayOfTheWeek, 
+    g.StartTime, 
+    g.EndTime,
+    Group_Lecturer.GroupId, 
+    g.Classroom, 
+    Regularity.Name Regularity, 
+    GroupType.Name GroupType,
+    u.Surname LecturerSurname, 
+    u.Name LecturerName, 
+    l.Id LecturerId,
+    Course.Name CourseName, 
+    Course.ECTS
 FROM [Group] g 
 INNER JOIN Group_Lecturer ON g.Id = Group_Lecturer.GroupId
 INNER JOIN Regularity ON g.RegularityId = Regularity.Id
