@@ -1,8 +1,10 @@
 CREATE OR ALTER PROCEDURE GetStudentAbsencesInGroupCount (@GroupId VARCHAR, @StudentId INT)
 AS
-SELECT Date from Student.Id, u.Name, u.Surname, Count(Absence) NumberOfAbsences
+SELECT Student.Id, u.Name, u.Surname, Count(Absence.Id) NumberOfAbsences
+FROM Student
 INNER JOIN Student_Group ON Student.Id = Student_Group.StudentId
 INNER JOIN [Group] g ON Student_Group.GroupId = g.Id
-INNER JOIN [User] u ON Student.UserId = User.Id
+INNER JOIN [User] u ON Student.UserId = u.Id
+INNER JOIN Absence ON Student_Group.StudentId = Absence.Id
 WHERE @GroupId = g.Id AND @StudentId = Student.Id
-GROUP BY Student.Id;
+GROUP BY Student.Id, u.Name, u.Surname;
