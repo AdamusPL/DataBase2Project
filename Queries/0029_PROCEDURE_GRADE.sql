@@ -5,6 +5,5 @@ BEGIN
     FROM Grade 
     INNER JOIN Student_Group ON Student_Group.Id = Grade.StudentInGroupId
     INNER JOIN [Group] g ON Student_Group.GroupId = g.Id
-    INNER JOIN Student ON Student_Group.StudentId = Student.Id
-    WHERE @StudentId = Student.Id AND @GroupId = g.Id
+    WHERE @StudentId = Student_Group.StudentId AND @GroupId = g.Id
 END;
