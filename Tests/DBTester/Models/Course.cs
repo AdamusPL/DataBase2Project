@@ -14,7 +14,7 @@ namespace Models
         public Course(string name, int ects)
         {
             Name = name;
-            ECTS = eCTS;
+            Ects = ects;
         }
     }
 }
