@@ -1,16 +1,19 @@
-CREATE OR ALTER PROCEDURE GetWeeklyPlanStudent(@UserId INT, @StartOfTheWeek DATE, @EndOfTheWeek DATE)
+CREATE OR ALTER PROCEDURE GetWeeklyPlanLecturer(@UserId INT, @StartOfTheWeek DATE, @EndOfTheWeek DATE)
 AS
 BEGIN
     SELECT 
         DayOfTheWeek, 
-        Regularity.Name Regularity,
+        Regularity.Name Regularity, 
+        g.Id, 
+        FieldOfStudy.Name, 
         Course.Name, 
         StartTime, 
         EndTime, 
-        Classroom, 
-        CONCAT(u.Name, ' ', u.Surname) Lecturer
+        Classroom
     FROM [Group] g
     INNER JOIN Course ON g.CourseId = Course.Id
+    INNER JOIN FieldOfStudy_Course ON Course.Id = FieldOfStudy_Course.CourseId
+    INNER JOIN FieldOfStudy ON FieldOfStudy_Course.FieldOfStudyId = FieldOfStudy.Id
     INNER JOIN Regularity ON g.RegularityId = Regularity.Id
     INNER JOIN Group_Lecturer ON g.Id = Group_Lecturer.GroupId
     INNER JOIN Lecturer ON Group_Lecturer.LecturerId = Lecturer.Id
