@@ -9,5 +9,6 @@ namespace DBUnitTests.Tests
     [TestFixture]
     public class ViewTests
     {
+
     }
 }
