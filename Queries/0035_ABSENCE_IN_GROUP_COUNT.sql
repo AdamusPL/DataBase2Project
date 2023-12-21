@@ -1,4 +1,4 @@
-CREATE OR ALTER PROCEDURE GetStudentAbsencesInGroupCount (@GroupId VARCHAR)
+CREATE OR ALTER PROCEDURE GetStudentsAbsencesInGroupCount (@GroupId VARCHAR)
 AS
 BEGIN
 SELECT Student.Id, u.Name, u.Surname, Count(Absence.Id) NumberOfAbsences
