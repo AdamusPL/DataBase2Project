@@ -8,7 +8,6 @@ BEGIN
     INNER JOIN Student_Group ON g.Id = Student_Group.GroupId
     INNER JOIN Grade ON Student_Group.StudentId = Grade.StudentInGroupId
     INNER JOIN Student ON Student_Group.StudentId = Student.Id
-    INNER JOIN Semester ON g.SemesterId = Semester.Id
-    WHERE @StudentId = Student.Id AND @SemesterId = Semester.Id AND isFinal = 1
+    WHERE @StudentId = Student.Id AND @SemesterId = g.SemesterId AND isFinal = 1
 
 END;
