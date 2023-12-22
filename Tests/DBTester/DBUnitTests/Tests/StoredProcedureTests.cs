@@ -387,6 +387,61 @@ VALUES
             grade.Should().Be(expectedAverage);
         }
 
+        [Test]
+        public void GetStudentWeeklyPlan_ReturnOccurencesOfGroup()
+        {
+            // Arrange
+            var login = "Test";
+            var passwordHash = "abab";
+            var name = "Maciej";
+            var surname = "Padula";
+            var fieldOfStudiesIdsJson = "[]";
+
+            _unitOfWork.Execute(@"
+RegisterStudent @Login, @PasswordHash, @Name, @Surname, @FieldOfStudiesIdsJson
+", new { login, passwordHash, name, surname, fieldOfStudiesIdsJson }, transaction: _transaction);
+
+            InsertGroup(out var courseId, out var groupId, out var semesterId, out var groupId2);
+            var studentId = GetStudentId(login);
+
+            _unitOfWork.Execute(@"
+INSERT INTO Student_Group (StudentId, GroupId, RegistrationDate)
+VALUES (@StudentId, @GroupId, @RegistrationDate)
+", new { studentId, groupId, RegistrationDate = new DateTime(1990, 1, 1) }, transaction: _transaction);
+
+            _unitOfWork.Execute(@"
+INSERT INTO Student_Group (StudentId, GroupId, RegistrationDate)
+VALUES (@StudentId, @GroupId2, @RegistrationDate)
+", new { studentId, groupId2, RegistrationDate = new DateTime(1990, 1, 1) }, transaction: _transaction);
+
+            var expectedTests = new List<PlanOccurence>
+            {
+                new()
+                {
+                    Date = new(2023, 12, 18),
+                    StartTime = new(12, 0, 0),
+                    Course = "Introduction to Mathematics",
+                    Lecturer = "Jan Kowalski"
+                },
+                new()
+                {
+                    Date = new(2023, 12, 21),
+                    StartTime = new(9, 0, 0),
+                    Course = "Introduction to Mathematics",
+                    Lecturer = "Jan Kowalski"
+                }
+            };
+
+            // Act
+            var plan = _unitOfWork.Query<PlanOccurence>("GetStudentWeeklyPlan",
+                new { studentId, StartDate = new DateTime(2023, 12, 18), EndDate = new DateTime(2023, 12, 24) },
+                commandType: CommandType.StoredProcedure,
+                transaction: _transaction);
+
+            // Assert
+            plan.Should().BeEquivalentTo(expectedTests);
+        }
+
         [TearDown]
         public void Teardown()
         {
@@ -402,7 +457,6 @@ VALUES
             groupId = Guid.NewGuid().ToString()[..20];
             groupId2 = Guid.NewGuid().ToString()[..20];
             var typeName = Guid.NewGuid().ToString()[..30];
-            var regularityName = Guid.NewGuid().ToString()[..10];
 
             var lecturerUserId = _unitOfWork.Query<int>("INSERT INTO [dbo].[User] ([Name], [Surname]) VALUES ('Jan', 'Kowalski'); SELECT CAST(SCOPE_IDENTITY() as int);", transaction: _transaction).Single();
 
@@ -412,16 +466,14 @@ VALUES
 
             var typeId = _unitOfWork.Query<int>("INSERT INTO [dbo].[GroupType] ([Name]) VALUES (@TypeName); SELECT CAST(SCOPE_IDENTITY() as int);", new { TypeName = typeName }, transaction: _transaction).Single();
 
-            var regularityId = _unitOfWork.Query<int>("INSERT INTO [dbo].[Regularity] ([Name]) VALUES (@RegularityName); SELECT CAST(SCOPE_IDENTITY() as int);", new { RegularityName = regularityName }, transaction: _transaction).Single();
-
             _unitOfWork.Query("INSERT INTO Semester (Id, StartDate, EndDate) VALUES (@SemId, '2021-10-01', '2022-02-07');", new { @SemId = semesterId }, transaction: _transaction);
 
-            _unitOfWork.Query("INSERT INTO [dbo].[Group] ([Id], [DayOfTheWeek], [StartTime], [EndTime], [Classroom], [Capacity], [RegularityId], [TypeId], [CourseId], [SemesterId]) VALUES (@GroupId, 3, '09:00:00', '11:00:00', 'Room 302', 25, @RegularityId, @TypeId, @CourseId, @SemId); SELECT CAST(SCOPE_IDENTITY() as int);", new { RegularityId = regularityId, TypeId = typeId, GroupId = groupId, SemId = semesterId, CourseId = courseId }, transaction: _transaction).Single();
+            _unitOfWork.Query("INSERT INTO [dbo].[Group] ([Id], [DayOfTheWeek], [StartTime], [EndTime], [Classroom], [Capacity], [RegularityId], [TypeId], [CourseId], [SemesterId]) VALUES (@GroupId, 5, '09:00:00', '11:00:00', 'Room 302', 25, @RegularityId, @TypeId, @CourseId, @SemId); SELECT CAST(SCOPE_IDENTITY() as int);", new { RegularityId = 3, TypeId = typeId, GroupId = groupId, SemId = semesterId, CourseId = courseId }, transaction: _transaction).Single();
 
             _unitOfWork.Query("INSERT INTO [dbo].[Group_Lecturer] ([GroupId], [LecturerId]) VALUES (@GroupId, @LecturerId)", new { GroupId = groupId, LecturerId = lecturerId }, transaction: _transaction);
 
 
-            _unitOfWork.Query("INSERT INTO [dbo].[Group] ([Id], [DayOfTheWeek], [StartTime], [EndTime], [Classroom], [Capacity], [RegularityId], [TypeId], [CourseId], [SemesterId]) VALUES (@GroupId, 3, '09:00:00', '11:00:00', 'Room 302', 25, @RegularityId, @TypeId, @CourseId, @SemId); SELECT CAST(SCOPE_IDENTITY() as int);", new { RegularityId = regularityId, TypeId = typeId, GroupId = groupId2, SemId = semesterId, CourseId = courseId }, transaction: _transaction).Single();
+            _unitOfWork.Query("INSERT INTO [dbo].[Group] ([Id], [DayOfTheWeek], [StartTime], [EndTime], [Classroom], [Capacity], [RegularityId], [TypeId], [CourseId], [SemesterId]) VALUES (@GroupId, 2, '12:00:00', '13:00:00', 'Room 302', 25, @RegularityId, @TypeId, @CourseId, @SemId); SELECT CAST(SCOPE_IDENTITY() as int);", new { RegularityId = 3, TypeId = typeId, GroupId = groupId2, SemId = semesterId, CourseId = courseId }, transaction: _transaction).Single();
 
             _unitOfWork.Query("INSERT INTO [dbo].[Group_Lecturer] ([GroupId], [LecturerId]) VALUES (@GroupId, @LecturerId)", new { GroupId = groupId2, LecturerId = lecturerId }, transaction: _transaction);
         }
