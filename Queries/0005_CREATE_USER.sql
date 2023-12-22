@@ -1,7 +1,7 @@
 CREATE TABLE [User] (
     Id int IDENTITY(1, 1) NOT NULL,
-    Name varchar(57) NOT NULL,
-    Surname varchar(100) NOT NULL,
+    Name nvarchar(57) NOT NULL,
+    Surname nvarchar(100) NOT NULL,
     PRIMARY KEY (Id)
 );
 

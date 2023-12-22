@@ -10,14 +10,6 @@ namespace DBUnitTests.Tests
     [TestFixture]
     public class PermissionTests
     {
-
-        /// <summary>
-        /// TODO: moznaby to rozdzielic na rozne klasy z testami
-        /// trzeba zaimplementowac puste testy
-        /// i dopisac testy na permisje do procedur skladowanych i widokow
-        /// </summary>
-        /// 
-
         private IDbConnection _unitOfWork;
         private IDbTransaction _transaction;
 
@@ -45,17 +37,25 @@ namespace DBUnitTests.Tests
             "Administrator"
         ];
 
+        private static readonly List<string> TablesWithoutInsertPermissionsForLecturer = TableNames.Except(new List<string> { "Grade", "Absence" }).ToList();
+
+        private static readonly List<string> TablesWithoutUpdatePermissionsForLecturer = TableNames.Except(new List<string> { "UserLoginInformation" }).ToList();
+
+        private static readonly List<string> TablesWithoutUpdatePermissionsForStudent = TableNames.Except(new List<string> { "Grade", "UserLoginInformation" }).ToList();
+
+        private static readonly List<string> Views =
+            [
+                "GroupInfo",
+                "UserContact",
+                "CourseInfo"
+            ];
+
         private static readonly List<Func<IDbConnection>> UserConnections =
         [
             DBConnectionProvider.AdministrationConnection,
             DBConnectionProvider.StudentConnection,
             DBConnectionProvider.LecturerConnection
         ];
-
-        private static readonly Dictionary<string, string> TableNamesWithInsertStatements = new()
-            {
-                {"Absence", "INSERT INTO Absence (Date, StudentInGroupId) VALUES('12-', 'tests')"},
-            };
 
         [SetUp]
         public void Setup()
@@ -79,6 +79,38 @@ namespace DBUnitTests.Tests
             //Teardown
             _transaction.Rollback();
             _unitOfWork.Dispose();
+        }
+
+        [Test]
+        public void AllUsers_Should_HaveSelectPermissions_OnAllViews([ValueSource(nameof(Views))] string view, [ValueSource(nameof(UserConnections))] Func<IDbConnection> getUserConnection)
+        {
+            //Arrange
+            _unitOfWork = DBConnectionProvider.AdministrationConnection();
+            _unitOfWork.Open();
+
+            //Act
+            var hasPermission = _unitOfWork.Query<bool>($"SELECT HAS_PERMS_BY_NAME(@ViewName, 'OBJECT', 'SELECT')",
+                new { ViewName = view },
+                transaction: _transaction).Single();
+
+            //Assert
+            hasPermission.Should().BeTrue();
+        }
+
+        [Test]
+        public void Administration_Should_HaveDeletePermissions_OnAllTables([ValueSource(nameof(TableNames))] string table)
+        {
+            //Arrange
+            _unitOfWork = DBConnectionProvider.AdministrationConnection();
+            _unitOfWork.Open();
+
+            //Act
+            var hasPermission = _unitOfWork.Query<bool>($"SELECT HAS_PERMS_BY_NAME(@TableName, 'OBJECT', 'DELETE')",
+                new { TableName = table },
+                transaction: _transaction).Single();
+
+            //Assert
+            hasPermission.Should().BeTrue();
         }
 
         [Test]
@@ -120,215 +152,237 @@ namespace DBUnitTests.Tests
         }
 
         [Test]
-        [Ignore("Not Implemented")]
+        public void Administration_Should_HaveInsertPermissions_OnAllTables([ValueSource(nameof(TableNames))] string table)
+        {
+            //Arrange
+            _unitOfWork = DBConnectionProvider.AdministrationConnection();
+            _unitOfWork.Open();
+
+            //Act
+            var hasPermission = _unitOfWork.Query<bool>($"SELECT HAS_PERMS_BY_NAME(@TableName, 'OBJECT', 'INSERT')",
+                new { TableName = table },
+                transaction: _transaction).Single();
+
+            //Assert
+            hasPermission.Should().BeTrue();
+        }
+
+        [Test]
         public void Student_ShouldNot_HaveInsertPermissions_OnAnyTables([ValueSource(nameof(TableNames))] string table)
         {
-            ///TODO: Tutaj trzeba zrobic liste przykladowych queriesow z insertem i puscic je z odpowiednim userem w bazie
-            ///schody sie zaczynaja w tym miejscu, ze te inserty maja porobione rozne constrainty
-            ///a jest 2:40 w nocy i mi sie nie chce o tym myslec :)
+            //Arrange
+            _unitOfWork = DBConnectionProvider.StudentConnection();
+            _unitOfWork.Open();
 
-            ////Arrange
-            //_unitOfWork = DBConnectionProvider.LecturerConnection();
-            //_unitOfWork.Open();
-            //_transaction = _unitOfWork.BeginTransaction();
+            //Act
+            var hasPermission = _unitOfWork.Query<bool>($"SELECT HAS_PERMS_BY_NAME(@TableName, 'OBJECT', 'INSERT')",
+                new { TableName = table },
+                transaction: _transaction).Single();
 
-            ////Act
-            //var act = () => _unitOfWork.Query($"DELETE FROM {table}", transaction: _transaction);
-
-            ////Assert
-            //act.Should().Throw<SqlException>();
-
-            ////Teardown
-            //_transaction.Rollback();
-            //_unitOfWork.Dispose();
+            //Assert
+            hasPermission.Should().BeFalse();
         }
 
         [Test]
-        [Ignore("Not Implemented")]
-        public void Lecturer_ShouldNot_HaveInsertPermissions_OnAnyTables([ValueSource(nameof(TableNames))] string table)
+        public void Lecturer_ShouldNot_HaveInsertPermissions_OnSpecifiedTables([ValueSource(nameof(TablesWithoutInsertPermissionsForLecturer))] string table)
         {
-            ///TODO: Tutaj trzeba zrobic liste przykladowych queriesow z insertem i puscic je z odpowiednim userem w bazie
-            ///schody sie zaczynaja w tym miejscu, ze te inserty maja porobione rozne constrainty
-            ///a jest 2:40 w nocy i mi sie nie chce o tym myslec :)
+            //Arrange
+            _unitOfWork = DBConnectionProvider.LecturerConnection();
+            _unitOfWork.Open();
 
-            ////Arrange
-            //_unitOfWork = DBConnectionProvider.LecturerConnection();
-            //_unitOfWork.Open();
-            //_transaction = _unitOfWork.BeginTransaction();
+            //Act
+            var hasPermission = _unitOfWork.Query<bool>($"SELECT HAS_PERMS_BY_NAME(@TableName, 'OBJECT', 'INSERT')",
+                new { TableName = table },
+                transaction: _transaction).Single();
 
-            ////Act
-            //var act = () => _unitOfWork.Query($"DELETE FROM {table}", transaction: _transaction);
-
-            ////Assert
-            //act.Should().Throw<SqlException>();
-
-            ////Teardown
-            //_transaction.Rollback();
-            //_unitOfWork.Dispose();
+            //Assert
+            hasPermission.Should().BeFalse();
         }
 
         [Test]
-        [Ignore("Not Implemented")]
-        public void Student_ShouldNot_HaveUpdatePermissions_OnAnyTables([ValueSource(nameof(TableNames))] string table)
+        public void Administration_Should_HaveUpdatePermissions_OnAllTables([ValueSource(nameof(TableNames))] string table)
         {
-            ///TODO: Tutaj trzeba zrobic liste przykladowych queriesow z insertem i puscic je z odpowiednim userem w bazie
-            ///oczywiscie najpierw musza istniec dane w bazie 
-            ///i trzeba z listy tabelek wywalic te tabelki na ktore faktycznie jest permisja
-            ///schody sie zaczynaja w tym miejscu, ze te inserty maja porobione rozne constrainty
-            ///a jest 2:40 w nocy i mi sie nie chce o tym myslec :)
+            //Arrange
+            _unitOfWork = DBConnectionProvider.AdministrationConnection();
+            _unitOfWork.Open();
 
-            ////Arrange
-            //_unitOfWork = DBConnectionProvider.LecturerConnection();
-            //_unitOfWork.Open();
-            //_transaction = _unitOfWork.BeginTransaction();
+            //Act
+            var hasPermission = _unitOfWork.Query<bool>($"SELECT HAS_PERMS_BY_NAME(@TableName, 'OBJECT', 'UPDATE')",
+                new { TableName = table },
+                transaction: _transaction).Single();
 
-            ////Act
-            //var act = () => _unitOfWork.Query($"DELETE FROM {table}", transaction: _transaction);
-
-            ////Assert
-            //act.Should().Throw<SqlException>();
-
-            ////Teardown
-            //_transaction.Rollback();
-            //_unitOfWork.Dispose();
+            //Assert
+            hasPermission.Should().BeTrue();
         }
 
         [Test]
-        [Ignore("Not Implemented")]
-        public void Lecturer_ShouldNot_HaveUpdatePermissions_OnAnyTables([ValueSource(nameof(TableNames))] string table)
+        public void Student_ShouldNot_HaveUpdatePermissions_OnSpecifiedTables([ValueSource(nameof(TablesWithoutUpdatePermissionsForStudent))] string table)
         {
-            ///TODO: Tutaj trzeba zrobic liste przykladowych queriesow z updatem i puscic je z odpowiednim userem w bazie
-            ///oczywiscie najpierw musza istniec dane w bazie 
-            ///i trzeba z listy tabelek wywalic te tabelki na ktore faktycznie jest permisja
-            ///schody sie zaczynaja w tym miejscu, ze te inserty maja porobione rozne constrainty
-            ///a jest 2:40 w nocy i mi sie nie chce o tym myslec :)
+            //Arrange
+            _unitOfWork = DBConnectionProvider.StudentConnection();
+            _unitOfWork.Open();
 
-            ////Arrange
-            //_unitOfWork = DBConnectionProvider.LecturerConnection();
-            //_unitOfWork.Open();
-            //_transaction = _unitOfWork.BeginTransaction();
+            //Act
+            var hasPermission = _unitOfWork.Query<bool>($"SELECT HAS_PERMS_BY_NAME(@TableName, 'OBJECT', 'UPDATE')",
+                new { TableName = table },
+                transaction: _transaction).Single();
 
-            ////Act
-            //var act = () => _unitOfWork.Query($"DELETE FROM {table}", transaction: _transaction);
-
-            ////Assert
-            //act.Should().Throw<SqlException>();
-
-            ////Teardown
-            //_transaction.Rollback();
-            //_unitOfWork.Dispose();
+            //Assert
+            hasPermission.Should().BeFalse();
         }
 
         [Test]
-        [Ignore("Not Implemented")]
-        public void Student_Should_HaveUpdatePermissions_OnGrades()
+        public void Lecturer_ShouldNot_HaveUpdatePermissions_OnSpecifiedTables([ValueSource(nameof(TablesWithoutUpdatePermissionsForLecturer))] string table)
         {
+            //Arrange
+            _unitOfWork = DBConnectionProvider.LecturerConnection();
+            _unitOfWork.Open();
 
-            ////Arrange
-            //_unitOfWork = DBConnectionProvider.LecturerConnection();
-            //_unitOfWork.Open();
-            //_transaction = _unitOfWork.BeginTransaction();
+            //Act
+            var hasPermission = _unitOfWork.Query<bool>($"SELECT HAS_PERMS_BY_NAME(@TableName, 'OBJECT', 'UPDATE')",
+                new { TableName = table },
+                transaction: _transaction).Single();
 
-            ////Act
-            //var act = () => _unitOfWork.Query($"DELETE FROM {table}", transaction: _transaction);
-
-            ////Assert
-            //act.Should().Throw<SqlException>();
-
-            ////Teardown
-            //_transaction.Rollback();
-            //_unitOfWork.Dispose();
+            //Assert
+            hasPermission.Should().BeFalse();
         }
 
         [Test]
-        [Ignore("Not Implemented")]
-        public void Student_Should_HaveUpdatePermissions_OnLoginInformation()
+        [TestCase("Grade")]
+        [TestCase("UserLoginInformation")]
+        public void Student_Should_HaveUpdatePermissions_OnSpecifiedTables(string table)
         {
+            //Arrange
+            _unitOfWork = DBConnectionProvider.StudentConnection();
+            _unitOfWork.Open();
 
-            ////Arrange
-            //_unitOfWork = DBConnectionProvider.LecturerConnection();
-            //_unitOfWork.Open();
-            //_transaction = _unitOfWork.BeginTransaction();
+            //Act
+            var hasPermission = _unitOfWork.Query<bool>($"SELECT HAS_PERMS_BY_NAME(@TableName, 'OBJECT', 'UPDATE')",
+                new { TableName = table },
+                transaction: _transaction).Single();
 
-            ////Act
-            //var act = () => _unitOfWork.Query($"DELETE FROM {table}", transaction: _transaction);
-
-            ////Assert
-            //act.Should().Throw<SqlException>();
-
-            ////Teardown
-            //_transaction.Rollback();
-            //_unitOfWork.Dispose();
+            //Assert
+            hasPermission.Should().BeTrue();
         }
 
         [Test]
-        [Ignore("Not Implemented")]
-        public void Lecturer_Should_HaveInsertPermissions_OnGrades()
+        [TestCase("Grade")]
+        [TestCase("Absence")]
+        public void Lecturer_Should_HaveInsertPermissions_OnSpecifiedTables(string table)
         {
+            //Arrange
+            _unitOfWork = DBConnectionProvider.LecturerConnection();
+            _unitOfWork.Open();
 
-            ////Arrange
-            //_unitOfWork = DBConnectionProvider.LecturerConnection();
-            //_unitOfWork.Open();
-            //_transaction = _unitOfWork.BeginTransaction();
+            //Act
+            var hasPermission = _unitOfWork.Query<bool>($"SELECT HAS_PERMS_BY_NAME(@TableName, 'OBJECT', 'INSERT')",
+                new { TableName = table },
+                transaction: _transaction).Single();
 
-            ////Act
-            //var act = () => _unitOfWork.Query($"DELETE FROM {table}", transaction: _transaction);
-
-            ////Assert
-            //act.Should().Throw<SqlException>();
-
-            ////Teardown
-            //_transaction.Rollback();
-            //_unitOfWork.Dispose();
+            //Assert
+            hasPermission.Should().BeTrue();
         }
 
         [Test]
-        [Ignore("Not Implemented")]
-        public void Lecturer_Should_HaveInsertPermissions_OnAbsences()
-        {
-
-            ////Arrange
-            //_unitOfWork = DBConnectionProvider.LecturerConnection();
-            //_unitOfWork.Open();
-            //_transaction = _unitOfWork.BeginTransaction();
-
-            ////Act
-            //var act = () => _unitOfWork.Query($"DELETE FROM {table}", transaction: _transaction);
-
-            ////Assert
-            //act.Should().Throw<SqlException>();
-
-            ////Teardown
-            //_transaction.Rollback();
-            //_unitOfWork.Dispose();
-        }
-
-        [Test]
-        [Ignore("Not Implemented")]
         public void Lecturer_Should_HaveUpdatePermissions_OnLoginInformation()
         {
+            //Arrange
+            _unitOfWork = DBConnectionProvider.LecturerConnection();
+            _unitOfWork.Open();
 
-            ////Arrange
-            //_unitOfWork = DBConnectionProvider.LecturerConnection();
-            //_unitOfWork.Open();
-            //_transaction = _unitOfWork.BeginTransaction();
+            //Act
+            var hasPermission = _unitOfWork.Query<bool>($"SELECT HAS_PERMS_BY_NAME('UserLoginInformation', 'OBJECT', 'UPDATE')",
+                transaction: _transaction).Single();
 
-            ////Act
-            //var act = () => _unitOfWork.Query($"DELETE FROM {table}", transaction: _transaction);
+            //Assert
+            hasPermission.Should().BeTrue();
+        }
 
-            ////Assert
-            //act.Should().Throw<SqlException>();
+        [Test]
+        [TestCase("RegisterStudent")]
+        [TestCase("GetStudentWeeklyPlan")]
+        [TestCase("GetLecturerWeeklyPlan")]
+        [TestCase("GetStudentGradesInGroup")]
+        [TestCase("GetStudentFinalGradesInSemester")]
+        [TestCase("GetStudentWeightedAverageGradeInSemester")]
+        [TestCase("GetStudentAbsencesInGroup")]
+        [TestCase("GetGroupGrades")]
+        [TestCase("GetCourseFinalGrades")]
+        [TestCase("GetStudentsAbsencesInGroupCount")]
+        [TestCase("RegisterLecturer")]
+        public void Administration_Should_HaveExecPermissions_OnAllStoredProcedures(string procedure)
+        {
+            //Arrange
+            _unitOfWork = DBConnectionProvider.AdministrationConnection();
+            _unitOfWork.Open();
 
-            ////Teardown
-            //_transaction.Rollback();
-            //_unitOfWork.Dispose();
+            //Act
+            var hasPermission = _unitOfWork.Query<bool>($"SELECT HAS_PERMS_BY_NAME(@proc, 'OBJECT', 'EXECUTE')",
+                                new { proc = procedure },
+                                transaction: _transaction).Single();
+
+            //Assert
+            hasPermission.Should().BeTrue();
+        }
+
+        [Test]
+        [TestCase("RegisterStudent", true)]
+        [TestCase("GetStudentWeeklyPlan", true)]
+        [TestCase("GetLecturerWeeklyPlan", false)]
+        [TestCase("GetStudentGradesInGroup", true)]
+        [TestCase("GetStudentFinalGradesInSemester", true)]
+        [TestCase("GetStudentWeightedAverageGradeInSemester", true)]
+        [TestCase("GetStudentAbsencesInGroup", true)]
+        [TestCase("GetGroupGrades", false)]
+        [TestCase("GetCourseFinalGrades", false)]
+        [TestCase("GetStudentsAbsencesInGroupCount", false)]
+        [TestCase("RegisterLecturer", false)]
+        public void Student_Should_HaveExecPermissions_OnSpecifiedStoredProcedures(string procedure, bool shouldHavePermission)
+        {
+            //Arrange
+            _unitOfWork = DBConnectionProvider.StudentConnection();
+            _unitOfWork.Open();
+
+            //Act
+            var hasPermission = _unitOfWork.Query<bool>($"SELECT HAS_PERMS_BY_NAME(@proc, 'OBJECT', 'EXECUTE')",
+                                new { proc = procedure },
+                                transaction: _transaction).Single();
+
+            //Assert
+            hasPermission.Should().Be(shouldHavePermission);
+        }
+
+        [Test]
+        [TestCase("RegisterStudent", false)]
+        [TestCase("GetStudentWeeklyPlan", false)]
+        [TestCase("GetLecturerWeeklyPlan", true)]
+        [TestCase("GetStudentGradesInGroup", true)]
+        [TestCase("GetStudentFinalGradesInSemester", false)]
+        [TestCase("GetStudentWeightedAverageGradeInSemester", false)]
+        [TestCase("GetStudentAbsencesInGroup", true)]
+        [TestCase("GetGroupGrades", true)]
+        [TestCase("GetCourseFinalGrades", true)]
+        [TestCase("GetStudentsAbsencesInGroupCount", true)]
+        [TestCase("RegisterLecturer", true)]
+        public void Lecturer_Should_HaveExecPermissions_OnSpecifiedStoredProcedures(string procedure, bool shouldHavePermission)
+        {
+            //Arrange
+            _unitOfWork = DBConnectionProvider.LecturerConnection();
+            _unitOfWork.Open();
+
+            //Act
+            var hasPermission = _unitOfWork.Query<bool>($"SELECT HAS_PERMS_BY_NAME(@proc, 'OBJECT', 'EXECUTE')",
+                                new { proc = procedure },
+                                transaction: _transaction).Single();
+
+            //Assert
+            hasPermission.Should().Be(shouldHavePermission);
         }
 
         [TearDown]
         public void Teardown()
         {
             _unitOfWork = DBConnectionProvider.SuperAdminConnection();
-            _unitOfWork.Execute("DBCC CHECKIDENT ('User', RESEED, 0);");
             _unitOfWork.Dispose();
         }
 

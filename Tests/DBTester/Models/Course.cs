@@ -9,12 +9,12 @@ namespace Models
     public class Course
     {
         public string Name { get; set; }
-        public int Ects { get; set; }
+        public int ECTS { get; set; }
 
         public Course(string name, int ects)
         {
             Name = name;
-            Ects = ects;
+            ECTS = ects;
         }
     }
 }
