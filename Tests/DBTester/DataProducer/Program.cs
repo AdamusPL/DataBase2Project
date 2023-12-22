@@ -10,8 +10,9 @@ var generator = new Generator([
                 new AdministratorGenerator(),
                 new LecturerGenerator(),
                 new StudentGenerator(),
-                new CourseGenerator()
-                ]);
+                new CourseGenerator(),
+                new GroupGenerator()
+                ]); ;
 
 //var generator = new Generator([new CSVGenerator()]);
 

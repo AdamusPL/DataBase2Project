@@ -10,10 +10,11 @@ namespace DataProducer
 {
     internal class Cleaner
     {
-        public void Clean() {
+        public void Clean()
+        {
             using var connection = DBConnectionProvider.SuperAdminConnection();
             connection.Open();
-            
+
 
             var query = "DELETE FROM Email";
             connection.Query(query);

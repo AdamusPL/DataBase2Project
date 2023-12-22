@@ -37,7 +37,7 @@ namespace DataProducer.Generators
                 int fieldOfStudyId = connection.Query<int>(query).Single();
 
                 query = "INSERT INTO Course (Name, ECTS, LecturerId) VALUES (@Name, @ECTS, @lecturerId); SELECT CAST(SCOPE_IDENTITY() as int)";
-                int courseId = connection.Query<int>(query, new { course.Name, course.ECTS, lecturerId }).Single();
+                int courseId = connection.Query<int>(query, new { course.Name, course.Ects, lecturerId }).Single();
 
                 query = "INSERT INTO FieldOfStudy_Course (FieldOfStudyId, CourseId) VALUES (@fieldOfStudyId,@courseId)";
                 connection.Query(query, new { fieldOfStudyId, courseId });
