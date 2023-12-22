@@ -15,32 +15,32 @@ BEGIN
     WHILE (@StartDate <= @EndDate)
     BEGIN
         DECLARE @DayOfWeek AS int = DATEPART(WEEKDAY, @StartDate);
-        set datefirst 1;
-        DECLARE @WeekParity AS int = DATEPART(WEEKDAY, @StartDate) % 2;
+        DECLARE @WeekParity AS int = DATEPART(ISO_WEEK, @StartDate) % 2;
         DECLARE @RegularityId AS int = CASE @WeekParity
             WHEN 0 THEN 2
             WHEN 1 THEN 1
         END;
-        
+
         INSERT INTO #Plan (Date, Regularity, Course, GroupType, StartTime, EndTime, Classroom, Lecturer)
         SELECT 
             @StartDate, 
-            Regularity.Name AS Regularity,
-            Course.Name AS Course, 
-            GroupType.Name AS GroupType,
+            r.Name AS Regularity,
+            c.Name AS Course, 
+            gt.Name AS GroupType,
             StartTime, 
             EndTime, 
             Classroom, 
             CONCAT(u.Name, ' ', u.Surname) Lecturer
         FROM [Group] g
-        INNER JOIN Course ON g.CourseId = Course.Id
-        INNER JOIN Regularity ON g.RegularityId = Regularity.Id
-        INNER JOIN Group_Lecturer ON g.Id = Group_Lecturer.GroupId
-        INNER JOIN Lecturer ON Group_Lecturer.LecturerId = Lecturer.Id
-        INNER JOIN [User] u ON Lecturer.UserId = u.Id
-        INNER JOIN Student_Group ON Student_Group.GroupId = g.Id
-        INNER JOIN GroupType ON g.TypeId = GroupType.Id
-        WHERE Student_Group.StudentId = @StudentId AND (g.RegularityId = 0 OR g.RegularityId = @RegularityId)
+        INNER JOIN Student_Group sg ON sg.GroupId = g.Id
+        INNER JOIN Regularity r ON r.Id = g.RegularityId
+        INNER JOIN Course c ON c.Id = g.CourseId
+        INNER JOIN GroupType gt ON gt.Id = g.TypeId
+        INNER JOIN Group_Lecturer gl ON gl.GroupId = g.Id
+        INNER JOIN Lecturer l ON l.Id = gl.LecturerId
+        INNER JOIN [User] u ON u.Id = l.UserId
+        WHERE sg.StudentId = @StudentId AND (g.RegularityId = 3 OR g.RegularityId = @RegularityId) AND DayOfTheWeek = @DayOfWeek
+        
         SET @StartDate = DATEADD(day, 1, @StartDate);
     END;
 
