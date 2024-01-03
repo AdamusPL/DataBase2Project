@@ -3,6 +3,7 @@ using Jsos3.Grades;
 using Jsos3.Groups;
 using Jsos3.LecturerInformations;
 using Jsos3.WeeklyPlan;
+using Jsos3.Shared;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +14,7 @@ builder.Services.AddGradesModule();
 builder.Services.AddGroupsModule();
 builder.Services.AddLecturerInformationsModule();
 builder.Services.AddWeeklyPlanModule();
+builder.Services.AddSharedModule();
 
 
 var app = builder.Build();
