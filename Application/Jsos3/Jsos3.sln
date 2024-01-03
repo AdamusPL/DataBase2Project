@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jsos3.WeeklyPlan", "Jsos3.W
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jsos3.LecturerInformations", "Jsos3.LecturerInformations\Jsos3.LecturerInformations.csproj", "{5A1789FF-7B35-44FD-85CB-3B38D5D623D9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jsos3.Shared", "Jsos3.Shared\Jsos3.Shared.csproj", "{7DDA5BCB-289B-42BA-AD2E-DE74396C0460}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +49,10 @@ Global
 		{5A1789FF-7B35-44FD-85CB-3B38D5D623D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5A1789FF-7B35-44FD-85CB-3B38D5D623D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5A1789FF-7B35-44FD-85CB-3B38D5D623D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7DDA5BCB-289B-42BA-AD2E-DE74396C0460}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7DDA5BCB-289B-42BA-AD2E-DE74396C0460}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7DDA5BCB-289B-42BA-AD2E-DE74396C0460}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7DDA5BCB-289B-42BA-AD2E-DE74396C0460}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
