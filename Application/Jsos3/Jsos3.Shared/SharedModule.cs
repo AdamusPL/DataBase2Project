@@ -1,4 +1,5 @@
-﻿using Jsos3.Shared.Db;
+﻿using Jsos3.Shared.Auth;
+using Jsos3.Shared.Db;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Jsos3.Shared;
@@ -9,5 +10,6 @@ public static class SharedModule
     {
         services.AddTransient<IDummyInterface, DummyImplementation>();
         services.AddTransient<IDbConnectionFactory, SqlConnectionFactory>();
+        services.AddScoped<IUserAccessor, DummyUserAccessor>();
     }
 }
