@@ -13,9 +13,9 @@ public interface IDbConnectionFactory
 
 internal class SqlConnectionFactory : IDbConnectionFactory
 {
-    private readonly IConfigurationRoot _configuration;
+    private readonly IConfiguration _configuration;
 
-    public SqlConnectionFactory(IConfigurationRoot configuration)
+    public SqlConnectionFactory(IConfiguration configuration)
     {
         _configuration = configuration;
     }
