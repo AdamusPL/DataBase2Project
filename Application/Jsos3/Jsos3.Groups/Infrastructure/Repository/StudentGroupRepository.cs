@@ -36,6 +36,8 @@ SELECT
     u.Name AS [{nameof(StudentGroup.LecturerName)}],
     u.Surname AS [{nameof(StudentGroup.LecturerSurname)}],
     c.ECTS AS [{nameof(StudentGroup.Ects)}],
+    clu.Name AS [{nameof(StudentGroup.CourseLecturerName)}],
+    clu.Surname AS [{nameof(StudentGroup.CourseLecturerSurname)}],
     c.Id AS [{nameof(StudentGroup.CourseId)}]
 FROM [dbo].[Group] g
 INNER JOIN [dbo].[Student_Group] sg ON sg.GroupId = g.Id
@@ -45,6 +47,8 @@ INNER JOIN [dbo].[Course] c ON c.Id = g.CourseId
 INNER JOIN [dbo].[Group_Lecturer] gl ON gl.GroupId = g.Id
 INNER JOIN [dbo].[Lecturer] l ON l.Id = gl.LecturerId
 INNER JOIN [dbo].[User] u ON u.Id = l.UserId
+INNER JOIN [dbo].[Lecturer] cl ON cl.Id = c.LecturerId
+INNER JOIN [dbo].[User] clu ON clu.Id = cl.UserId
 WHERE s.Id = @StudentId AND sem.Id LIKE @SemesterId
 ORDER BY c.Name
 ";

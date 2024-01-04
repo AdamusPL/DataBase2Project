@@ -33,12 +33,16 @@ internal class StudentService : IStudentService
         var groups = await _studentGroupRepository.GetStudentGroupsInSemester(userId, semester);
 
         return groups
-            .GroupBy(x => new CourseData(x.CourseId, x.Course, x.Ects))
+            .GroupBy(x => new CourseData(
+                x.CourseId,
+                x.Course,
+                x.Ects,
+                $"{x.LecturerName} {x.LecturerSurname}"))
             .Select(x => new StudentCourseDto
             {
                 Id = x.Key.Id,
                 Name = x.Key.Name,
-                Lecturer = "",
+                Lecturer = x.Key.Lecturer,
                 Ects = x.Key.Ects,
                 Groups = _studentGroupDtoMapper.Map(x.ToList())
             })

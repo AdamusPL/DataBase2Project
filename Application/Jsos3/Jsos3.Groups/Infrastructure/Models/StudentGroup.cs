@@ -12,5 +12,7 @@ internal readonly record struct StudentGroup(
     int Type,
     string LecturerName,
     string LecturerSurname,
+    string CourseLecturerName,
+    string CourseLecturerSurname,
     int Ects,
     int CourseId);

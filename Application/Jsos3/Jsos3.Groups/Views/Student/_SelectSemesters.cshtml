@@ -1,0 +1,8 @@
+@model Jsos3.Groups.ViewModels.Models.StudentIndexViewModel
+
+<select>
+    @foreach (var semester in Model.Semesters)
+    {
+        <option value="@semester">@semester</option>
+    }
+</select>
