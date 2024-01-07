@@ -28,6 +28,7 @@ public class StudentIndexViewModelBuilder : IStudentIndexViewModelBuilder
         var semesters = await _semesterService.GetSemesters();
         return new StudentIndexViewModel
         {
+            SelectedSemester = semesterId ?? semesters.First(),
             Semesters = semesters,
             Courses = courses
         };

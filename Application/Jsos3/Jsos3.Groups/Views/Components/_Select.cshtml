@@ -1,0 +1,21 @@
+@model Jsos3.Groups.ViewModels.Models.SelectViewModel
+
+<select onchange="optionSelected(this.value)">
+    @foreach (var item in Model.Options)
+    {
+        <option value="@item.Key"
+        @{
+            if (item.Key == Model.Selected)
+            {
+                <text>selected</text>
+            }
+        }>@item.Value</option>
+    }
+</select>
+
+<script>
+    function optionSelected(selected) {
+        const uri = encodeURI(`@Model.RedirectUrl?@Model.QueryParameterName=${selected}`);
+        window.location.replace(uri);
+    }
+</script>

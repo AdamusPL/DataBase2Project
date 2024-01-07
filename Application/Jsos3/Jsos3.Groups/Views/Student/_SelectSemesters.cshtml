@@ -1,8 +1,8 @@
+@using Jsos3.Groups.ViewModels.Builders
 @model Jsos3.Groups.ViewModels.Models.StudentIndexViewModel
 
-<select>
-    @foreach (var semester in Model.Semesters)
-    {
-        <option value="@semester">@semester</option>
-    }
-</select>
+@{
+    var viewModelBuilder = new SelectViewModelBuilder();
+}
+
+@Html.Partial("../Components/_Select", viewModelBuilder.BuildForSemesters(Model.SelectedSemester, Model.Semesters))

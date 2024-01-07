@@ -37,7 +37,7 @@ internal class StudentService : IStudentService
                 x.CourseId,
                 x.Course,
                 x.Ects,
-                $"{x.LecturerName} {x.LecturerSurname}"))
+                $"{x.CourseLecturerName} {x.CourseLecturerSurname}"))
             .Select(x => new StudentCourseDto
             {
                 Id = x.Key.Id,

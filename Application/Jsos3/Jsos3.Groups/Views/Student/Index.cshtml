@@ -4,9 +4,9 @@
     ViewBag.Title = "Grupy studenta";
 }
 
-@Html.Partial("_SelectSemesters.cshtml", Model);
+@Html.Partial("_SelectSemesters.cshtml", Model)
 
-<div class="accordion accordion-flush">
+<div class="accordion">
     @foreach (var course in Model.Courses)
     {
         @Html.Partial("_Course.cshtml", course)
