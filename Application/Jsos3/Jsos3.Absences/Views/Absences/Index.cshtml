@@ -1,28 +1,46 @@
-﻿@model Jsos3.Absences.ViewModels.AbsenceIndexViewModel
+﻿@using Jsos3.Absences.Infrastructure.Models
+@model Jsos3.Absences.ViewModels.AbsenceIndexViewModel
 @{
     
 }
 
-<h1>Obecność dla grupy </h1>
+<h1>Obecność dla grupy</h1>
 
 <table>
 <tr>
+    <th>Nr</th>
     <th>Indeks studenta</th>
     <th>Imię</th>
     <th>Nazwisko</th>
         @foreach (var date in Model.Days)
         {
-            <th>@date</th>
+            <th>@date.Date</th>
         }
     </tr>
 
 
-@foreach (var absence in Model.AbsenceOfStudents)
+@foreach (var student in Model.StudentsInGroup)
 {
     <tr>
-        <td>@absence.StudentId</td>
-        <td>@absence.Name</td>
-        <td>@absence.Surname</td>
-    </tr>
+        <td>@student.StudentInGroupId</td>
+        <td>@student.StudentId</td>
+        <td>@student.Name</td>
+        <td>@student.Surname</td>
+            @foreach (var date in Model.Days)
+            {
+            var absence = Model.AbsenceOfStudents.GetValueOrDefault(new AbsenceKey(student.StudentId, date));
+
+                @if(absence == default(AbsenceOfStudents))
+                {
+                    <td>+</td>
+                }
+
+                else
+                {
+                    <td>-</td>
+                }
+
+            }
+        </tr>
 }
 </table>

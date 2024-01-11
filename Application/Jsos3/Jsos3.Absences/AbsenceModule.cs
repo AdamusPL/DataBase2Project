@@ -9,6 +9,7 @@ namespace Jsos3.Absences
         {
             services.AddScoped<IAbsencesOfStudentsRepository, AbsencesOfStudentsRepository>();
             services.AddScoped<IGroupDatesRepository, GroupDatesRepository>();
+            services.AddScoped<IStudentsInGroupRepository, StudentsInGroupRepository>();
         }
 
     }

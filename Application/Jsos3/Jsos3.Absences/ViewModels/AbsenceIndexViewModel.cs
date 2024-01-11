@@ -9,7 +9,8 @@ namespace Jsos3.Absences.ViewModels
 {
     public class AbsenceIndexViewModel
     {
-        public required List<AbsenceOfStudents> AbsenceOfStudents { get; set; }
+        public required Dictionary<AbsenceKey, AbsenceOfStudents> AbsenceOfStudents { get; set; }
+        public required List<StudentInGroup> StudentsInGroup { get; set; }
         public required List<DateTime> Days { get; set; }
     }
 }

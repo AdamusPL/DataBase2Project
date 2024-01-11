@@ -21,7 +21,7 @@ internal class GroupOccurencesCalculator : IGroupOccurencesCalculator
         Regularity regularity = (Regularity)Enum.Parse(typeof(Regularity), regularityId.ToString());
         var days = new List<DateTime>();
 
-        for (var date = start; date <= end; date.AddDays(1))
+        for (var date = start; date <= end; date = date.AddDays(1))
         {
             if (date.DayOfWeek != dayOfWeek)
             {
