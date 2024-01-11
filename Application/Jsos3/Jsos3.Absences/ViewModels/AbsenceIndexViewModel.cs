@@ -12,5 +12,6 @@ namespace Jsos3.Absences.ViewModels
         public required Dictionary<AbsenceKey, AbsenceOfStudents> AbsenceOfStudents { get; set; }
         public required List<StudentInGroup> StudentsInGroup { get; set; }
         public required List<DateTime> Days { get; set; }
+        public required string GroupId { get; set; }
     }
 }

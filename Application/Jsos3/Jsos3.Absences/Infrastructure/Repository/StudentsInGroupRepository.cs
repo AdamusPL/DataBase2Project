@@ -42,7 +42,9 @@ WHERE g.Id LIKE @groupId
     
 ";
         var queryResult = await connection.QueryAsync<StudentInGroup>(query, new { groupId });
+        var queryResultList = queryResult.ToList();
+        List<StudentInGroup> sortedList = queryResultList.OrderBy(student => student.Surname).ToList();
 
-        return queryResult.ToList();
+        return sortedList;
     }
 }

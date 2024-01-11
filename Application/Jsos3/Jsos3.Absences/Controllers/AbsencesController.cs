@@ -38,6 +38,7 @@ namespace Jsos3.Absences.Controllers
 
             var absenceIndexViewModel = new AbsenceIndexViewModel()
             {
+                GroupId = groupId,
                 AbsenceOfStudents = AbsenceOfStudents,
                 Days = groupOccurencesCalculator.Calculate(GroupDate.Start, GroupDate.End, GroupDate.DayOfTheWeek, GroupDate.RegularityId),
                 StudentsInGroup = await _studentsInGroupRepository.GetStudentsFromGroup(groupId)

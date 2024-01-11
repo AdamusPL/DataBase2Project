@@ -4,17 +4,27 @@
     
 }
 
-<h1>Obecność dla grupy</h1>
+<style>
+
+    th, td {
+        border: 1px solid black;
+        padding: 15px;
+        text-align: left;
+    }
+
+</style>
+
+<h1>Lista obecności grupy @Model.GroupId</h1>
 
 <table>
+
 <tr>
-    <th>Nr</th>
     <th>Indeks studenta</th>
     <th>Imię</th>
     <th>Nazwisko</th>
         @foreach (var date in Model.Days)
         {
-            <th>@date.Date</th>
+            <th>@date.ToString("dd/MM/yyyy")</th>
         }
     </tr>
 
@@ -22,7 +32,6 @@
 @foreach (var student in Model.StudentsInGroup)
 {
     <tr>
-        <td>@student.StudentInGroupId</td>
         <td>@student.StudentId</td>
         <td>@student.Name</td>
         <td>@student.Surname</td>
@@ -32,12 +41,12 @@
 
                 @if(absence == default(AbsenceOfStudents))
                 {
-                    <td>+</td>
+                    <td style="color: green, font-weight: bold;">+</td>
                 }
 
                 else
                 {
-                    <td>-</td>
+                    <td style="color: red, font-weight: bold;">-</td>
                 }
 
             }
