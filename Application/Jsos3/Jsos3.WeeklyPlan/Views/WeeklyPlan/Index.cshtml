@@ -1,0 +1,59 @@
+@using Jsos3.WeeklyPlan.Models
+@model Jsos3.WeeklyPlan.ViewModels.Models.WeeklyPlanIndexViewModel
+
+@{
+    var days = new List<DateTime>();
+
+    for (var date = Model.StartOfWeek; date <= Model.EndOfWeek; date = date.AddDays(1))
+    {
+        days.Add(date);
+    };
+
+    var start = new TimeSpan(8, 0, 0);
+    var timeToAdd = new TimeSpan(1, 0, 0);
+    var end = new TimeSpan(20, 0, 0);
+    var times = new List<TimeSpan>();
+    for (var time = start; time <= end; time = time.Add(timeToAdd))
+    {
+        times.Add(time);
+    };
+}
+
+<div style="display: flex; flex-direction: row; width:100%">
+    @foreach (var day in days)
+    {
+        var todayGroups = Model.Occurences.GetValueOrDefault(day) ?? new List<WeeklyPlanDto>();
+        <div style="display: flex; flex-direction: column;">
+            <h3>@day.DayOfWeek</h3>
+            <div style="display: flex; flex-direction: column;">
+                @foreach (var time in times)
+                {
+                    <div style="display: flex; flex-direction: row;">
+                        @if(day.DayOfWeek == DayOfWeek.Monday)
+                        {
+                            <span>@time.ToString("hh\\:mm")</span>
+                        }
+                        <div style="display: flex; flex-direction: column;">
+                            <div class="card" style="width: 18rem; height: 10rem; overflow:auto; display: flex; flex-direction: row;">
+                                @foreach (var group in todayGroups)
+                                {
+                                    if (group.StartTime <= time && group.EndTime > time.Add(timeToAdd))
+                                    {
+                                        <div class="card-body">
+                                            <h5 class="card-title">@group.Course</h5>
+                                            <h6 class="card-subtitle mb-2 text-muted">@group.Lecturer</h6>
+                                            <p class="card-text">@group.Classroom</p>
+                                        </div>
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                }
+            </div>
+        </div>
+
+
+    }
+</div>

@@ -13,8 +13,6 @@ public static class GroupsModule
 {
     public static void AddGroupsModule(this IServiceCollection services)
     {
-        services.AddMemoryCache();
-
         services.AddProxed<IStudentGroupRepository, CachedStudentGroupRepository, StudentGroupRepository>(
             (p, impl) => new(impl, p.GetRequiredService<IMemoryCache>()),
             p => new(p.GetRequiredService<IDbConnectionFactory>()));

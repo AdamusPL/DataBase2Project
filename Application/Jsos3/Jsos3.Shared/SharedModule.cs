@@ -7,10 +7,12 @@ namespace Jsos3.Shared;
 
 public static class SharedModule
 {
+
     public static void AddSharedModule(this IServiceCollection services)
     {
         services.AddTransient<IDbConnectionFactory, SqlConnectionFactory>();
         services.AddScoped<IUserAccessor, DummyUserAccessor>();
         services.AddTransient<ITranslationService, PolishTranslationService>();
+        services.AddTransient(_ => TimeProvider.System);
     }
 }
