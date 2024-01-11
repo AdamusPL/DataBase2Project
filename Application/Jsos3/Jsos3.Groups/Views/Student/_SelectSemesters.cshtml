@@ -1,8 +1,0 @@
-@using Jsos3.Groups.ViewModels.Builders
-@model Jsos3.Groups.ViewModels.Models.StudentIndexViewModel
-
-@{
-    var viewModelBuilder = new SelectViewModelBuilder();
-}
-
-@Html.Partial("../Components/_Select", viewModelBuilder.BuildForSemesters(Model.SelectedSemester, Model.Semesters))

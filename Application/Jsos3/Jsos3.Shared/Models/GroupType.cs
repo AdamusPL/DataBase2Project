@@ -1,4 +1,4 @@
-﻿namespace Jsos3.Groups.Models;
+﻿namespace Jsos3.Shared.Models;
 
 public enum GroupType
 {

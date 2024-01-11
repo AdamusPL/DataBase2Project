@@ -12,9 +12,9 @@ public class StudentController : Controller
         _studentIndexViewModelBuilder = studentIndexViewModelBuilder;
     }
 
-    public async Task<IActionResult> Index([FromQuery] string? semesterId)
+    public async Task<IActionResult> Index([FromQuery] string? semesterId, [FromQuery] string? courseName)
     {
-        var viewModel = await _studentIndexViewModelBuilder.Build(semesterId);
+        var viewModel = await _studentIndexViewModelBuilder.Build(semesterId, courseName);
         return View(viewModel);
     }
 }
