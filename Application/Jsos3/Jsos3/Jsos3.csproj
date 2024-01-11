@@ -7,6 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Dapper" Version="2.1.28" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Jsos3.Absences\Jsos3.Absences.csproj" />
     <ProjectReference Include="..\Jsos3.Authorization\Jsos3.Authorization.csproj" />
     <ProjectReference Include="..\Jsos3.Grades\Jsos3.Grades.csproj" />
     <ProjectReference Include="..\Jsos3.Groups\Jsos3.Groups.csproj" />
