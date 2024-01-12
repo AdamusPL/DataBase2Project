@@ -6,4 +6,12 @@ using System.Threading.Tasks;
 
 namespace Jsos3.Absences.Infrastructure.Models;
 
-public readonly record struct AbsenceKey(int StudentId, DateTime Occurence);
+public readonly record struct AbsenceOfStudent(
+
+    string GroupId,
+    int StudentId,
+    string Name,
+    string Surname,
+    DateTime Date
+
+);

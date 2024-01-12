@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Jsos3.Shared.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,5 +12,5 @@ public readonly record struct GroupDate(
     DateTime Start,
     DateTime End,
     DayOfWeek DayOfTheWeek,
-    int RegularityId
+    Regularity Regularity
     );

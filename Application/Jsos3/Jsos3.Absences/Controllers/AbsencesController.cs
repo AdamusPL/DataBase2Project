@@ -5,43 +5,35 @@ using Jsos3.Absences.Infrastructure;
 using Jsos3.Absences.Infrastructure.Repository;
 using Jsos3.Absences.ViewModels;
 using Jsos3.Absences.Infrastructure.Models;
+using Jsos3.Absences.Models;
 using System;
+using Jsos3.Absences.Services;
 
 namespace Jsos3.Absences.Controllers
 {
 
     public class AbsencesController : Controller
-    { 
+    {
+        private readonly IGroupService _groupService;
 
-        public AbsencesController(IAbsencesOfStudentsRepository absencesOfStudentsRepository, IGroupDatesRepository groupDatesRepository, IStudentsInGroupRepository studentsInGroupRepository)
+        public AbsencesController(IGroupService groupService)
         {
-            _absencesOfStudentsRepository = absencesOfStudentsRepository;
-            _groupDatesRepository = groupDatesRepository;
-            _studentsInGroupRepository = studentsInGroupRepository;
+            _groupService = groupService;
         }
 
-        public readonly IAbsencesOfStudentsRepository _absencesOfStudentsRepository;
-        public readonly IGroupDatesRepository _groupDatesRepository;
-        public readonly IStudentsInGroupRepository _studentsInGroupRepository;
-
-        // GET: AbsencesController
-        public async Task<ActionResult> Index([FromQuery]string groupId)
+        public async Task<ActionResult> Index([FromQuery] string groupId)
         {
-            var GroupDate = await _groupDatesRepository.GetDatesOfGroup(groupId);
-            var groupOccurencesCalculator = new GroupOccurencesCalculator();
-
-
-            var AbsenceOfStudentsList = await _absencesOfStudentsRepository.GetAbsencesOfStudentsInGroup(groupId);
-            var AbsenceOfStudents = AbsenceOfStudentsList
-                .GroupBy(x => new AbsenceKey(x.StudentId, x.Date))
-                .ToDictionary(x => x.Key, x => x.Single());
+            if(groupId == null)
+            {
+                return RedirectToAction("Error");
+            }
 
             var absenceIndexViewModel = new AbsenceIndexViewModel()
             {
                 GroupId = groupId,
-                AbsenceOfStudents = AbsenceOfStudents,
-                Days = groupOccurencesCalculator.Calculate(GroupDate.Start, GroupDate.End, GroupDate.DayOfTheWeek, GroupDate.RegularityId),
-                StudentsInGroup = await _studentsInGroupRepository.GetStudentsFromGroup(groupId)
+                AbsenceOfStudents = await _groupService.GetAbsencesOfStudentsInGroup(groupId),
+                Days = await _groupService.GetDatesOfGroup(groupId),
+                StudentsInGroup = await _groupService.GetSortedStudentsFromGroup(groupId)
             };
 
             return View(absenceIndexViewModel);

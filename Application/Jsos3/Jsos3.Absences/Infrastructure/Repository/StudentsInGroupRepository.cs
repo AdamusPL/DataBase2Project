@@ -11,7 +11,7 @@ namespace Jsos3.Absences.Infrastructure.Repository;
 
 public interface IStudentsInGroupRepository
 {
-    Task<List<StudentInGroup>> GetStudentsFromGroup(string groupId);
+    Task<List<StudentInGroup>> GetSortedStudentsFromGroup(string groupId);
 }
 
 internal class StudentsInGroupRepository : IStudentsInGroupRepository
@@ -23,7 +23,7 @@ internal class StudentsInGroupRepository : IStudentsInGroupRepository
         _dbConnectionFactory = dbConnectionFactory;
     }
 
-    public async Task<List<StudentInGroup>> GetStudentsFromGroup(string groupId)
+    public async Task<List<StudentInGroup>> GetSortedStudentsFromGroup(string groupId)
     {
         using var connection = await _dbConnectionFactory.GetOpenLecturerConnectionAsync();
 
@@ -39,12 +39,11 @@ INNER JOIN [Student_Group] sg ON g.Id = sg.GroupId
 INNER JOIN [Student] s ON sg.StudentId = s.Id
 INNER JOIN [User] u ON u.Id = s.UserId
 WHERE g.Id LIKE @groupId
+ORDER BY u.Surname ASC
     
 ";
         var queryResult = await connection.QueryAsync<StudentInGroup>(query, new { groupId });
-        var queryResultList = queryResult.ToList();
-        List<StudentInGroup> sortedList = queryResultList.OrderBy(student => student.Surname).ToList();
 
-        return sortedList;
+        return queryResult.ToList();
     }
 }

@@ -1,18 +1,10 @@
-﻿@using Jsos3.Absences.Infrastructure.Models
+﻿@using Jsos3.Absences.Helpers
+@using Jsos3.Absences.Infrastructure.Models
+@using Jsos3.Absences.Models
 @model Jsos3.Absences.ViewModels.AbsenceIndexViewModel
 @{
     
 }
-
-<style>
-
-    th, td {
-        border: 1px solid black;
-        padding: 15px;
-        text-align: left;
-    }
-
-</style>
 
 <h1>Lista obecności grupy @Model.GroupId</h1>
 
@@ -37,16 +29,16 @@
         <td>@student.Surname</td>
             @foreach (var date in Model.Days)
             {
-            var absence = Model.AbsenceOfStudents.GetValueOrDefault(new AbsenceKey(student.StudentId, date));
+            var absence = Model.AbsenceOfStudents.GetValueOrDefault(new AbsenceKey(date));
 
-                @if(absence == default(AbsenceOfStudents))
+                @if(absence == default(StudentAbsenceDto))
                 {
-                    <td style="color: green, font-weight: bold;">+</td>
+                    <td style="color: green; font-weight: bold;">+</td>
                 }
 
                 else
                 {
-                    <td style="color: red, font-weight: bold;">-</td>
+                    <td style="color: red; font-weight: bold;">-</td>
                 }
 
             }

@@ -1,24 +1,16 @@
 ﻿using System;
 using System.Globalization;
+using Jsos3.Shared.Models;
 
-internal enum Regularity
+public interface IGroupOccurrencesCalculator
 {
-    Odd = 1,
-    Even = 2,
-    Every = 3
+    List<DateTime> Calculate(DateTime start, DateTime end, DayOfWeek dayOfWeek, Regularity regularity);
 }
 
-internal interface IGroupOccurencesCalculator
+internal class GroupOccurrencesCalculator : IGroupOccurrencesCalculator
 {
-    List<DateTime> Calculate(DateTime start, DateTime end, DayOfWeek dayOfWeek, int regularityId);
-}
-
-internal class GroupOccurencesCalculator : IGroupOccurencesCalculator
-{
-    public List<DateTime> Calculate(DateTime start, DateTime end, DayOfWeek dayOfWeek, int regularityId)
+    public List<DateTime> Calculate(DateTime start, DateTime end, DayOfWeek dayOfWeek, Regularity regularity)
     {
-       
-        Regularity regularity = (Regularity)Enum.Parse(typeof(Regularity), regularityId.ToString());
         var days = new List<DateTime>();
 
         for (var date = start; date <= end; date = date.AddDays(1))
