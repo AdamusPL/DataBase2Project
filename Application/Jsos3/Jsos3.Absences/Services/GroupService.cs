@@ -34,14 +34,10 @@ namespace Jsos3.Absences.Services
         public async Task<Dictionary<AbsenceKey, StudentAbsenceDto>> GetAbsencesOfStudentsInGroup(string groupId)
         {
             var absencesOfStudents = await _absencesOfStudentsRepository.GetAbsencesOfStudentsInGroup(groupId);
-            var listOfDto = absencesOfStudents
-            .Select(absence => new StudentAbsenceDto { Date = absence.Date })
-            .ToList();
-            //przerobic AbsenceOfStudent na StudentAbsenceDto
 
-            return listOfDto
-                .GroupBy(x => new AbsenceKey(x.Date))
-                .ToDictionary(x => x.Key, x => x.Single());
+            return absencesOfStudents
+                .GroupBy(x => new AbsenceKey(x.StudentId, x.Date))
+                .ToDictionary(x => x.Key, x => x.Select(absence => new StudentAbsenceDto { Date = absence.Date }).Single());
         }
 
         public async Task<List<DateTime>> GetDatesOfGroup(string groupId)

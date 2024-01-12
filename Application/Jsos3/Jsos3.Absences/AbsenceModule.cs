@@ -1,4 +1,5 @@
 ﻿using Jsos3.Absences.Infrastructure.Repository;
+using Jsos3.Absences.Services;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Jsos3.Absences
@@ -10,6 +11,8 @@ namespace Jsos3.Absences
             services.AddScoped<IAbsencesOfStudentsRepository, AbsencesOfStudentsRepository>();
             services.AddScoped<IGroupDatesRepository, GroupDatesRepository>();
             services.AddScoped<IStudentsInGroupRepository, StudentsInGroupRepository>();
+            services.AddScoped<IGroupService, GroupService>();
+            services.AddScoped<IGroupOccurrencesCalculator, GroupOccurrencesCalculator>();
         }
 
     }

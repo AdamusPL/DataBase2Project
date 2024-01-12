@@ -29,7 +29,7 @@
         <td>@student.Surname</td>
             @foreach (var date in Model.Days)
             {
-            var absence = Model.AbsenceOfStudents.GetValueOrDefault(new AbsenceKey(date));
+            var absence = Model.AbsenceOfStudents.GetValueOrDefault(new AbsenceKey(student.StudentId, date));
 
                 @if(absence == default(StudentAbsenceDto))
                 {
