@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Jsos3.Absences.Infrastructure.Models;
 
-public readonly record struct StudentInGroup(
+internal readonly record struct StudentInGroup(
     int StudentInGroupId,
     string GroupId,
     int StudentId,

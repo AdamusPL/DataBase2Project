@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Jsos3.Absences.Infrastructure.Models;
 
-public readonly record struct GroupDate(
+internal readonly record struct GroupDate(
     string GroupId,
     DateTime Start,
     DateTime End,

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Jsos3.Absences.Infrastructure.Repository;
 
-public interface IGroupDatesRepository
+internal interface IGroupDatesRepository
 {
     Task<GroupDate> GetDatesOfGroup(string groupId);
 }
@@ -28,7 +28,7 @@ internal class GroupDatesRepository : IGroupDatesRepository
         using var connection = await _dbConnectionFactory.GetOpenLecturerConnectionAsync();
 
         var query = @$"
-SELECT 
+SELECT TOP 1
 g.Id AS [{nameof(GroupDate.GroupId)}], 
 s.StartDate AS [{nameof(GroupDate.Start)}], 
 s.EndDate AS [{nameof(GroupDate.End)}], 

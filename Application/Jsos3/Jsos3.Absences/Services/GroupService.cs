@@ -16,7 +16,7 @@ namespace Jsos3.Absences.Services
         Task<Dictionary<AbsenceKey, StudentAbsenceDto>> GetAbsencesOfStudentsInGroup(string groupId);
     }
 
-    public class GroupService : IGroupService
+    internal class GroupService : IGroupService
     {
         private readonly IGroupOccurrencesCalculator _groupOccurencesCalculator;
         private readonly IAbsencesOfStudentsRepository _absencesOfStudentsRepository;
@@ -24,7 +24,8 @@ namespace Jsos3.Absences.Services
         private readonly IGroupDatesRepository _groupDatesRepository;
 
         public GroupService(IGroupOccurrencesCalculator groupOccurencesCalculator, IAbsencesOfStudentsRepository absencesOfStudentsRepository, IGroupDatesRepository groupDatesRepository,
-            IStudentsInGroupRepository studentsInGroupRepository) {
+            IStudentsInGroupRepository studentsInGroupRepository) 
+        {
             _groupOccurencesCalculator = groupOccurencesCalculator;
             _absencesOfStudentsRepository = absencesOfStudentsRepository;
             _studentsInGroupRepository = studentsInGroupRepository;
@@ -50,13 +51,13 @@ namespace Jsos3.Absences.Services
         {
             var studentsInGroup = await _studentsInGroupRepository.GetSortedStudentsFromGroup(groupId);
             return studentsInGroup
-            .Select(student => new StudentInGroupDto
-            {
-                StudentId = student.StudentId,
-                Name = student.Name,
-                Surname = student.Surname
-            })
-            .ToList();
+                .Select(student => new StudentInGroupDto
+                {
+                    StudentId = student.StudentId,
+                    Name = student.Name,
+                    Surname = student.Surname
+                })
+                .ToList();
         }
     }
 

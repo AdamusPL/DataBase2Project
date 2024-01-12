@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Jsos3.Absences.Infrastructure.Repository;
 
-public interface IStudentsInGroupRepository
+internal interface IStudentsInGroupRepository
 {
     Task<List<StudentInGroup>> GetSortedStudentsFromGroup(string groupId);
 }

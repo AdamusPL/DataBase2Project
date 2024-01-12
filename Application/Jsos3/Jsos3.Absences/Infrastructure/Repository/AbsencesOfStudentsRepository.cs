@@ -10,7 +10,7 @@ using Jsos3.Absences.Infrastructure.Models;
 
 namespace Jsos3.Absences.Infrastructure.Repository;
 
-public interface IAbsencesOfStudentsRepository
+internal interface IAbsencesOfStudentsRepository
 {
     Task<List<AbsenceOfStudent>> GetAbsencesOfStudentsInGroup(string groupId);
 }
@@ -24,7 +24,6 @@ internal class AbsencesOfStudentsRepository : IAbsencesOfStudentsRepository
         _dbConnectionFactory = dbConnectionFactory;
     }
 
-    //connection with DB, query with absences and take results to List
     public async Task<List<AbsenceOfStudent>> GetAbsencesOfStudentsInGroup(string groupId)
     {
         using var connection = await _dbConnectionFactory.GetOpenLecturerConnectionAsync();

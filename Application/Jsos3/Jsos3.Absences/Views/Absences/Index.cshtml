@@ -9,39 +9,38 @@
 <h1>Lista obecności grupy @Model.GroupId</h1>
 
 <table>
-
-<tr>
-    <th>Indeks studenta</th>
-    <th>Imię</th>
-    <th>Nazwisko</th>
-        @foreach (var date in Model.Days)
-        {
-            <th>@date.ToString("dd/MM/yyyy")</th>
-        }
+    <tr>
+        <th>Indeks studenta</th>
+        <th>Imię</th>
+        <th>Nazwisko</th>
+            @foreach (var date in Model.Days)
+            {
+                <th>@date.ToString("dd/MM/yyyy")</th>
+            }
     </tr>
 
 
-@foreach (var student in Model.StudentsInGroup)
-{
-    <tr>
-        <td>@student.StudentId</td>
-        <td>@student.Name</td>
-        <td>@student.Surname</td>
-            @foreach (var date in Model.Days)
-            {
-            var absence = Model.AbsenceOfStudents.GetValueOrDefault(new AbsenceKey(student.StudentId, date));
-
-                @if(absence == default(StudentAbsenceDto))
+    @foreach (var student in Model.StudentsInGroup)
+    {
+        <tr>
+            <td>@student.StudentId</td>
+            <td>@student.Name</td>
+            <td>@student.Surname</td>
+                @foreach (var date in Model.Days)
                 {
-                    <td style="color: green; font-weight: bold;">+</td>
-                }
+                    var absence = Model.AbsenceOfStudents.GetValueOrDefault(new AbsenceKey(student.StudentId, date));
 
-                else
-                {
-                    <td style="color: red; font-weight: bold;">-</td>
-                }
+                    @if(absence == default(StudentAbsenceDto))
+                    {
+                        <td style="color: green; font-weight: bold;">+</td>
+                    }
 
-            }
+                    else
+                    {
+                        <td style="color: red; font-weight: bold;">-</td>
+                    }
+
+                }
         </tr>
-}
+    }
 </table>
