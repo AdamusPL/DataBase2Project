@@ -1,0 +1,14 @@
+@model Jsos3.Groups.ViewModels.Models.StudentIndexViewModel
+
+@{
+    ViewBag.Title = "Grupy studenta";
+}
+
+@Html.Partial("_SelectSemesters.cshtml", Model)
+
+<div class="accordion">
+    @foreach (var course in Model.Courses)
+    {
+        @Html.Partial("_Course.cshtml", course)
+    }
+</div>

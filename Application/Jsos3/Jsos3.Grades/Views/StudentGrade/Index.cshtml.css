@@ -1,0 +1,18 @@
+table, th, td {
+    border: 1px solid;
+    width: 100%
+}
+
+th {
+    border: 2px solid;
+}
+
+.description {
+    width: 76%
+}
+.grade {
+    width: 12%
+}
+.category {
+    width: 12%
+}
