@@ -8,15 +8,24 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Content Remove="Views\Index.cshtml" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<FrameworkReference Include="Microsoft.AspNetCore.App" />
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="Dapper" Version="2.1.28" />
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.ViewFeatures" Version="2.2.0" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Views\" />
+	  <None Include="Views\StudentGrade\Index.cshtml" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\Jsos3.Shared\Jsos3.Shared.csproj" />
 	</ItemGroup>
 
 </Project>

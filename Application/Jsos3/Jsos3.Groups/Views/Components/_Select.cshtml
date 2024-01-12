@@ -3,7 +3,7 @@
 <select onchange="optionSelected(this.value)">
     @foreach (var item in Model.Options)
     {
-        <option value="@item.Key"
+        <option value="@item.Key">
         @{
             if (item.Key == Model.Selected)
             {
