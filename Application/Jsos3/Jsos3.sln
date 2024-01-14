@@ -19,10 +19,13 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jsos3.WeeklyPlan", "Jsos3.WeeklyPlan\Jsos3.WeeklyPlan.csproj", "{9D2AE686-485F-4E28-ADE2-737F600D4D31}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jsos3.LecturerInformations", "Jsos3.LecturerInformations\Jsos3.LecturerInformations.csproj", "{5A1789FF-7B35-44FD-85CB-3B38D5D623D9}"
+	ProjectSection(ProjectDependencies) = postProject
+		{7DDA5BCB-289B-42BA-AD2E-DE74396C0460} = {7DDA5BCB-289B-42BA-AD2E-DE74396C0460}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jsos3.Shared", "Jsos3.Shared\Jsos3.Shared.csproj", "{7DDA5BCB-289B-42BA-AD2E-DE74396C0460}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jsos3.Absences", "Jsos3.Absences\Jsos3.Absences.csproj", "{3685DFBF-ED30-4B44-BC72-3E9B1AB1EA8C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jsos3.Absences", "Jsos3.Absences\Jsos3.Absences.csproj", "{3685DFBF-ED30-4B44-BC72-3E9B1AB1EA8C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
