@@ -21,7 +21,7 @@ BEGIN
             WHEN 1 THEN 1
         END;
 
-        INSERT INTO #Plan (Date, RegularityId, Course, GroupTypeId, StartTime, EndTime, Classroom)
+        INSERT INTO #Plan (Date, RegularityId, Course, GroupTypeId, StartTime, EndTime, Classroom, Lecturer)
         SELECT 
             @StartDate, 
             g.RegularityId AS RegularityId,
@@ -29,10 +29,13 @@ BEGIN
             g.TypeId AS GroupTypeId,
             StartTime, 
             EndTime, 
-            Classroom
+            Classroom, 
+            CONCAT(u.Name, ' ', u.Surname) Lecturer
         FROM [Group] g
         INNER JOIN Course c ON c.Id = g.CourseId
         INNER JOIN Group_Lecturer gl ON gl.GroupId = g.Id
+        INNER JOIN Lecturer l ON l.Id = gl.LecturerId
+        INNER JOIN [User] u ON u.Id = l.UserId
         WHERE gl.LecturerId = @LecturerId AND (g.RegularityId = 3 OR g.RegularityId = @RegularityId) AND DayOfTheWeek = @DayOfWeek
         
         SET @StartDate = DATEADD(day, 1, @StartDate);
