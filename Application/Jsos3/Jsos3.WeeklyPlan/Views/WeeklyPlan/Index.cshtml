@@ -2,8 +2,17 @@
 @model Jsos3.WeeklyPlan.ViewModels.Models.WeeklyPlanIndexViewModel
 
 @{
+    ViewBag.Title = "Plan zajêæ";
     var week = Model.Week;
+    var previousWeekOffset = Model.WeekOffset - 1;
+    var nextWeekOffset = Model.WeekOffset + 1;
 }
+
+<div style="display: flex; flex-direction: row; align-items: center; gap: 0.5rem;">
+    <button class="btn btn-primary" onclick="changeWeek(@previousWeekOffset)">&laquo;</button>
+    <span>@week.StartOfWeek.ToString("dd.MM.yyyy") - @week.EndOfWeek.ToString("dd.MM.yyyy")</span>
+    <button class="btn btn-primary" onclick="changeWeek(@nextWeekOffset)">&raquo;</button>
+</div>
 
 <div style="display: flex; flex-direction: row; width:100%">
     @foreach (var day in week.Days)
@@ -15,7 +24,7 @@
                 @foreach (var hour in week.Hours)
                 {
                     <div style="display: flex; flex-direction: row;">
-                        @if(day.DayOfWeek == DayOfWeek.Monday)
+                        @if (day.DayOfWeek == DayOfWeek.Monday)
                         {
                             <span>@hour.ToString("hh\\:mm")</span>
                         }
@@ -43,3 +52,11 @@
 
     }
 </div>
+
+<script>
+    function changeWeek(weekOffset) {
+        const urlParams = new URLSearchParams(window.location.search);
+        urlParams.set('weekOffset', weekOffset);
+        window.location.search = urlParams;
+    }
+</script>

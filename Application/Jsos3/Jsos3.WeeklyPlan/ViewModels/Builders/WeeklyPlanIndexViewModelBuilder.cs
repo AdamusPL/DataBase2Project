@@ -32,6 +32,7 @@ internal class WeeklyPlanIndexViewModelBuilder : IWeeklyPlanIndexViewModelBuilde
         return new()
         {
             Week = weekData,
+            WeekOffset = weekOffset ?? 0,
             Occurences = plan
         };
     }

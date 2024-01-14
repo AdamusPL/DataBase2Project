@@ -19,8 +19,7 @@ internal class WeekRangeCalculator : IWeekRangeCalculator
 
     public DateTimeRange Calculate(int? weekOffset)
     {
-        //var now = _timeProvider.GetLocalNow();
-        var now = new DateTimeOffset(new DateTime(2021, 1, 1));
+        var now = _timeProvider.GetLocalNow();
         if (weekOffset.HasValue)
         {
             now = now.AddDays(weekOffset.Value * 7);

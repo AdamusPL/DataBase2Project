@@ -4,6 +4,7 @@ namespace Jsos3.WeeklyPlan.ViewModels.Models;
 
 public class WeeklyPlanIndexViewModel
 {
+    public required int WeekOffset { get; set; }
     public required WeekData Week { get; set; }
     public required Dictionary<DateTime, List<WeeklyPlanDto>> Occurences { get; set; }
 }
