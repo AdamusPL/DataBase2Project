@@ -6,7 +6,20 @@
 
 <h1>Wyszukaj prowadzącego</h1>
 
-<table>
+<form method="get">
+    <label for="searchTerm">Filtruj:</label>
+    <input type="text" placeholder="Adam Kowalski..." id="searchTerm" name="searchTerm" />
+    <button type="button" onclick="searchLecturers()">Search</button>
+</form>
+
+<table id="lecturersTable">
+    <tr>
+        <th>Imię</th>
+        <th>Nazwisko</th>
+        <th>Email</th>
+        <th>Telefon</th>
+    </tr>
+
 @foreach(var lecturer in Model.LecturersData)
 {
     <tr>
@@ -18,3 +31,23 @@
 }
 
 </table>
+
+<script>
+
+    function searchLecturers() {
+        var searchTerm = document.getElementById("searchTerm").value.toLowerCase();
+        var rows = document.getElementById("lecturersTable").getElementsByTagName("tr");
+
+        for (var i = 1; i < rows.length; i++) { // Start from 1 to skip the header row
+            var name = rows[i].getElementsByTagName("td")[0].innerText.toLowerCase();
+            var surname = rows[i].getElementsByTagName("td")[1].innerText.toLowerCase();
+
+            if (name.includes(searchTerm) || surname.includes(searchTerm)) {
+                rows[i].style.display = "";
+            } else {
+                rows[i].style.display = "none";
+            }
+        }
+    }
+
+</script>

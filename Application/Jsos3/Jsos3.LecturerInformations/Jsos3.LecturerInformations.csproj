@@ -8,14 +8,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <None Remove="Views\Components\_Select.cshtml.css" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Compile Include="Views\Components\_Select.cshtml.css" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<FrameworkReference Include="Microsoft.AspNetCore.App" />
 	</ItemGroup>
 

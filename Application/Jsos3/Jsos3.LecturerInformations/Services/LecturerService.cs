@@ -25,7 +25,9 @@ namespace Jsos3.LecturerInformations.Services
             var config = new MapperConfiguration(cfg => cfg.CreateMap<LecturerData, LecturerDataDto>());
             var mapper = new Mapper(config);
 
-            return mapper.Map<List<LecturerDataDto>>(fromDatabase);
+            return mapper.Map<List<LecturerDataDto>>(fromDatabase)
+                .OrderBy(lecturer => lecturer.Surname)
+                .ToList();
         }
     }
 }
