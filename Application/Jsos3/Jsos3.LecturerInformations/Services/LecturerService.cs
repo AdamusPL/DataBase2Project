@@ -1,31 +1,47 @@
-﻿using AutoMapper;
-using Jsos3.LecturerInformations.Helpers;
-using Jsos3.LecturerInformations.Infrastructure.Models;
-using Jsos3.LecturerInformations.Infrastructure.Repository;
+﻿using Jsos3.LecturerInformations.Infrastructure.Repository;
+using Jsos3.LecturerInformations.Models;
 
 namespace Jsos3.LecturerInformations.Services;
 
 public interface ILecturerService
 {
-    Task<List<LecturerDataDto>> GetAllLecturers();
+    Task<List<LecturerDataDto>> GetLecturersAtPage(string? searchTerm, int? pageIndex);
+    Task<int> GetLecturersPagesCount(string? searchTerm);
 }
 
 internal class LecturerService : ILecturerService
 {
     private readonly ILecturersDataRepository _lecturersDataRepository;
+
+    private const int PageSize = 10;
+
     public LecturerService(ILecturersDataRepository lecturersDataRepository)
     {
         _lecturersDataRepository = lecturersDataRepository;
     }
 
-    public async Task<List<LecturerDataDto>> GetAllLecturers()
+    public async Task<List<LecturerDataDto>> GetLecturersAtPage(string? searchTerm, int? pageIndex)
     {
-        var fromDatabase = await _lecturersDataRepository.GetAllLecturers();
+        pageIndex ??= 0;
+        var lecturers = await _lecturersDataRepository.GetPagedLecturers(searchTerm, pageIndex.Value * PageSize, PageSize);
+        var lecturerIds = lecturers.Select(x => x.Id);
 
-        var config = new MapperConfiguration(cfg => cfg.CreateMap<LecturerData, LecturerDataDto>());
-        var mapper = new Mapper(config);
+        var phones = await _lecturersDataRepository.GetLecturersPhones(lecturerIds);
+        var emails = await _lecturersDataRepository.GetLecturersEmails(lecturerIds);
 
-        return mapper.Map<List<LecturerDataDto>>(fromDatabase)
-            .ToList();
+        return lecturers
+            .Select(x => new LecturerDataDto
+            {
+                Name = x.Name,
+                Surname = x.Surname,
+                Phones = phones.GetValueOrDefault(x.Id, []),
+                Emails = emails.GetValueOrDefault(x.Id, [])
+            }).ToList();
+    }
+
+    public async Task<int> GetLecturersPagesCount(string? searchTerm)
+    { 
+        var result = (decimal)await _lecturersDataRepository.GetLecturersPagesCount(searchTerm) / PageSize;
+        return (int)Math.Ceiling(result);
     }
 }

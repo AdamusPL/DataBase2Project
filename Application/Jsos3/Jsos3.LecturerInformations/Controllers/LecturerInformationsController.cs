@@ -8,16 +8,28 @@ public class LecturerInformationsController : Controller
 {
     private readonly ILecturerService _lecturerService;
 
-    public LecturerInformationsController(ILecturerService lecturerService) 
-    { 
+    public LecturerInformationsController(ILecturerService lecturerService)
+    {
         _lecturerService = lecturerService;
     }
 
-    public async Task<ActionResult> Index()
+    public async Task<ActionResult> Index([FromQuery] string? searchTerm, [FromQuery] int? pageNumber)
     {
+        var lecturersPages = await _lecturerService.GetLecturersPagesCount(searchTerm);
+
+        pageNumber ??= 1;
+        if (pageNumber.Value > lecturersPages)
+        {
+            pageNumber = lecturersPages;
+        }
+
+        var lecturersData = await _lecturerService.GetLecturersAtPage(searchTerm, pageNumber - 1);
+
         var lecturerInformationsViewModel = new LecturerInformationIndexViewModel()
         {
-            LecturersData = await _lecturerService.GetAllLecturers()
+            LecturersData = lecturersData,
+            PageNumber = pageNumber.Value,
+            NumberOfPages = lecturersPages
         };
 
         return View(lecturerInformationsViewModel);

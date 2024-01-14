@@ -1,53 +1,98 @@
 ﻿@using Jsos3.LecturerInformations.Infrastructure.Models
 @model Jsos3.LecturerInformations.ViewModels.LecturerInformationIndexViewModel
 @{
-
+    var startNumber = Model.PageNumber != 1 ? Model.PageNumber - 1 : 1;
 }
 
 <h1>Wyszukaj prowadzącego</h1>
 
-<form method="get">
-    <label for="searchTerm">Filtruj:</label>
-    <input type="text" placeholder="Adam Kowalski..." id="searchTerm" name="searchTerm" />
-    <button type="button" onclick="searchLecturers()">Search</button>
-</form>
+<div class="search">
+    <div class="form-group">
+        <label for="searchTerm">Filtruj:</label>
+        <input type="text" placeholder="Adam Kowalski..." id="searchTerm" name="searchTerm" class="form-control" />
+    </div>
+    <div style="display: flex; align-items: flex-end">
+        <button class="btn btn-primary" onclick="search()">Search</button>
+    </div>
+</div>
 
-<table id="lecturersTable">
-    <tr>
-        <th>Imię</th>
-        <th>Nazwisko</th>
-        <th>Email</th>
-        <th>Telefon</th>
-    </tr>
-
-    @foreach(var lecturer in Model.LecturersData)
-    {
+<table class="table">
+    <thead>
         <tr>
-            <td>@lecturer.Name</td>
-            <td>@lecturer.Surname</td>
-            <td>@lecturer.Email</td>
-            <td>@lecturer.Phone</td>
+            <th scope="col">Imię</th>
+            <th scope="col">Nazwisko</th>
+            <th scope="col">Email</th>
+            <th scope="col">Telefon</th>
         </tr>
-    }
+    </thead>
+
+    <tbody>
+        @foreach (var lecturer in Model.LecturersData)
+        {
+            <tr>
+                <td>@lecturer.Name</td>
+                <td>@lecturer.Surname</td>
+                <td>
+                    @foreach (var email in lecturer.Emails)
+                    {
+                        <p>@email</p>
+                    }
+                </td>
+                <td>
+                    @foreach (var phone in lecturer.Phones)
+                    {
+                        <p>@phone</p>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
 
 </table>
 
-<script>
+<nav class="table-footer">
+    <ul class="pagination">
+        <li class="page-item @(@Model.PageNumber == 1 ? "disabled" : null)">
+            <a class="page-link" onclick="changePage(@Model.PageNumber - 1)" href="#">Poprzednia</a>
+        </li>
 
-    function searchLecturers() {
-        var searchTerm = document.getElementById("searchTerm").value.toLowerCase();
-        var rows = document.getElementById("lecturersTable").getElementsByTagName("tr");
-
-        for (var i = 1; i < rows.length; i++) { // Start from 1 to skip the header row
-            var name = rows[i].getElementsByTagName("td")[0].innerText.toLowerCase();
-            var surname = rows[i].getElementsByTagName("td")[1].innerText.toLowerCase();
-
-            if (name.includes(searchTerm) || surname.includes(searchTerm)) {
-                rows[i].style.display = "";
-            } else {
-                rows[i].style.display = "none";
+        @foreach (var pageNumber in Enumerable.Range(startNumber, 3))
+        {
+            if (pageNumber > Model.NumberOfPages)
+            {
+                break;
             }
+            <li class="page-item @(@pageNumber == Model.PageNumber ? "active" : null)">
+                <a class="page-link" onclick="changePage(@pageNumber)" href="#">@pageNumber</a>
+            </li>
         }
+        
+        <li class="page-item @(@Model.PageNumber == Model.NumberOfPages ? "disabled" : null)">
+            <a class="page-link" onclick="changePage(@Model.PageNumber + 1)" href="#">Następna</a>
+        </li>
+    </ul>
+</nav>
+
+<script>
+    const searchTermInput = document.getElementById('searchTerm');
+    const queryParams = new URLSearchParams(window.location.search);
+
+    if (queryParams.has('searchTerm')) {
+        searchTermInput.value = queryParams.get('searchTerm');
     }
 
+    function search() {
+        const searchTerm = searchTermInput.value;
+        if (!!searchTerm) {
+            queryParams.set('searchTerm', searchTerm);
+        } else {
+            queryParams.delete('searchTerm');
+        }
+        window.location.search = queryParams.toString();
+    }
+
+    function changePage(pageNumber) {
+        queryParams.set('pageNumber', pageNumber);
+        window.location.search = queryParams.toString();
+    }
 </script>
