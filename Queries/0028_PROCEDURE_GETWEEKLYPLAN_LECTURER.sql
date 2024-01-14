@@ -31,7 +31,6 @@ BEGIN
             EndTime, 
             Classroom
         FROM [Group] g
-        INNER JOIN Regularity r ON r.Id = g.RegularityId
         INNER JOIN Course c ON c.Id = g.CourseId
         INNER JOIN Group_Lecturer gl ON gl.GroupId = g.Id
         WHERE gl.LecturerId = @LecturerId AND (g.RegularityId = 3 OR g.RegularityId = @RegularityId) AND DayOfTheWeek = @DayOfWeek
