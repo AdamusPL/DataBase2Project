@@ -32,12 +32,18 @@ BEGIN
             Classroom, 
             CONCAT(u.Name, ' ', u.Surname) Lecturer
         FROM [Group] g
-        INNER JOIN Student_Group sg ON sg.GroupId = g.Id
-        INNER JOIN Course c ON c.Id = g.CourseId
-        INNER JOIN Group_Lecturer gl ON gl.GroupId = g.Id
-        INNER JOIN Lecturer l ON l.Id = gl.LecturerId
+        INNER JOIN [Student_Group] sg ON sg.GroupId = g.Id
+        INNER JOIN [Course] c ON c.Id = g.CourseId
+        INNER JOIN [Group_Lecturer] gl ON gl.GroupId = g.Id
+        INNER JOIN [Lecturer] l ON l.Id = gl.LecturerId
         INNER JOIN [User] u ON u.Id = l.UserId
-        WHERE sg.StudentId = @StudentId AND (g.RegularityId = 3 OR g.RegularityId = @RegularityId) AND DayOfTheWeek = @DayOfWeek
+        INNER JOIN [Semester] s ON s.Id = g.SemesterId
+        WHERE 
+            sg.StudentId = @StudentId
+            AND (g.RegularityId = 3 OR g.RegularityId = @RegularityId)
+            AND DayOfTheWeek = @DayOfWeek
+            AND @StartDate BETWEEN s.StartDate AND s.EndDate
+            AND @EndDate BETWEEN s.StartDate AND s.EndDate;
         
         SET @StartDate = DATEADD(day, 1, @StartDate);
     END;
