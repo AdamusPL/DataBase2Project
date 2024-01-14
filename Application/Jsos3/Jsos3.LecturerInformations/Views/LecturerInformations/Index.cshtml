@@ -1,0 +1,20 @@
+﻿@using Jsos3.LecturerInformations.Infrastructure.Models
+@model Jsos3.LecturerInformations.ViewModels.LecturerInformationIndexViewModel
+@{
+
+}
+
+<h1>Wyszukaj prowadzącego</h1>
+
+<table>
+@foreach(var lecturer in Model.LecturersData)
+{
+    <tr>
+        <td>@lecturer.Name</td>
+        <td>@lecturer.Surname</td>
+        <td>@lecturer.Email</td>
+        <td>@lecturer.Phone</td>
+    </tr>
+}
+
+</table>
