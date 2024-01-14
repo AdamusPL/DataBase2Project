@@ -20,15 +20,15 @@
         <th>Telefon</th>
     </tr>
 
-@foreach(var lecturer in Model.LecturersData)
-{
-    <tr>
-        <td>@lecturer.Name</td>
-        <td>@lecturer.Surname</td>
-        <td>@lecturer.Email</td>
-        <td>@lecturer.Phone</td>
-    </tr>
-}
+    @foreach(var lecturer in Model.LecturersData)
+    {
+        <tr>
+            <td>@lecturer.Name</td>
+            <td>@lecturer.Surname</td>
+            <td>@lecturer.Email</td>
+            <td>@lecturer.Phone</td>
+        </tr>
+    }
 
 </table>
 

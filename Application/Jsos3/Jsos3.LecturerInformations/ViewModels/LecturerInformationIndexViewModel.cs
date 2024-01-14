@@ -1,9 +1,8 @@
 ﻿using Jsos3.LecturerInformations.Helpers;
 
-namespace Jsos3.LecturerInformations.ViewModels
+namespace Jsos3.LecturerInformations.ViewModels;
+
+public class LecturerInformationIndexViewModel
 {
-    public class LecturerInformationIndexViewModel
-    {
-        public required List<LecturerDataDto> LecturersData {  get; set; } 
-    }
+    public required List<LecturerDataDto> LecturersData {  get; set; } 
 }

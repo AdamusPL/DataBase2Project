@@ -3,31 +3,29 @@ using Jsos3.LecturerInformations.Helpers;
 using Jsos3.LecturerInformations.Infrastructure.Models;
 using Jsos3.LecturerInformations.Infrastructure.Repository;
 
-namespace Jsos3.LecturerInformations.Services
+namespace Jsos3.LecturerInformations.Services;
+
+public interface ILecturerService
 {
-    public interface ILecturerService
+    Task<List<LecturerDataDto>> GetAllLecturers();
+}
+
+internal class LecturerService : ILecturerService
+{
+    private readonly ILecturersDataRepository _lecturersDataRepository;
+    public LecturerService(ILecturersDataRepository lecturersDataRepository)
     {
-        Task<List<LecturerDataDto>> GetAllLecturers();
+        _lecturersDataRepository = lecturersDataRepository;
     }
 
-    internal class LecturerService : ILecturerService
+    public async Task<List<LecturerDataDto>> GetAllLecturers()
     {
-        private readonly ILecturersDataRepository _lecturersDataRepository;
-        public LecturerService(ILecturersDataRepository lecturersDataRepository)
-        {
-            _lecturersDataRepository = lecturersDataRepository;
-        }
+        var fromDatabase = await _lecturersDataRepository.GetAllLecturers();
 
-        public async Task<List<LecturerDataDto>> GetAllLecturers()
-        {
-            var fromDatabase = await _lecturersDataRepository.GetAllLecturers();
+        var config = new MapperConfiguration(cfg => cfg.CreateMap<LecturerData, LecturerDataDto>());
+        var mapper = new Mapper(config);
 
-            var config = new MapperConfiguration(cfg => cfg.CreateMap<LecturerData, LecturerDataDto>());
-            var mapper = new Mapper(config);
-
-            return mapper.Map<List<LecturerDataDto>>(fromDatabase)
-                .OrderBy(lecturer => lecturer.Surname)
-                .ToList();
-        }
+        return mapper.Map<List<LecturerDataDto>>(fromDatabase)
+            .ToList();
     }
 }

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Dapper;
+﻿using Dapper;
 using Jsos3.LecturerInformations.Infrastructure.Models;
 using Jsos3.Shared.Db;
 
@@ -37,7 +32,8 @@ Phone AS [{nameof(LecturerData.Phone)}]
 FROM Lecturer
 INNER JOIN [User] u ON Lecturer.UserId = u.Id
 INNER JOIN Email ON u.Id = Email.UserId
-INNER JOIN WorkPhone ON Lecturer.UserId = WorkPhone.UserId;
+INNER JOIN WorkPhone ON Lecturer.UserId = WorkPhone.UserId
+ORDER BY Surname;
 ";
         var queryResult = await connection.QueryAsync<LecturerData>(query, new { });
 

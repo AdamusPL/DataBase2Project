@@ -1,16 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Jsos3.LecturerInformations.Helpers;
 
-namespace Jsos3.LecturerInformations.Helpers
+public class LecturerDataDto
 {
-    public class LecturerDataDto
-    {
-        public string Name { get; set; }
-        public string Surname { get; set; }
-        public string Email { get; set; }
-        public string Phone { get; set; }
-    }
+    public string Name { get; set; }
+    public string Surname { get; set; }
+    public string Email { get; set; }
+    public string Phone { get; set; }
 }
