@@ -1,4 +1,5 @@
-﻿using Jsos3.Shared.Logic;
+﻿using Jsos3.Shared.Auth;
+using Jsos3.Shared.Logic;
 using Jsos3.WeeklyPlan.Infrastructure.Repository;
 using Jsos3.WeeklyPlan.Models;
 
@@ -6,7 +7,7 @@ namespace Jsos3.WeeklyPlan.Services;
 
 public interface IPlanService
 {
-    Task<Dictionary<DateTime, List<WeeklyPlanDto>>> GetStudentPlan(int studentId, DateTime startOfWeek, DateTime endOfWeek);
+    Task<Dictionary<DateTime, List<WeeklyPlanDto>>> GetPlanForUser(int userObjectId, UserType userType, DateTime startOfWeek, DateTime endOfWeek);
 }
 
 internal class PlanService : IPlanService
@@ -20,9 +21,14 @@ internal class PlanService : IPlanService
         _translationService = translationService;
     }
 
-    public async Task<Dictionary<DateTime, List<WeeklyPlanDto>>> GetStudentPlan(int studentId, DateTime startOfWeek, DateTime endOfWeek)
+    public async Task<Dictionary<DateTime, List<WeeklyPlanDto>>> GetPlanForUser(int userObjectId, UserType userType, DateTime startOfWeek, DateTime endOfWeek)
     {
-        var weeklyPlan = await _weeklyPlanRepository.GetStudentWeeklyPlan(studentId, startOfWeek, endOfWeek);
+        var weeklyPlan = userType switch
+        {
+            UserType.Student => await _weeklyPlanRepository.GetStudentWeeklyPlan(userObjectId, startOfWeek, endOfWeek),
+            UserType.Lecturer => await _weeklyPlanRepository.GetLecturerWeeklyPlan(userObjectId, startOfWeek, endOfWeek),
+            _ => throw new ArgumentOutOfRangeException(nameof(userType), userType, null)
+        };
 
         return weeklyPlan
             .Select(x => new WeeklyPlanDto
@@ -30,7 +36,7 @@ internal class PlanService : IPlanService
                 Date = x.Date,
                 Regularity = _translationService.Translate(x.RegularityId),
                 Course = x.Course,
-                GroupType = _translationService.Translate(x.GroupType),
+                GroupType = _translationService.Translate(x.GroupTypeId),
                 StartTime = x.StartTime,
                 EndTime = x.EndTime,
                 Classroom = x.Classroom,

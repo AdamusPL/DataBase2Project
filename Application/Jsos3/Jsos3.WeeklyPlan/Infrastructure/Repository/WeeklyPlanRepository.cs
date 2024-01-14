@@ -6,7 +6,8 @@ namespace Jsos3.WeeklyPlan.Infrastructure.Repository;
 
 internal interface IWeeklyPlanRepository
 {
-    Task<List<WeeklyPlanItem>> GetStudentWeeklyPlan(int studentId, DateTime start, DateTime end);
+    Task<List<WeeklyPlanItem>> GetStudentWeeklyPlan(int studentId, DateTime startDate, DateTime endDate);
+    Task<List<WeeklyPlanItem>> GetLecturerWeeklyPlan(int lecturerId, DateTime startDate, DateTime endDate);
 }
 
 internal class WeeklyPlanRepository : IWeeklyPlanRepository
@@ -18,17 +19,33 @@ internal class WeeklyPlanRepository : IWeeklyPlanRepository
         _dbConnectionFactory = dbConnectionFactory;
     }
 
-    public async Task<List<WeeklyPlanItem>> GetStudentWeeklyPlan(int studentId, DateTime start, DateTime end)
+    public async Task<List<WeeklyPlanItem>> GetLecturerWeeklyPlan(int lecturerId, DateTime startDate, DateTime endDate)
+    {
+        using var connection = await _dbConnectionFactory.GetOpenLecturerConnectionAsync();
+
+        var query = "EXEC [dbo].[GetLecturerWeeklyPlan] @LecturerId, @StartDate, @EndDate";
+
+        var result = await connection.QueryAsync<WeeklyPlanItem>(query, new
+        {
+            lecturerId,
+            startDate,
+            endDate
+        });
+
+        return result.ToList();
+    }
+
+    public async Task<List<WeeklyPlanItem>> GetStudentWeeklyPlan(int studentId, DateTime startDate, DateTime endDate)
     {
         using var connection = await _dbConnectionFactory.GetOpenStudentConnectionAsync();
-
+        
         var query = "EXEC [dbo].[GetStudentWeeklyPlan] @StudentId, @StartDate, @EndDate";
 
         var result = await connection.QueryAsync<WeeklyPlanItem>(query, new
         {
-            StudentId = studentId,
-            StartDate = start,
-            EndDate = end
+            studentId,
+            startDate,
+            endDate
         });
 
         return result.ToList();

@@ -23,8 +23,20 @@ internal class CachedWeeklyPlanRepository : IWeeklyPlanRepository
         var result = await _memoryCache.GetOrCreateAsync(cacheKey, async entry =>
         {
             entry.AbsoluteExpirationRelativeToNow = CacheLifetime;
-
             return await _weeklyPlanRepository.GetStudentWeeklyPlan(studentId, start, end);
+        });
+
+        return result is null ? throw new ArgumentNullException() : result;
+    }
+
+    public async Task<List<WeeklyPlanItem>> GetLecturerWeeklyPlan(int lecturerId, DateTime start, DateTime end)
+    {
+        var cacheKey = $"{nameof(GetLecturerWeeklyPlan)}_{lecturerId}_{start}_{end}";
+
+        var result = await _memoryCache.GetOrCreateAsync(cacheKey, async entry =>
+        {
+            entry.AbsoluteExpirationRelativeToNow = CacheLifetime;
+            return await _weeklyPlanRepository.GetLecturerWeeklyPlan(lecturerId, start, end);
         });
 
         return result is null ? throw new ArgumentNullException() : result;

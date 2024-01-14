@@ -18,7 +18,9 @@ public class WeeklyPlanController : Controller
     public async Task<IActionResult> Index([FromQuery] int? weekOffset)
     {
         var viewModel = await _weeklyPlanIndexViewModelBuilder.Build(
-            _userAccessor.Id, weekOffset);
+            _userAccessor.Id,
+            _userAccessor.Type,
+            weekOffset);
         return View(viewModel);
     }
 }

@@ -18,6 +18,7 @@ public static class WeeklyPlanModule
             p => new(p.GetRequiredService<IDbConnectionFactory>()));
 
         services.AddTransient<IWeekRangeCalculator, WeekRangeCalculator>();
+        services.AddTransient<IWeekDataCalculator, WeekDataCalculator>();
         services.AddTransient<IPlanService, PlanService>();
         services.AddTransient<IWeeklyPlanIndexViewModelBuilder, WeeklyPlanIndexViewModelBuilder>();
     }

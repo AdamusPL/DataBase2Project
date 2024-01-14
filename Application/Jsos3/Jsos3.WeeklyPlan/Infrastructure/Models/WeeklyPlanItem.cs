@@ -2,11 +2,11 @@
 
 namespace Jsos3.WeeklyPlan.Infrastructure.Models;
 
-internal record WeeklyPlanItem(
+internal readonly record struct WeeklyPlanItem(
     DateTime Date,
     Regularity RegularityId,
     string Course,
-    GroupType GroupType,
+    GroupType GroupTypeId,
     TimeSpan StartTime,
     TimeSpan EndTime,
     string Classroom,
