@@ -1,0 +1,49 @@
+﻿@using Jsos3.Absences.Helpers
+@using Jsos3.Absences.Infrastructure.Models
+@using Jsos3.Absences.Models
+@model Jsos3.Absences.ViewModels.AbsenceIndexViewModel
+@{
+
+}
+
+<h1>Lista obecności grupy @Model.GroupId</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Indeks studenta</th>
+            <th scope="col">Imię</th>
+            <th scope="col">Nazwisko</th>
+            @foreach (var date in Model.Days)
+            {
+                <th scope="col">@date.ToString("dd/MM/yyyy")</th>
+            }
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var student in Model.StudentsInGroup)
+        {
+            <tr>
+                <td>@student.StudentId</td>
+                <td>@student.Name</td>
+                <td>@student.Surname</td>
+                @foreach (var date in Model.Days)
+                {
+                    var absence = Model.AbsenceOfStudents.GetValueOrDefault(new AbsenceKey(student.StudentId, date));
+
+                    @if (absence == default(StudentAbsenceDto))
+                    {
+                        <td style="color: green; font-weight: bold;">+</td>
+                    }
+
+                    else
+                    {
+                        <td style="color: red; font-weight: bold;">-</td>
+                    }
+
+                }
+            </tr>
+        }
+    </tbody>
+</table>

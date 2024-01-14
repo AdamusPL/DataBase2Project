@@ -3,21 +3,29 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34330.188
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jsos3", "Jsos3\Jsos3.csproj", "{373AD02E-0E65-46AD-8881-D1688C79F70B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jsos3", "Jsos3\Jsos3.csproj", "{373AD02E-0E65-46AD-8881-D1688C79F70B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{3685DFBF-ED30-4B44-BC72-3E9B1AB1EA8C} = {3685DFBF-ED30-4B44-BC72-3E9B1AB1EA8C}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{20AB5DE1-30F7-4918-BA78-9E1BC5FE1C7F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jsos3.Grades", "Jsos3.Grades\Jsos3.Grades.csproj", "{B043B4B0-7003-4499-96A1-E91EC1036F12}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jsos3.Grades", "Jsos3.Grades\Jsos3.Grades.csproj", "{B043B4B0-7003-4499-96A1-E91EC1036F12}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jsos3.Groups", "Jsos3.Groups\Jsos3.Groups.csproj", "{B284B76E-6CF6-4F8D-8B69-929977969D1F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jsos3.Groups", "Jsos3.Groups\Jsos3.Groups.csproj", "{B284B76E-6CF6-4F8D-8B69-929977969D1F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jsos3.Authorization", "Jsos3.Authorization\Jsos3.Authorization.csproj", "{9369EAE1-45F3-4552-908A-8E74F5C1D988}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jsos3.Authorization", "Jsos3.Authorization\Jsos3.Authorization.csproj", "{9369EAE1-45F3-4552-908A-8E74F5C1D988}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jsos3.WeeklyPlan", "Jsos3.WeeklyPlan\Jsos3.WeeklyPlan.csproj", "{9D2AE686-485F-4E28-ADE2-737F600D4D31}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jsos3.WeeklyPlan", "Jsos3.WeeklyPlan\Jsos3.WeeklyPlan.csproj", "{9D2AE686-485F-4E28-ADE2-737F600D4D31}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jsos3.LecturerInformations", "Jsos3.LecturerInformations\Jsos3.LecturerInformations.csproj", "{5A1789FF-7B35-44FD-85CB-3B38D5D623D9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jsos3.LecturerInformations", "Jsos3.LecturerInformations\Jsos3.LecturerInformations.csproj", "{5A1789FF-7B35-44FD-85CB-3B38D5D623D9}"
+	ProjectSection(ProjectDependencies) = postProject
+		{7DDA5BCB-289B-42BA-AD2E-DE74396C0460} = {7DDA5BCB-289B-42BA-AD2E-DE74396C0460}
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jsos3.Shared", "Jsos3.Shared\Jsos3.Shared.csproj", "{7DDA5BCB-289B-42BA-AD2E-DE74396C0460}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jsos3.Shared", "Jsos3.Shared\Jsos3.Shared.csproj", "{7DDA5BCB-289B-42BA-AD2E-DE74396C0460}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jsos3.Absences", "Jsos3.Absences\Jsos3.Absences.csproj", "{3685DFBF-ED30-4B44-BC72-3E9B1AB1EA8C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,6 +61,10 @@ Global
 		{7DDA5BCB-289B-42BA-AD2E-DE74396C0460}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7DDA5BCB-289B-42BA-AD2E-DE74396C0460}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7DDA5BCB-289B-42BA-AD2E-DE74396C0460}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3685DFBF-ED30-4B44-BC72-3E9B1AB1EA8C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3685DFBF-ED30-4B44-BC72-3E9B1AB1EA8C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3685DFBF-ED30-4B44-BC72-3E9B1AB1EA8C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3685DFBF-ED30-4B44-BC72-3E9B1AB1EA8C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -63,6 +75,7 @@ Global
 		{9369EAE1-45F3-4552-908A-8E74F5C1D988} = {20AB5DE1-30F7-4918-BA78-9E1BC5FE1C7F}
 		{9D2AE686-485F-4E28-ADE2-737F600D4D31} = {20AB5DE1-30F7-4918-BA78-9E1BC5FE1C7F}
 		{5A1789FF-7B35-44FD-85CB-3B38D5D623D9} = {20AB5DE1-30F7-4918-BA78-9E1BC5FE1C7F}
+		{3685DFBF-ED30-4B44-BC72-3E9B1AB1EA8C} = {20AB5DE1-30F7-4918-BA78-9E1BC5FE1C7F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {227CB16A-A47A-4393-BB87-4B0D9F5B26F8}

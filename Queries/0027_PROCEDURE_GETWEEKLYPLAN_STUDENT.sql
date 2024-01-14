@@ -3,7 +3,7 @@ AS
 BEGIN
     CREATE TABLE #Plan (
         Date date,
-        Regularity varchar(255),
+        RegularityId int,
         Course varchar(255),
         GroupType varchar(255),
         StartTime time,
@@ -21,10 +21,10 @@ BEGIN
             WHEN 1 THEN 1
         END;
 
-        INSERT INTO #Plan (Date, Regularity, Course, GroupType, StartTime, EndTime, Classroom, Lecturer)
+        INSERT INTO #Plan (Date, RegularityId, Course, GroupType, StartTime, EndTime, Classroom, Lecturer)
         SELECT 
             @StartDate, 
-            r.Name AS Regularity,
+            g.RegularityId AS RegularityId,
             c.Name AS Course, 
             gt.Name AS GroupType,
             StartTime, 
@@ -33,7 +33,6 @@ BEGIN
             CONCAT(u.Name, ' ', u.Surname) Lecturer
         FROM [Group] g
         INNER JOIN Student_Group sg ON sg.GroupId = g.Id
-        INNER JOIN Regularity r ON r.Id = g.RegularityId
         INNER JOIN Course c ON c.Id = g.CourseId
         INNER JOIN GroupType gt ON gt.Id = g.TypeId
         INNER JOIN Group_Lecturer gl ON gl.GroupId = g.Id
