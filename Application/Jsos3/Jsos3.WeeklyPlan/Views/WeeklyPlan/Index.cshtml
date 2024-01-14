@@ -8,35 +8,35 @@
     var nextWeekOffset = Model.WeekOffset + 1;
 }
 
-<div style="display: flex; flex-direction: row; align-items: center; gap: 0.5rem;">
+<div class="date-range-form">
     <button class="btn btn-primary" onclick="changeWeek(@previousWeekOffset)">&laquo;</button>
     <span>@week.StartOfWeek.ToString("dd.MM.yyyy") - @week.EndOfWeek.ToString("dd.MM.yyyy")</span>
     <button class="btn btn-primary" onclick="changeWeek(@nextWeekOffset)">&raquo;</button>
 </div>
 
-<div style="display: flex; flex-direction: row; width:100%">
+<div class="calendar-container">
     @foreach (var day in week.Days)
     {
         var todayGroups = Model.Occurences.GetValueOrDefault(day) ?? new List<WeeklyPlanDto>();
-        <div style="display: flex; flex-direction: column;">
+        <div class="day-column">
             <h3>@day.DayOfWeek</h3>
-            <div style="display: flex; flex-direction: column;">
+            <div class="day-hours">
                 @foreach (var hour in week.Hours)
                 {
-                    <div style="display: flex; flex-direction: row;">
+                    <div class="hour-box">
                         @if (day.DayOfWeek == DayOfWeek.Monday)
                         {
-                            <span>@hour.ToString("hh\\:mm")</span>
+                            <h5>@hour.ToString("hh\\:mm")</h5>
                         }
-                        <div style="display: flex; flex-direction: column;">
-                            <div class="card" style="width: 18rem; height: 10rem; overflow:auto; display: flex; flex-direction: row;">
+                        <div style="hour-at-day-card">
+                            <div class="card group-cards">
                                 @foreach (var group in todayGroups)
                                 {
                                     if (group.StartTime <= hour && group.EndTime > hour.Add(week.TimeGap))
                                     {
-                                        <div class="card-body">
-                                            <h5 class="card-title">@group.Course</h5>
-                                            <h6 class="card-subtitle mb-2 text-muted">@group.Lecturer</h6>
+                                        <div class="card-body group-card">
+                                            <h5 class="card-title text-truncate" data-toggle="tooltip" title="@group.Course">@group.Course</h5>
+                                            <h6 class="card-subtitle mb-2 text-muted text-truncate" data-toggle="tooltip" title="@group.Lecturer">@group.Lecturer</h6>
                                             <p class="card-text">@group.Classroom</p>
                                         </div>
                                     }

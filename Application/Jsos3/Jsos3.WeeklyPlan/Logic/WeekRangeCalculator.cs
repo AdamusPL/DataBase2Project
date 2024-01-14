@@ -11,6 +11,8 @@ internal interface IWeekRangeCalculator
 internal class WeekRangeCalculator : IWeekRangeCalculator
 {
     private readonly TimeProvider _timeProvider;
+    private const int DaysInWeek = 7;
+    private const int FridayMondayOffset = 4;
 
     public WeekRangeCalculator(TimeProvider timeProvider)
     {
@@ -22,7 +24,7 @@ internal class WeekRangeCalculator : IWeekRangeCalculator
         var now = _timeProvider.GetLocalNow();
         if (weekOffset.HasValue)
         {
-            now = now.AddDays(weekOffset.Value * 7);
+            now = now.AddDays(weekOffset.Value * DaysInWeek);
         }
 
         var startOfWeek = now.StartOfWeek();
@@ -30,7 +32,7 @@ internal class WeekRangeCalculator : IWeekRangeCalculator
         return new()
         {
             Start = startOfWeek,
-            End = startOfWeek.AddDays(6)
+            End = startOfWeek.AddDays(FridayMondayOffset)
         };
     }
 }
