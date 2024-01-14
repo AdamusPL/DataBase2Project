@@ -26,8 +26,7 @@ internal class LecturersDataRepository : ILecturersDataRepository
     {
         using var connection = await _dbConnectionFactory.GetOpenStudentConnectionAsync();
 
-        var search = string.IsNullOrEmpty(searchTerm) ? null : $"%{searchTerm}%";
-
+        var search = GetSearchTerm(searchTerm);
         var query = @$"
 SELECT
     l.Id AS [{nameof(Lecturer.Id)}],
@@ -98,8 +97,7 @@ WHERE l.Id IN @lecturerIds;
     {
         using var connection = await _dbConnectionFactory.GetOpenStudentConnectionAsync();
 
-        var search = string.IsNullOrEmpty(searchTerm) ? null : $"%{searchTerm}%";
-
+        var search = GetSearchTerm(searchTerm);
         var query = @$"
 SELECT COUNT(*)
 FROM [Lecturer] l
@@ -112,7 +110,9 @@ WHERE @search IS NULL
 
         return await connection.ExecuteScalarAsync<int>(
             query,
-            new
-            { search });
+            new { search });
     }
+
+    private string? GetSearchTerm(string? searchTerm) =>
+        string.IsNullOrEmpty(searchTerm) ? null : $"%{searchTerm}%";
 }
