@@ -15,6 +15,5 @@ namespace Jsos3.Absences
             services.AddScoped<IGroupOccurrencesCalculator, GroupOccurrencesCalculator>();
             services.AddScoped<IUpdatePresenceOfStudentRepository, UpdatePresenceOfStudentRepository>();
         }
-
     }
 }

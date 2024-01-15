@@ -6,6 +6,7 @@
     <title>@ViewData["Title"] - Jsos3</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/helpers.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Jsos3.styles.css" asp-append-version="true" />
 </head>
 <body>
@@ -20,10 +21,13 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Prywatność</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Absences" asp-action="Index">Obecności</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="LecturerInformations" asp-action="Index">Wyszukiwanie prowadzącego</a>
                         </li>
                     </ul>
                 </div>
