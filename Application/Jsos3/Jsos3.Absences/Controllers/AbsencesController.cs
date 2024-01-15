@@ -1,16 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Jsos3.Absences.Helpers;
+using Jsos3.Absences.Services;
+using Jsos3.Absences.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
-using Jsos3.Absences.Infrastructure;
-using Jsos3.Absences.Infrastructure.Repository;
-using Jsos3.Absences.ViewModels;
-using Jsos3.Absences.Infrastructure.Models;
-using System;
-using Jsos3.Absences.Services;
-using Jsos3.Absences.Helpers;
-
 namespace Jsos3.Absences.Controllers;
-
 
 public class AbsencesController : Controller
 {
@@ -23,7 +16,7 @@ public class AbsencesController : Controller
 
     public async Task<ActionResult> Index([FromQuery] string groupId)
     {
-        if(groupId == null)
+        if (groupId == null)
         {
             return RedirectToAction("Error");
         }
