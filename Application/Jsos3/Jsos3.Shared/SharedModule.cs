@@ -1,6 +1,5 @@
 ﻿using Jsos3.Shared.Auth;
 using Jsos3.Shared.Db;
-using Jsos3.Shared.Logic;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Jsos3.Shared;
@@ -12,7 +11,6 @@ public static class SharedModule
     {
         services.AddTransient<IDbConnectionFactory, SqlConnectionFactory>();
         services.AddScoped<IUserAccessor, DummyUserAccessor>();
-        services.AddTransient<ITranslationService, PolishTranslationService>();
         services.AddTransient(_ => TimeProvider.System);
     }
 }

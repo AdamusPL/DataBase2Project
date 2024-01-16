@@ -3,8 +3,9 @@ using Jsos3.Authorization;
 using Jsos3.Grades;
 using Jsos3.Groups;
 using Jsos3.LecturerInformations;
-using Jsos3.WeeklyPlan;
 using Jsos3.Shared;
+using Jsos3.TranslateModule;
+using Jsos3.WeeklyPlan;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,7 +19,7 @@ builder.Services.AddGroupsModule();
 builder.Services.AddLecturerInformationsModule();
 builder.Services.AddWeeklyPlanModule();
 builder.Services.AddSharedModule();
-
+builder.Services.AddTranslateModule();
 
 var app = builder.Build();
 

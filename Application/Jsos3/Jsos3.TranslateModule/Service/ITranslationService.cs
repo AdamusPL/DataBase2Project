@@ -1,6 +1,6 @@
 ﻿using Jsos3.Shared.Models;
 
-namespace Jsos3.Shared.Logic;
+namespace Jsos3.TranslateModule;
 
 public interface ITranslationService
 {

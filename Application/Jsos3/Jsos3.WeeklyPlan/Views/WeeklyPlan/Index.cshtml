@@ -1,5 +1,9 @@
+@using Jsos3.TranslateModule
 @using Jsos3.WeeklyPlan.Models
+
 @model Jsos3.WeeklyPlan.ViewModels.Models.WeeklyPlanIndexViewModel
+
+@inject ITranslationService translationService
 
 @{
     ViewBag.Title = "Plan zajêæ";
@@ -19,7 +23,7 @@
     {
         var todayGroups = Model.Occurences.GetValueOrDefault(day) ?? new List<WeeklyPlanDto>();
         <div class="day-column">
-            <h3>@day.DayOfWeek</h3>
+            <h3>@translationService.Translate(day.DayOfWeek)</h3>
             <div class="day-hours">
                 @foreach (var hour in week.Hours)
                 {
@@ -44,7 +48,6 @@
                             </div>
                         </div>
                     </div>
-
                 }
             </div>
         </div>
