@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Jsos3.Shared.Db;
-using Dapper;
+﻿using Dapper;
 using Jsos3.Absences.Infrastructure.Models;
-using Jsos3.Absences.Helpers;
-using System.Collections;
+using Jsos3.Shared.Db;
 
 
 namespace Jsos3.Absences.Infrastructure.Repository;
@@ -33,9 +26,7 @@ internal class AbsencesOfStudentsRepository : IAbsencesOfStudentsRepository
         using var connection = await _dbConnectionFactory.GetOpenLecturerConnectionAsync();
 
         var query = $@" 
-
 INSERT INTO Absence (Absence.Date, StudentInGroupId) VALUES (@Date, @studentInGroupId);
-
 ";
 
         var parameters = new DynamicParameters();
@@ -49,9 +40,7 @@ INSERT INTO Absence (Absence.Date, StudentInGroupId) VALUES (@Date, @studentInGr
     public async Task AddPresence(int studentInGroupId, DateTime date)
     {
         using var connection = await _dbConnectionFactory.GetOpenLecturerConnectionAsync();
-
         var query = $@" 
-
 DELETE FROM Absence WHERE StudentInGroupId = @studentInGroupId AND Date = @Date;
 
 ";

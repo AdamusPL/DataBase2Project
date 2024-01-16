@@ -32,12 +32,16 @@
 
                 @if (absence == default(StudentAbsenceDto))
                 {
-                    <td><input type="checkbox" class="absence-checkbox" data-student-id="@student.StudentId" data-date="@date.ToString("yyyy-MM-dd")" checked></td>
+                    <td>
+                        <input onchange="updateAbsence('@Model.GroupId', @student.StudentId, '@date.ToString("yyyy-MM-dd")', this.checked);" type="checkbox" class="absence-checkbox" checked>
+                    </td>
                 }
 
                 else
                 {
-                    <td><input type="checkbox" class="absence-checkbox" data-student-id="@student.StudentId" data-date="@date.ToString("yyyy-MM-dd")"></td>
+                    <td>
+                        <input onchange="updateAbsence('@Model.GroupId', @student.StudentId, '@date.ToString("yyyy-MM-dd")', this.checked);" type="checkbox" class="absence-checkbox">
+                    </td>
                 }
 
             }
@@ -46,36 +50,26 @@
 </table>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        document.querySelectorAll('.absence-checkbox').forEach(function (checkbox) {
-            checkbox.addEventListener('change', function () {
-                var groupId = '@(Model.GroupId)';
-                var isChecked = this.checked;
-                var studentId = this.getAttribute('data-student-id');
-                var date = this.getAttribute('data-date');
+    async function updateAbsence(groupId, studentId, date, isChecked) {
+        try {
+            const request = {
+                GroupId: groupId,
+                StudentId: studentId,
+                Date: date,
+                IsChecked: isChecked
+            };
 
-                fetch('/Absences/Get', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        GroupId: groupId,
-                        StudentId: studentId,
-                        Date: date,
-                        IsChecked: isChecked
-                    }),
-                })
-                    .then(response => response.json())
-                    .then(data => {
-                        // Handle the response if needed
-                        console.log(data);
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                    });
-            });
-        });
+            console.log(request);
 
-    });
+            await fetch('/Absences/ToggleAbsence', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(request),
+            })
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
 </script>
