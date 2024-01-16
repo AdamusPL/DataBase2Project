@@ -9,41 +9,67 @@
 <h1>Lista obecności grupy @Model.GroupId</h1>
 
 <table class="table">
-    <thead>
+    <tr>
+        <th>Indeks studenta</th>
+        <th>Imię</th>
+        <th>Nazwisko</th>
+        @foreach (var date in Model.Days)
+        {
+            <th class="date-column">@date.ToString("dd/MM/yyyy")</th>
+        }
+    </tr>
+
+
+    @foreach (var student in Model.StudentsInGroup)
+    {
         <tr>
-            <th scope="col">Indeks studenta</th>
-            <th scope="col">Imię</th>
-            <th scope="col">Nazwisko</th>
+            <td class="index-row">@student.StudentId</td>
+            <td>@student.Name</td>
+            <td>@student.Surname</td>
             @foreach (var date in Model.Days)
             {
-                <th scope="col">@date.ToString("dd/MM/yyyy")</th>
+                var absence = Model.AbsenceOfStudents.GetValueOrDefault(new AbsenceKey(student.StudentId, date));
+
+                @if (absence == default(StudentAbsenceDto))
+                {
+                    <td>
+                        <input onchange="updateAbsence('@Model.GroupId', @student.StudentId, '@date.ToString("yyyy-MM-dd")', this.checked);" type="checkbox" class="absence-checkbox" checked>
+                    </td>
+                }
+
+                else
+                {
+                    <td>
+                        <input onchange="updateAbsence('@Model.GroupId', @student.StudentId, '@date.ToString("yyyy-MM-dd")', this.checked);" type="checkbox" class="absence-checkbox">
+                    </td>
+                }
+
             }
         </tr>
-    </thead>
-
-    <tbody>
-        @foreach (var student in Model.StudentsInGroup)
-        {
-            <tr>
-                <td>@student.StudentId</td>
-                <td>@student.Name</td>
-                <td>@student.Surname</td>
-                @foreach (var date in Model.Days)
-                {
-                    var absence = Model.AbsenceOfStudents.GetValueOrDefault(new AbsenceKey(student.StudentId, date));
-
-                    @if (absence == default(StudentAbsenceDto))
-                    {
-                        <td style="color: green; font-weight: bold;">+</td>
-                    }
-
-                    else
-                    {
-                        <td style="color: red; font-weight: bold;">-</td>
-                    }
-
-                }
-            </tr>
-        }
-    </tbody>
+    }
 </table>
+
+<script>
+    async function updateAbsence(groupId, studentId, date, isChecked) {
+        try {
+            const request = {
+                GroupId: groupId,
+                StudentId: studentId,
+                Date: date,
+                IsChecked: isChecked
+            };
+
+            console.log(request);
+
+            await fetch('/Absences/ToggleAbsence', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(request),
+            })
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+</script>

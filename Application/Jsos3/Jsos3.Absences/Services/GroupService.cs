@@ -14,6 +14,7 @@ namespace Jsos3.Absences.Services
         Task<List<DateTime>> GetDatesOfGroup(string groupId);
         Task<List<StudentInGroupDto>> GetSortedStudentsFromGroup(string groupId);
         Task<Dictionary<AbsenceKey, StudentAbsenceDto>> GetAbsencesOfStudentsInGroup(string groupId);
+        Task UpdatePresence(AbsencePageDto absencePageDto);
     }
 
     internal class GroupService : IGroupService
@@ -30,6 +31,20 @@ namespace Jsos3.Absences.Services
             _absencesOfStudentsRepository = absencesOfStudentsRepository;
             _studentsInGroupRepository = studentsInGroupRepository;
             _groupDatesRepository = groupDatesRepository;
+        }
+
+        public async Task UpdatePresence(AbsencePageDto absencePageDto)
+        {
+            int studentInGroupId = await _studentsInGroupRepository.GetStudentInGroupId(absencePageDto.StudentId, absencePageDto.GroupId);
+
+            if (absencePageDto.IsChecked)
+            {
+                await _absencesOfStudentsRepository.AddPresence(studentInGroupId, absencePageDto.Date);
+            }
+            else
+            {
+                await _absencesOfStudentsRepository.DeletePresence(studentInGroupId, absencePageDto.Date);
+            }
         }
 
         public async Task<Dictionary<AbsenceKey, StudentAbsenceDto>> GetAbsencesOfStudentsInGroup(string groupId)
