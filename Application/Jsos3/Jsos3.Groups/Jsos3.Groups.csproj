@@ -17,7 +17,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Views\" />
+	  <ProjectReference Include="..\Jsos3.Shared\Jsos3.Shared.csproj" />
 	</ItemGroup>
 
 </Project>

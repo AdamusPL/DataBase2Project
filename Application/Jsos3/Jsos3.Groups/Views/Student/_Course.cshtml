@@ -1,0 +1,26 @@
+@model Jsos3.Groups.ViewModels.Models.CourseViewModel
+
+@{
+    var course = Model.Course;
+    var showAtStartup = Model.ShowAtStartup;
+}
+
+<div class="accordion-item">
+    <h2 class="accordion-header" id="course-@course.Id-header">
+        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#course-@course.Id" aria-controls="course-@course.Id">
+            <div>@course.Name</div>
+        </button>
+    </h2>
+
+    <div id="course-@course.Id" class="accordion-collapse collapse @(showAtStartup ? "show" : null)" aria-labelledby="course-@course.Id-header">
+        <div class="accordion-body">
+            @Html.Partial("_CourseInfo.cshtml", course)
+            <div class="groups-container">
+                @foreach (var group in course.Groups)
+                {
+                    @Html.Partial("_Group.cshtml", group)
+                }
+            </div>
+        </div>
+    </div>
+</div>

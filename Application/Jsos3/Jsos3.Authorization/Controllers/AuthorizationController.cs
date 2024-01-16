@@ -1,15 +1,11 @@
-﻿using Jsos3.Shared;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace Jsos3.Authorization.Controllers;
 
 public class AuthorizationController : Controller
 {
-    private readonly IDummyInterface _dummyInterface;
-
-    public AuthorizationController(IDummyInterface dummyInterface)
+    public AuthorizationController()
     {
-        _dummyInterface = dummyInterface;
     }
 
     public IActionResult Index()

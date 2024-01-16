@@ -1,0 +1,13 @@
+.filters {
+    display: flex;
+    justify-content: left;
+    gap: 1rem;
+    flex-direction: row;
+    margin: 0.5rem;
+}
+
+@media only screen and (max-width : 667px) {
+    .filters {
+        flex-direction: column;
+    }
+}
