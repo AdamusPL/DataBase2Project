@@ -1,5 +1,4 @@
 ﻿using Jsos3.Shared.Auth;
-using Jsos3.Shared.Logic;
 using Jsos3.WeeklyPlan.Infrastructure.Repository;
 using Jsos3.WeeklyPlan.Models;
 
@@ -13,12 +12,10 @@ public interface IPlanService
 internal class PlanService : IPlanService
 {
     private readonly IWeeklyPlanRepository _weeklyPlanRepository;
-    private readonly ITranslationService _translationService;
 
-    public PlanService(IWeeklyPlanRepository weeklyPlanRepository, ITranslationService translationService)
+    public PlanService(IWeeklyPlanRepository weeklyPlanRepository)
     {
         _weeklyPlanRepository = weeklyPlanRepository;
-        _translationService = translationService;
     }
 
     public async Task<Dictionary<DateTime, List<WeeklyPlanDto>>> GetPlanForUser(int userObjectId, UserType userType, DateTime startOfWeek, DateTime endOfWeek)
@@ -34,9 +31,9 @@ internal class PlanService : IPlanService
             .Select(x => new WeeklyPlanDto
             {
                 Date = x.Date,
-                Regularity = _translationService.Translate(x.RegularityId),
+                Regularity = x.RegularityId,
                 Course = x.Course,
-                GroupType = _translationService.Translate(x.GroupTypeId),
+                GroupType = x.GroupTypeId,
                 StartTime = x.StartTime,
                 EndTime = x.EndTime,
                 Classroom = x.Classroom,

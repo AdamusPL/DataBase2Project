@@ -1,13 +1,14 @@
 ﻿using Jsos3.Shared.Models;
+using System;
 
-namespace Jsos3.Shared.Logic;
+namespace Jsos3.TranslateModule.Service;
 
 internal class PolishTranslationService : ITranslationService
 {
-    public string Translate(string key)
+    public string Translate(string key) => key switch
     {
-        throw new NotImplementedException();
-    }
+        _ => key
+    };
 
     public string Translate(DayOfWeek dayOfWeek) => dayOfWeek switch
     {
