@@ -3,13 +3,7 @@
 @{
     ViewBag.Title = "Grupy studenta";
 }
-
-<script>
-    function {
-        const uri = encodeURI(`/StudentGrade?3fb7106c-d9e5-40f4-9`);
-        window.location.replace(uri);
-    }
-</script>
+<!--/StudentGrade?groupId=3fb7106c-d9e5-40f4-9-->
 
 <div>
     <h3>Oceny Wybrana Grupa</h3>
@@ -24,5 +18,13 @@
             <td class="grade">Ocena</td>
             <td class="category">Kategoria</td>
         </tr>
+        @foreach (var grade in Model.Grade.Grades)
+        {
+            <tr>
+                <td class="description">@grade.Text</td>
+                <td class="grade">@grade.Grade</td>
+                <td class="category">@grade.IsFinal</td>
+            </tr>
+        }
     </table>
 </div>

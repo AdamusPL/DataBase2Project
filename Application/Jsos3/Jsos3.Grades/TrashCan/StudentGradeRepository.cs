@@ -3,7 +3,12 @@ using Dapper;
 
 namespace Jsos3.Grades.TrashCan;
 
-internal class StudentGradeRepository
+public interface IStudentGradeRepository
+{
+    Task<List<StudentGrade>> GetStudentGrade(int studentId, string groupId);
+}
+
+internal class StudentGradeRepository : IStudentGradeRepository
 {
     private readonly IDbConnectionFactory _dbConnectionFactory;
 
@@ -22,7 +27,7 @@ SELECT
     g.Grade AS [{nameof(StudentGrade.Grade)}],
     g.Accepted AS [{nameof(StudentGrade.Accepted)}],
     g.IsFinal AS [{nameof(StudentGrade.IsFinal)}],
-    g.Text AS [{nameof(StudentGrade.Text)}],
+    g.Text AS [{nameof(StudentGrade.Text)}]
 FROM [dbo].[Grade] g
 WHERE g.StudentInGroupId = (SELECT Id FROM Student_Group
 WHERE StudentId = @studentId and GroupId LIKE @groupId)
