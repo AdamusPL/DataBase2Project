@@ -6,6 +6,8 @@ internal class DummyUserAccessor : IUserAccessor
 
     public int UserId => 2;
 
+    public UserType Type => UserType.Student;
+
     public string Email => "TestEmail@test.pl";
 
     public string Name => "Maciej";

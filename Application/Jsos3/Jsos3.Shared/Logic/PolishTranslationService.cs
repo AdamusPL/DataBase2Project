@@ -29,4 +29,12 @@ internal class PolishTranslationService : ITranslationService
         GroupType.Project => "Projekt",
         _ => throw new ArgumentOutOfRangeException(nameof(groupType), groupType, null)
     };
+
+    public string Translate(Regularity regularity) => regularity switch
+    {
+        Regularity.Odd => "Tydzień nieparzysty",
+        Regularity.Even => "Tydzień parzysty",
+        Regularity.Every => "Co tydzień",
+        _ => throw new ArgumentOutOfRangeException(nameof(regularity), regularity, null)
+    };
 }

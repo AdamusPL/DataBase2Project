@@ -10,6 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddMemoryCache();
 builder.Services.AddAbsencesModule();
 builder.Services.AddAuthorizationModule();
 builder.Services.AddGradesModule();
