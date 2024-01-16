@@ -1,3 +1,4 @@
+using Jsos3.Absences;
 using Jsos3.Authorization;
 using Jsos3.Grades;
 using Jsos3.Groups;
@@ -10,6 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddMemoryCache();
+builder.Services.AddAbsencesModule();
 builder.Services.AddAuthorizationModule();
 builder.Services.AddGradesModule();
 builder.Services.AddGroupsModule();
