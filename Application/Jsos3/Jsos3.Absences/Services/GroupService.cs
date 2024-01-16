@@ -14,7 +14,7 @@ namespace Jsos3.Absences.Services
         Task<List<DateTime>> GetDatesOfGroup(string groupId);
         Task<List<StudentInGroupDto>> GetSortedStudentsFromGroup(string groupId);
         Task<Dictionary<AbsenceKey, StudentAbsenceDto>> GetAbsencesOfStudentsInGroup(string groupId);
-        void AddPresence(AbsencePageDto absencePageDto);
+        Task UpdatePresence(AbsencePageDto absencePageDto);
     }
 
     internal class GroupService : IGroupService
@@ -23,21 +23,28 @@ namespace Jsos3.Absences.Services
         private readonly IAbsencesOfStudentsRepository _absencesOfStudentsRepository;
         private readonly IStudentsInGroupRepository _studentsInGroupRepository;
         private readonly IGroupDatesRepository _groupDatesRepository;
-        private readonly IUpdatePresenceOfStudentRepository _updatePresenceOfStudentRepository;
 
         public GroupService(IGroupOccurrencesCalculator groupOccurencesCalculator, IAbsencesOfStudentsRepository absencesOfStudentsRepository, IGroupDatesRepository groupDatesRepository,
-            IStudentsInGroupRepository studentsInGroupRepository, IUpdatePresenceOfStudentRepository updatePresenceOfStudentRepository) 
+            IStudentsInGroupRepository studentsInGroupRepository) 
         {
             _groupOccurencesCalculator = groupOccurencesCalculator;
             _absencesOfStudentsRepository = absencesOfStudentsRepository;
             _studentsInGroupRepository = studentsInGroupRepository;
             _groupDatesRepository = groupDatesRepository;
-            _updatePresenceOfStudentRepository = updatePresenceOfStudentRepository;
         }
 
-        public void AddPresence(AbsencePageDto absencePageDto)
+        public async Task UpdatePresence(AbsencePageDto absencePageDto)
         {
-            _updatePresenceOfStudentRepository.AddPresence(absencePageDto);
+            int studentInGroupId = await _studentsInGroupRepository.GetStudentInGroupId(absencePageDto.StudentId, absencePageDto.GroupId);
+
+            if (absencePageDto.IsChecked)
+            {
+                await _absencesOfStudentsRepository.AddPresence(studentInGroupId, absencePageDto.Date);
+            }
+            else
+            {
+                await _absencesOfStudentsRepository.DeletePresence(studentInGroupId, absencePageDto.Date);
+            }
         }
 
         public async Task<Dictionary<AbsenceKey, StudentAbsenceDto>> GetAbsencesOfStudentsInGroup(string groupId)

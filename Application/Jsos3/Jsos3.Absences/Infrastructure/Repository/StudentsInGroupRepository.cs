@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using Jsos3.Absences.Helpers;
 using Jsos3.Absences.Infrastructure.Models;
 using Jsos3.Shared.Db;
 using System;
@@ -12,6 +13,7 @@ namespace Jsos3.Absences.Infrastructure.Repository;
 internal interface IStudentsInGroupRepository
 {
     Task<List<StudentInGroup>> GetSortedStudentsFromGroup(string groupId);
+    Task<int> GetStudentInGroupId(int studentId, string groupId);
 }
 
 internal class StudentsInGroupRepository : IStudentsInGroupRepository
@@ -45,5 +47,20 @@ ORDER BY u.Surname ASC
         var queryResult = await connection.QueryAsync<StudentInGroup>(query, new { groupId });
 
         return queryResult.ToList();
+    }
+
+    public async Task<int> GetStudentInGroupId(int studentId, string groupId)
+    {
+        using var connection = await _dbConnectionFactory.GetOpenLecturerConnectionAsync();
+
+        var query = $@"
+
+SELECT TOP 1 
+Id 
+FROM Student_Group
+WHERE StudentId = @studentId AND GroupId LIKE @groupId
+
+";
+        return await connection.QueryFirstOrDefaultAsync<int>(query, new { studentId, groupId });
     }
 }

@@ -33,9 +33,9 @@ public class AbsencesController : Controller
     }
 
     [HttpPost]
-    public ActionResult Get([FromBody] AbsencePageDto absencePageDto)
+    public async Task<IActionResult> ToggleAbsence([FromBody] AbsencePageDto absencePageDto)
     {
-        _groupService.AddPresence(absencePageDto);
+        await _groupService.UpdatePresence(absencePageDto);
 
         return Json(new { success = true });
     }
