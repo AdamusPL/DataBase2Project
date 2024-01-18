@@ -6,7 +6,7 @@ namespace Jsos3.Grades.Services;
 
 public interface IStudentGradeService
 {
-    Task<List<StudentGrupGradeDto>> GetStudentGrades(int userId, string? groupId);
+    Task<List<StudentGrupGradeDto>> GetStudentGrades(int userId, string groupId);
 }
 internal class StudentGradeService : IStudentGradeService
 {
@@ -17,24 +17,20 @@ internal class StudentGradeService : IStudentGradeService
         _studentGradeRepository = studentGradeRepository;
     }
 
-    public async Task<List<StudentGrupGradeDto>> GetStudentGrades(int userId, string? groupId)
+    public async Task<List<StudentGrupGradeDto>> GetStudentGrades(int userId, string groupId)
     {
         var grades = await _studentGradeRepository.GetStudentGrade(userId, groupId);
         var mapper = new GradeDtoMapper();
-        var gradeList = new List<StudentGrupGradeDto>();
 
-        foreach (var grade in grades)
-        {
-            var gradeDto = new StudentGrupGradeDto
-            {
-                Id = grade.Id,
-                Text = grade.Text,
-                Grade = grade.Grade,
-                IsFinal = mapper.mapType(grade),
-                Accepted = grade.Accepted
-            };
-            gradeList.Add(gradeDto);
-        }
-        return gradeList;
+        return grades
+                    .Select(grade => new StudentGrupGradeDto
+                    {
+                        Id = grade.Id,
+                        Text = grade.Text,
+                        Grade = grade.Grade,
+                        IsFinal = mapper.mapType(grade),
+                        Accepted = grade.Accepted
+                    })
+                    .ToList();
     }
 }

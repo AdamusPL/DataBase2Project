@@ -13,7 +13,8 @@ public static class GradesModule
         services.AddScoped<IStudentGradeRepository, StudentGradeRepository>();
         services.AddScoped<IStudentGradeService, StudentGradeService>();
         services.AddScoped<IGradeIndexViewModelBuilder, GradeIndexViewModelBuilder>();
-
-
+        services.AddScoped<ILecturerGradeIndexViewModelBuilder, LecturerGradeIndexViewModelBiulder>();
+        services.AddScoped<ILecturerGradePerository, LecturerGradeRepository>();
+        services.AddScoped<ILecturerGroupGradeService, LecturerGroupGradeService>();   
     }
 }

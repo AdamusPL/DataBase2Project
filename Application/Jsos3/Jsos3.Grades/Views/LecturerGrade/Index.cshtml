@@ -1,0 +1,33 @@
+﻿@model LecturerGradeIndexViewModel
+@using Jsos3.Grades.VievModels
+@using Jsos3.Grades.Models
+
+@{
+    ViewBag.Title = "Oceny w grupie";
+}
+
+<!--/LecturerGrade?groupId=3fb7106c-d9e5-40f4-9-->
+
+<div>
+    <h3>Oceny w grupie: @Model.GroupId</h3>
+</div>
+
+<div class ="accordion">
+    @foreach(var student in Model.Students)
+    {
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="group-@Model.GroupId-header">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#student-@student.Student.Id" aria-controls="student-@student.Student.Id">
+                    <div>@student.Student.Id | @student.Student.FirstName @student.Student.LastName</div>
+            </button>
+        </h2>
+
+        <div id="grade-@student.Student.Id" class="accordion-collapse collapse show" aria-labelledby="student-@student.Student.Id-header" data-bs-parent="#student-@student.Student.Id">
+            <div class="accordion-body">
+
+            </div>
+        </div>
+    </div>
+    }
+
+</div>
