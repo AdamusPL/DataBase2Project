@@ -4,9 +4,15 @@
 
 @{
     ViewBag.Title = "Grupy";
+    var filerViewModel = new FilterViewModelBuilder()
+        .WithSelectedSemester(Model.SemesterSummary.SelectedSemester)
+        .WithSemesters(Model.Semesters)
+        .Build();
 }
 
-@Html.Partial("../Components/_Filter", Model)
+@Html.Partial("../Components/_Filter", filerViewModel)
+
+@Html.Partial("_SemesterSummary", Model.SemesterSummary)
 
 <div class="accordion">
     @foreach (var courseViewModel in Model.Courses)

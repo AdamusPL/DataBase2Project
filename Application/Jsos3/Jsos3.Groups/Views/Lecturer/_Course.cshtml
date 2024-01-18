@@ -1,4 +1,4 @@
-@model Jsos3.Groups.Models.CourseDto
+@model Jsos3.Groups.Models.LecturerCourseDto
 
 <div class="accordion-item">
     <h2 class="accordion-header" id="course-@Model.Id-header">
@@ -12,7 +12,7 @@
             <div class="groups-container">
                 @foreach (var group in Model.Groups)
                 {
-                    @Html.Partial("../Components/_Group.cshtml", group)
+                    @Html.Partial("../Components/_Group", group)
                 }
             </div>
         </div>

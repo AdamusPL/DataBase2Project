@@ -28,11 +28,11 @@ internal class SqlConnectionFactory : IDbConnectionFactory
     }
 
     public Task<IDbConnection> GetOpenStudentConnectionAsync() =>
-            GetOpenConnectionAsync(_configuration.GetConnectionString("StudentSql"));
+            GetOpenConnectionAsync(_configuration.GetConnectionString("StudentSql") ?? string.Empty);
 
     public Task<IDbConnection> GetOpenAdministrationConnectionAsync() =>
-        GetOpenConnectionAsync(_configuration.GetConnectionString("AdministrationSql"));
+        GetOpenConnectionAsync(_configuration.GetConnectionString("AdministrationSql") ?? string.Empty);
 
     public Task<IDbConnection> GetOpenLecturerConnectionAsync() =>
-        GetOpenConnectionAsync(_configuration.GetConnectionString("LecturerSql"));
+        GetOpenConnectionAsync(_configuration.GetConnectionString("LecturerSql") ?? string.Empty);
 }

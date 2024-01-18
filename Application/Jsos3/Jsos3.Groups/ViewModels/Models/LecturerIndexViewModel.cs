@@ -6,5 +6,5 @@ public class LecturerIndexViewModel
 {
     public required string SelectedSemester { get; set; }
     public required List<string> Semesters { get; set; }
-    public required List<CourseDto> Courses { get; set; }
+    public required List<LecturerCourseDto> Courses { get; set; }
 }
