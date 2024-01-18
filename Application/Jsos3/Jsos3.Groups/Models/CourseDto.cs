@@ -1,6 +1,6 @@
 ﻿namespace Jsos3.Groups.Models;
 
-public class StudentCourseDto
+public class CourseDto
 {
     public required int Id { get; set; }
     public required string Name { get; set; }

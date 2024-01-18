@@ -4,18 +4,12 @@ using Jsos3.Shared.Models;
 
 namespace Jsos3.Groups.Helpers;
 
-internal interface IStudentGroupDtoMapper
+internal static class GroupDtoMapper
 {
-    List<GroupDto> Map(List<StudentGroup> studentGroups);
-    GroupDto Map(StudentGroup studentGroup);
-}
+    internal static IEnumerable<GroupDto> ToGroupDto(this IEnumerable<Group> studentGroups) =>
+        studentGroups.Select(ToGroupDto);
 
-internal class StudentGroupDtoMapper : IStudentGroupDtoMapper
-{
-    public List<GroupDto> Map(List<StudentGroup> studentGroups) =>
-        studentGroups.Select(Map).ToList();
-
-    public GroupDto Map(StudentGroup studentGroup) =>
+    internal static GroupDto ToGroupDto(this Group studentGroup) =>
         new()
         {
             Lecturer = $"{studentGroup.LecturerName} {studentGroup.LecturerSurname}",

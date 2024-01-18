@@ -4,34 +4,34 @@ using Jsos3.Shared.Auth;
 
 namespace Jsos3.Groups.ViewModels.Builders;
 
-public interface IStudentIndexViewModelBuilder
+public interface ILecturerIndexViewModelBuilder
 {
-    Task<StudentIndexViewModel> Build(string? semesterId, string? courseName);
+    Task<LecturerIndexViewModel> Build(string? semesterId, string? courseName);
 }
 
-public class StudentIndexViewModelBuilder : IStudentIndexViewModelBuilder
+internal class LecturerIndexViewModelBuilder : ILecturerIndexViewModelBuilder
 {
     private readonly IGroupService _groupService;
     private readonly ISemesterService _semesterService;
     private readonly IUserAccessor _userAccessor;
 
-    public StudentIndexViewModelBuilder(IGroupService groupService, IUserAccessor userAccessor, ISemesterService semesterService)
+    public LecturerIndexViewModelBuilder(IGroupService groupService, ISemesterService semesterService, IUserAccessor userAccessor)
     {
         _groupService = groupService;
-        _userAccessor = userAccessor;
         _semesterService = semesterService;
+        _userAccessor = userAccessor;
     }
 
-    public async Task<StudentIndexViewModel> Build(string? semesterId, string? courseName)
+    public async Task<LecturerIndexViewModel> Build(string? semesterId, string? courseName)
     {
-        var courses = await _groupService.GetStudentCourses(
+        var courses = await _groupService.GetLecturerCourses(
             _userAccessor.Id,
             semesterId,
             courseName);
 
         var semesters = await _semesterService.GetSemesters();
 
-        return new StudentIndexViewModel
+        return new LecturerIndexViewModel
         {
             SelectedSemester = semesterId ?? semesters.First(),
             Semesters = semesters,

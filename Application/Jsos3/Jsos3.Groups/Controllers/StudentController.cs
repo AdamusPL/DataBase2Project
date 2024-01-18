@@ -1,4 +1,5 @@
 ﻿using Jsos3.Groups.ViewModels.Builders;
+using Jsos3.Shared.Auth;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Jsos3.Groups.Controllers;

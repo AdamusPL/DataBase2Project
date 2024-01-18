@@ -9,7 +9,6 @@
 
     <div id="course-@Model.Id" class="accordion-collapse collapse" aria-labelledby="course-@Model.Id-header">
         <div class="accordion-body">
-            @Html.Partial("_CourseInfo.cshtml", Model)
             <div class="groups-container">
                 @foreach (var group in Model.Groups)
                 {

@@ -1,6 +1,6 @@
 ﻿namespace Jsos3.Groups.Infrastructure.Models;
 
-internal readonly record struct StudentGroup(
+internal readonly record struct Group(
     string Id,
     string SemesterId,
     int DayOfTheWeek,
