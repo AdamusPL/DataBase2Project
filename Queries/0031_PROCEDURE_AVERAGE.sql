@@ -3,7 +3,7 @@ AS
 BEGIN
     CREATE TABLE #Grade (
         Id int,
-        Grade DECIMAL(10, 2)
+        Grade DECIMAL(10, 3)
     );
 
     INSERT INTO #Grade
