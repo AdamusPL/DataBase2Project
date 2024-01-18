@@ -21,6 +21,9 @@ public static class GroupsModule
             (p, impl) => new(impl, p.GetRequiredService<IMemoryCache>()),
             p => new(p.GetRequiredService<IDbConnectionFactory>()));
 
+        services.AddTransient<IViewHelper, ViewHelper>();
+        services.AddScoped<IGradeRepository, GradeRepository>();
+        services.AddScoped<ISemesterSummaryViewModelBuilder, SemesterSummaryViewModelBuilder>();
         services.AddScoped<IStudentService, StudentService>();
         services.AddScoped<ISemesterService, SemesterService>();
         services.AddScoped<IStudentGroupDtoMapper, StudentGroupDtoMapper>();

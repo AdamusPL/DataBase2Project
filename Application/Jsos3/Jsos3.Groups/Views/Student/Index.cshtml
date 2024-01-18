@@ -7,11 +7,13 @@
     var courseViewModels = new CourseViewModelBuilder().BuildList(Model.Courses);
 }
 
-@Html.Partial("_Filter.cshtml", Model)
+@Html.Partial("_Filter", Model)
+
+@Html.Partial("_SemesterSummary", Model.SemesterSummary)
 
 <div class="accordion">
     @foreach (var courseViewModel in courseViewModels)
     {
-        @Html.Partial("_Course.cshtml", courseViewModel)
+        @Html.Partial("_Course", courseViewModel)
     }
 </div>

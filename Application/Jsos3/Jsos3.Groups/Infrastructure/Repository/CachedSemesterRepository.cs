@@ -40,4 +40,10 @@ internal class CachedSemesterRepository : ISemesterRepository
 
         return result ?? throw new ArgumentNullException();
     }
+
+    public Task<int> GetStudentAllEcts(int studentId, string semesterId) =>
+        _semesterRepository.GetStudentAllEcts(studentId, semesterId);
+
+    public Task<int> GetStudentReceivedEcts(int studentId, string semesterId, int gradeRequiredToPass) =>
+        _semesterRepository.GetStudentReceivedEcts(studentId, semesterId, gradeRequiredToPass);
 }

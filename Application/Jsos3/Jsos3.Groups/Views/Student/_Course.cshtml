@@ -14,11 +14,11 @@
 
     <div id="course-@course.Id" class="accordion-collapse collapse @(showAtStartup ? "show" : null)" aria-labelledby="course-@course.Id-header">
         <div class="accordion-body">
-            @Html.Partial("_CourseInfo.cshtml", course)
+            @Html.Partial("_CourseInfo", course)
             <div class="groups-container">
                 @foreach (var group in course.Groups)
                 {
-                    @Html.Partial("_Group.cshtml", group)
+                    @Html.Partial("_Group", group)
                 }
             </div>
         </div>

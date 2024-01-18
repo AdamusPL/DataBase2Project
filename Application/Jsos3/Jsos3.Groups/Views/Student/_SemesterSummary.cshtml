@@ -1,0 +1,26 @@
+@using Jsos3.Groups.Helpers
+@model Jsos3.Groups.ViewModels.Models.SemesterSummaryViewModel
+@inject IViewHelper viewHelper
+
+@{
+    var gradeInfo = Model.GradeInfo;
+}
+
+<div class="semester-summary-container">
+    <div>
+        <span class="semester-summary-container__key">Semestr:</span>
+        <span class="semester-summary-container__value">@Model.SelectedSemester</span>
+    </div>
+
+    <div>
+        <span class="semester-summary-container__key">Œrednia:</span>
+        <span class="semester-summary-container__value">@viewHelper.DashWhenZero(gradeInfo.Grade)</span>
+    </div>
+
+    <div>
+        <span class="semester-summary-container__key">Uzyskane punkty ECTS:</span>
+        <span class="semester-summary-container__value">@viewHelper.DashWhenZero(gradeInfo.ReceivedEcts)</span>
+        /
+        <span class="semester-summary-container__value">@viewHelper.DashWhenZero(gradeInfo.Ects)</span>
+    </div>
+</div>

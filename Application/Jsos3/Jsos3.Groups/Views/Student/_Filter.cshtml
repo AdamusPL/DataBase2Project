@@ -6,7 +6,7 @@
 }
 
 <div class="filters">
-    @Html.Partial("../Components/_Select", viewModelBuilder.BuildForSemesters(Model.SelectedSemester, Model.Semesters))
+    @Html.Partial("../Components/_Select", viewModelBuilder.BuildForSemesters(Model.SemesterSummary.SelectedSemester, Model.Semesters))
     <div class="form-group">
         <label>Nazwa kursu</label>
         <input id="course-name" class="form-control" type="text" placeholder="Miernictwo...">
