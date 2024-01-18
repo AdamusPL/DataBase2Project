@@ -10,6 +10,7 @@ public static class GradesModule
     public static void AddGradesModule(this IServiceCollection services)
     {
         services.AddScoped<IGradeAccepter, GradeAccepter>();
+        services.AddScoped<IGradeAdder, GradeAdder>();
         services.AddScoped<IStudentGradeRepository, StudentGradeRepository>();
         services.AddScoped<IStudentGradeService, StudentGradeService>();
         services.AddScoped<IGradeIndexViewModelBuilder, GradeIndexViewModelBuilder>();

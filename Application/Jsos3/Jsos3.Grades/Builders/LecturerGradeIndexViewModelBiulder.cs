@@ -7,7 +7,7 @@ public interface ILecturerGradeIndexViewModelBuilder
 {
     Task<LecturerGradeIndexViewModel> Build(string groupId);
 }
-internal class LecturerGradeIndexViewModelBiulder : ILecturerGradeIndexViewModelBuilder
+public class LecturerGradeIndexViewModelBiulder : ILecturerGradeIndexViewModelBuilder
 {
     private readonly ILecturerGroupGradeService _service;
 
