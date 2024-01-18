@@ -3,20 +3,19 @@ SELECT
     g.DayOfTheWeek, 
     g.StartTime, 
     g.EndTime,
-    Group_Lecturer.GroupId, 
+    gl.GroupId, 
     g.Classroom, 
-    Regularity.Name Regularity, 
-    GroupType.Name GroupType,
-    u.Surname LecturerSurname, 
-    u.Name LecturerName, 
-    l.Id LecturerId,
-    Course.Name CourseName, 
-    Course.ECTS
+    r.Name AS Regularity, 
+    gt.Name AS GroupType,
+    u.Surname AS LecturerSurname, 
+    u.Name AS LecturerName, 
+    l.Id AS LecturerId,
+    c.Name AS CourseName, 
+    c.ECTS
 FROM [Group] g 
-INNER JOIN Group_Lecturer ON g.Id = Group_Lecturer.GroupId
-INNER JOIN Regularity ON g.RegularityId = Regularity.Id
-INNER JOIN GroupType ON g.Id = GroupType.Id 
-INNER JOIN [Lecturer] l ON Group_Lecturer.LecturerId = l.Id
+INNER JOIN [Group_Lecturer] gl ON g.Id = gl.GroupId
+INNER JOIN [Regularity] r ON g.RegularityId = r.Id
+INNER JOIN [GroupType] gt ON g.Id = gt.Id 
+INNER JOIN [Lecturer] l ON gl.LecturerId = l.Id
 INNER JOIN [User] u ON l.UserId = u.Id
-INNER JOIN Course ON g.CourseId = Course.Id;
-
+INNER JOIN [Course] c ON g.CourseId = c.Id;
