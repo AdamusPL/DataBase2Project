@@ -42,6 +42,7 @@ public abstract class BenchmarkBase : IBenchmark
             await actionToTest();
             var elapsed = CurrentTimestamp - start;
             result += (int)elapsed;
+            Console.WriteLine($"{name} test {i + 1}/{testsCount} took {elapsed} ms");
         }
 
         Console.WriteLine($"{name} ended after {result / testsCount} ms");
