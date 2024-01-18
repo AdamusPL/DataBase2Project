@@ -6,7 +6,7 @@ namespace Jsos3.Grades.Builders;
 
 public interface IGradeIndexViewModelBuilder
 {
-    Task<GradeIndexViewModel> Build(string? groupId);
+    Task<GradeIndexViewModel> Build(string groupId);
 }
 
 public class GradeIndexViewModelBuilder : IGradeIndexViewModelBuilder
@@ -20,7 +20,7 @@ public class GradeIndexViewModelBuilder : IGradeIndexViewModelBuilder
         _userAccessor = userAccessor;
     }
 
-    public async Task<GradeIndexViewModel> Build(string? groupId)
+    public async Task<GradeIndexViewModel> Build(string groupId)
     {
         var grades = await _studentGradeService.GetStudentGrades(_userAccessor.Id, groupId);
         return new GradeIndexViewModel

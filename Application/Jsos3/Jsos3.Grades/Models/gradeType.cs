@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Jsos3.Grades.Models
 {
-    public enum gradeType
+    public enum GradeType
     {
         Końcowa, Cząstkowa
     }

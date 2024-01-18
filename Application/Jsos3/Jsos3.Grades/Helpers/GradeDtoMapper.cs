@@ -9,15 +9,15 @@ namespace Jsos3.Grades.Helpers
 {
     public class GradeDtoMapper
     {
-        public gradeType mapType(StudentGrade studentGrade)
+        public GradeType mapType(StudentGrade studentGrade)
         {
             if (studentGrade.IsFinal)
             {
-                return gradeType.Końcowa;
+                return GradeType.Końcowa;
             }
             else
             {
-                return gradeType.Cząstkowa;
+                return GradeType.Cząstkowa;
             }
         }
     }

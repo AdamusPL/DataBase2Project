@@ -10,7 +10,7 @@ public class StudentGrupGradeDto
     public required int Id { get; set; }
     public required string Text { get; set; }
     public required decimal Grade { get; set; }
-    public required gradeType IsFinal { get; set; }
+    public required GradeType IsFinal { get; set; }
     public required bool? Accepted { get; set; }
 }
 

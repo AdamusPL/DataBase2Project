@@ -34,8 +34,8 @@ SELECT
     g.IsFinal AS [{nameof(StudentGrade.IsFinal)}],
     g.Text AS [{nameof(StudentGrade.Text)}]
 FROM [dbo].[Grade] g
-WHERE g.StudentInGroupId = (SELECT Id FROM Student_Group
-WHERE StudentId = @studentId and GroupId LIKE @groupId)
+INNER JOIN [dbo].[Student_Group] sg ON g.StudentInGroupId = sg.Id
+WHERE sg.GroupId = @groupId AND sg.StudentId = @studentId
 ";
         var queryResult = await connection.QueryAsync<StudentGrade>(query, new { studentId, groupId });
 
@@ -48,7 +48,7 @@ WHERE StudentId = @studentId and GroupId LIKE @groupId)
         var query = @$"
 UPDATE [dbo].[Grade]
 set Accepted = 1
-WHERE Id = @gradeId
+WHERE Id = @gradeId AND Accepted IS NULL
 ";
         await connection.ExecuteAsync(query, new { gradeId }); ;
     }
@@ -59,7 +59,7 @@ WHERE Id = @gradeId
         var query = @$"
 UPDATE [dbo].[Grade]
 set Accepted = 0
-WHERE Id = @gradeId
+WHERE Id = @gradeId AND Accepted IS NULL
 ";
         await connection.ExecuteAsync(query, new { gradeId });
     }

@@ -15,7 +15,7 @@ public class StudentGradeController : Controller
         _gradeAccepter = gradeAccepter;
     }
 
-    public async Task<IActionResult> Index([FromQuery] string? groupId)
+    public async Task<IActionResult> Index([FromQuery] string groupId)
     {
         var viewModel = await _gradeIndexVievModelBuilder.Build(groupId);
         return View(viewModel);
