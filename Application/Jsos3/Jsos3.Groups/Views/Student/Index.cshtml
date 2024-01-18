@@ -1,14 +1,17 @@
+@using Jsos3.Groups.ViewModels.Builders
+
 @model Jsos3.Groups.ViewModels.Models.StudentIndexViewModel
 
 @{
     ViewBag.Title = "Grupy studenta";
+    var courseViewModels = new CourseViewModelBuilder().BuildList(Model.Courses);
 }
 
-@Html.Partial("_SelectSemesters.cshtml", Model)
+@Html.Partial("_Filter.cshtml", Model)
 
 <div class="accordion">
-    @foreach (var course in Model.Courses)
+    @foreach (var courseViewModel in courseViewModels)
     {
-        @Html.Partial("_Course.cshtml", course)
+        @Html.Partial("_Course.cshtml", courseViewModel)
     }
 </div>

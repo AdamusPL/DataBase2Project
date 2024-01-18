@@ -6,7 +6,7 @@ namespace Jsos3.Groups.Services;
 
 public interface IStudentService
 {
-    Task<List<StudentCourseDto>> GetCoursesWithGroups(int userId, string? semesterId);
+    Task<List<StudentCourseDto>> GetCoursesWithGroupsFiltered(int userId, string? semesterId, string? courseName);
 }
 
 internal class StudentService : IStudentService
@@ -27,12 +27,13 @@ internal class StudentService : IStudentService
         return _semesterRepository.GetAllSemesterIds();
     }
 
-    public async Task<List<StudentCourseDto>> GetCoursesWithGroups(int userId, string? semesterId)
+    public async Task<List<StudentCourseDto>> GetCoursesWithGroupsFiltered(int userId, string? semesterId, string? courseName)
     {
         var semester = semesterId ?? await _semesterRepository.GetLatestSemesterId();
         var groups = await _studentGroupRepository.GetStudentGroupsInSemester(userId, semester);
 
         return groups
+            .Where(x => x.Course.Contains(courseName ?? string.Empty, StringComparison.InvariantCultureIgnoreCase))
             .GroupBy(x => new CourseData(
                 x.CourseId,
                 x.Course,

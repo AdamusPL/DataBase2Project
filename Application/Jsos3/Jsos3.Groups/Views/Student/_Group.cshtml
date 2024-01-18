@@ -1,11 +1,15 @@
+@using Jsos3.TranslateModule
+
 @model Jsos3.Groups.Models.GroupDto
 
-<div class="card" style="width: 18rem;">
+@inject ITranslationService translationService
+
+<div class="card group-card">
     <div class="card-body">
-        <h5 class="card-title">@Model.Type</h5>
+        <h5 class="card-title">@translationService.Translate(Model.Type)</h5>
         <h6 class="card-subtitle mb-2 text-muted">@Model.Lecturer</h6>
         <p class="card-text">
-            <div>@Model.DayOfTheWeek</div>
+            <div>@translationService.Translate(Model.DayOfTheWeek)</div>
             <div>@Model.StartTime - @Model.EndTime</div>
         </p>
     </div>

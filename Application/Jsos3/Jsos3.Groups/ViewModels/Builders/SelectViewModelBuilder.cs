@@ -2,16 +2,18 @@
 
 namespace Jsos3.Groups.ViewModels.Builders;
 
-public class SelectViewModelBuilder
+public interface ISelectViewModelBuilder
 {
-    public SelectViewModel BuildForSemesters(string selected, List<string> semesters)
+    SelectViewModel BuildForSemesters(string selected, List<string> semesters);
+}
+
+public class SelectViewModelBuilder : ISelectViewModelBuilder
+{
+    public SelectViewModel BuildForSemesters(string selected, List<string> semesters) => new()
     {
-        return new()
-        {
-            Options = semesters.ToDictionary(x => x, x => x),
-            QueryParameterName = "semesterId",
-            RedirectUrl = "/Student",
-            Selected = selected
-        };
-    }
+        Label = "Semestr",
+        Options = semesters.ToDictionary(x => x, x => x),
+        QueryParameterName = "semesterId",
+        Selected = selected
+    };
 }

@@ -6,7 +6,7 @@ namespace Jsos3.Groups.ViewModels.Builders;
 
 public interface IStudentIndexViewModelBuilder
 {
-    Task<StudentIndexViewModel> Build(string? semesterId);
+    Task<StudentIndexViewModel> Build(string? semesterId, string? courseName);
 }
 
 public class StudentIndexViewModelBuilder : IStudentIndexViewModelBuilder
@@ -22,9 +22,9 @@ public class StudentIndexViewModelBuilder : IStudentIndexViewModelBuilder
         _semesterService = semesterService;
     }
 
-    public async Task<StudentIndexViewModel> Build(string? semesterId)
+    public async Task<StudentIndexViewModel> Build(string? semesterId, string? courseName)
     {
-        var courses = await _studentService.GetCoursesWithGroups(_userAccessor.Id, semesterId);
+        var courses = await _studentService.GetCoursesWithGroupsFiltered(_userAccessor.Id, semesterId, courseName);
         var semesters = await _semesterService.GetSemesters();
         return new StudentIndexViewModel
         {
