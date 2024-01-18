@@ -4,7 +4,7 @@ using Jsos3.Groups;
 using Jsos3.LecturerInformations;
 using Jsos3.WeeklyPlan;
 using Jsos3.Shared;
-using Jsos3.Grades.TrashCan;
+using Jsos3.Grades.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 

@@ -1,6 +1,6 @@
 ﻿using Jsos3.Shared.Auth;
-using Jsos3.Grades.Models;
-using Jsos3.Grades.TrashCan;
+using Jsos3.Grades.VievModels;
+using Jsos3.Grades.Services;
 
 namespace Jsos3.Grades.Builders;
 

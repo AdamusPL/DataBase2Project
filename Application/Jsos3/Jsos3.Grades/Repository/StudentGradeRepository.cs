@@ -1,11 +1,15 @@
 ﻿using Jsos3.Shared.Db;
 using Dapper;
+using System.Text.RegularExpressions;
+using Jsos3.Grades.Models;
 
-namespace Jsos3.Grades.TrashCan;
+namespace Jsos3.Grades.Repository;
 
 public interface IStudentGradeRepository
 {
     Task<List<StudentGrade>> GetStudentGrade(int studentId, string groupId);
+    Task AcceptGrade(int gradeId);
+    Task DeclineGrade(int gradeId);
 }
 
 internal class StudentGradeRepository : IStudentGradeRepository
@@ -16,6 +20,7 @@ internal class StudentGradeRepository : IStudentGradeRepository
     {
         _dbConnectionFactory = dbConnectionFactory;
     }
+
 
     public async Task<List<StudentGrade>> GetStudentGrade(int studentId, string groupId)
     {
@@ -35,5 +40,27 @@ WHERE StudentId = @studentId and GroupId LIKE @groupId)
         var queryResult = await connection.QueryAsync<StudentGrade>(query, new { studentId, groupId });
 
         return queryResult.ToList();
+    }
+
+    public async Task AcceptGrade(int gradeId)
+    {
+        using var connection = await _dbConnectionFactory.GetOpenStudentConnectionAsync();
+        var query = @$"
+UPDATE [dbo].[Grade]
+set Accepted = 1
+WHERE Id = @gradeId
+";
+        await connection.ExecuteAsync(query, new { gradeId }); ;
+    }
+
+    public async Task DeclineGrade(int gradeId)
+    {
+        using var connection = await _dbConnectionFactory.GetOpenStudentConnectionAsync();
+        var query = @$"
+UPDATE [dbo].[Grade]
+set Accepted = 0
+WHERE Id = @gradeId
+";
+        await connection.ExecuteAsync(query, new { gradeId });
     }
 }

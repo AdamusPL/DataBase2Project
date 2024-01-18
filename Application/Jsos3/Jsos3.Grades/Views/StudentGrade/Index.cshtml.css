@@ -1,13 +1,4 @@
-table, th, td {
-    border: 1px solid;
-    width: 100%
-}
-
-th {
-    border: 2px solid;
-}
-
-.description {
+/*.description {
     width: 76%
 }
 .grade {
@@ -15,4 +6,4 @@ th {
 }
 .category {
     width: 12%
-}
+}*/
