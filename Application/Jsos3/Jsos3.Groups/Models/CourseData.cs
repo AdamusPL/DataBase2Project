@@ -4,4 +4,5 @@ public readonly record struct CourseData(
     int Id,
     string Name,
     int Ects,
-    string Lecturer);
+    string Lecturer,
+    decimal? Grade);

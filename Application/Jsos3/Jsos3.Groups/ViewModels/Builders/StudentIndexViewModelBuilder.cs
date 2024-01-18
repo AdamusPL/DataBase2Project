@@ -14,21 +14,24 @@ public class StudentIndexViewModelBuilder : IStudentIndexViewModelBuilder
     private readonly IStudentService _studentService;
     private readonly ISemesterService _semesterService;
     private readonly IUserAccessor _userAccessor;
+    private readonly ISemesterSummaryViewModelBuilder _semesterSummaryViewModelBuilder;
 
-    public StudentIndexViewModelBuilder(IStudentService studentService, IUserAccessor userAccessor, ISemesterService semesterService)
+    public StudentIndexViewModelBuilder(IStudentService studentService, IUserAccessor userAccessor, ISemesterService semesterService, ISemesterSummaryViewModelBuilder semesterSummaryViewModelBuilder)
     {
         _studentService = studentService;
         _userAccessor = userAccessor;
         _semesterService = semesterService;
+        _semesterSummaryViewModelBuilder = semesterSummaryViewModelBuilder;
     }
 
     public async Task<StudentIndexViewModel> Build(string? semesterId, string? courseName)
     {
         var courses = await _studentService.GetCoursesWithGroupsFiltered(_userAccessor.Id, semesterId, courseName);
         var semesters = await _semesterService.GetSemesters();
+        var semesterSummary = await _semesterSummaryViewModelBuilder.Build(_userAccessor.Id, semesterId);
         return new StudentIndexViewModel
         {
-            SelectedSemester = semesterId ?? semesters.First(),
+            SemesterSummary = semesterSummary,
             Semesters = semesters,
             Courses = courses
         };
