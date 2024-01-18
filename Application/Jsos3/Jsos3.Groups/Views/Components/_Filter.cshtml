@@ -1,12 +1,12 @@
 @using Jsos3.Groups.ViewModels.Builders
-@model Jsos3.Groups.ViewModels.Models.StudentIndexViewModel
+@model Jsos3.Groups.ViewModels.Models.FilterViewModel
 
 @{
     var viewModelBuilder = new SelectViewModelBuilder();
 }
 
 <div class="filters">
-    @Html.Partial("../Components/_Select", viewModelBuilder.BuildForSemesters(Model.SemesterSummary.SelectedSemester, Model.Semesters))
+    @Html.Partial("../Components/_Select", viewModelBuilder.BuildForSemesters(Model.SelectedSemester, Model.Semesters))
     <div class="form-group">
         <label>Nazwa kursu</label>
         <input id="course-name" class="form-control" type="text" placeholder="Miernictwo...">

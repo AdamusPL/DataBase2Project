@@ -10,16 +10,16 @@ public interface ISemesterSummaryViewModelBuilder
 
 public class SemesterSummaryViewModelBuilder : ISemesterSummaryViewModelBuilder
 {
-    private readonly IStudentService _studentService;
+    private readonly ISemesterService _semesterService;
 
-    public SemesterSummaryViewModelBuilder(IStudentService studentService)
+    public SemesterSummaryViewModelBuilder(ISemesterService semesterService)
     {
-        _studentService = studentService;
+        _semesterService = semesterService;
     }
 
     public async Task<SemesterSummaryViewModel> Build(int studentId, string? semesterId)
     {
-        var averageGradeInfo = await _studentService.GetAverageGrade(studentId, semesterId);
+        var averageGradeInfo = await _semesterService.GetStudentAverageGrade(studentId, semesterId);
 
         return new()
         {

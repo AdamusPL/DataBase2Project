@@ -11,14 +11,18 @@ public interface IStudentIndexViewModelBuilder
 
 public class StudentIndexViewModelBuilder : IStudentIndexViewModelBuilder
 {
-    private readonly IStudentService _studentService;
+    private readonly IGroupService _groupService;
     private readonly ISemesterService _semesterService;
     private readonly IUserAccessor _userAccessor;
     private readonly ISemesterSummaryViewModelBuilder _semesterSummaryViewModelBuilder;
 
-    public StudentIndexViewModelBuilder(IStudentService studentService, IUserAccessor userAccessor, ISemesterService semesterService, ISemesterSummaryViewModelBuilder semesterSummaryViewModelBuilder)
+    public StudentIndexViewModelBuilder(
+        IGroupService groupService,
+        IUserAccessor userAccessor,
+        ISemesterService semesterService,
+        ISemesterSummaryViewModelBuilder semesterSummaryViewModelBuilder)
     {
-        _studentService = studentService;
+        _groupService = groupService;
         _userAccessor = userAccessor;
         _semesterService = semesterService;
         _semesterSummaryViewModelBuilder = semesterSummaryViewModelBuilder;
@@ -26,9 +30,14 @@ public class StudentIndexViewModelBuilder : IStudentIndexViewModelBuilder
 
     public async Task<StudentIndexViewModel> Build(string? semesterId, string? courseName)
     {
-        var courses = await _studentService.GetCoursesWithGroupsFiltered(_userAccessor.Id, semesterId, courseName);
+        var courses = await _groupService.GetStudentCourses(
+            _userAccessor.Id,
+            semesterId,
+            courseName);
+
         var semesters = await _semesterService.GetSemesters();
         var semesterSummary = await _semesterSummaryViewModelBuilder.Build(_userAccessor.Id, semesterId);
+
         return new StudentIndexViewModel
         {
             SemesterSummary = semesterSummary,

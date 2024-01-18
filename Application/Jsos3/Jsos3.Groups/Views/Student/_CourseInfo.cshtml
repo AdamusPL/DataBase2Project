@@ -3,7 +3,7 @@
 @inject IViewHelper viewHelper
 
 <div class="course-info">
-    <div>Prowadz¹cy kurs: @Model.Lecturer</div>
+    <div>ProwadzÄ…cy kurs: @Model.Lecturer</div>
     <div>Punkty ECTS: @Model.Ects</div>
-    <div>Ocena koñcowa: @viewHelper.DashWhenZero(Model.Grade ?? decimal.Zero)</div>
+    <div>Ocena koÅ„cowa: @viewHelper.DashWhenZero(Model.Grade ?? decimal.Zero)</div>
 </div>

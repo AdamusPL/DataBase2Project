@@ -1,18 +1,15 @@
 @using Jsos3.Groups.ViewModels.Builders
-
-@model Jsos3.Groups.ViewModels.Models.StudentIndexViewModel
+@model Jsos3.Groups.ViewModels.Models.LecturerIndexViewModel
 
 @{
     ViewBag.Title = "Grupy";
     var filerViewModel = new FilterViewModelBuilder()
-        .WithSelectedSemester(Model.SemesterSummary.SelectedSemester)
+        .WithSelectedSemester(Model.SelectedSemester)
         .WithSemesters(Model.Semesters)
         .Build();
 }
 
 @Html.Partial("../Components/_Filter", filerViewModel)
-
-@Html.Partial("_SemesterSummary", Model.SemesterSummary)
 
 <div class="accordion">
     @foreach (var courseViewModel in Model.Courses)

@@ -1,5 +1,6 @@
 ﻿using Jsos3.Groups.Helpers;
 using Jsos3.Groups.Infrastructure.Repository;
+using Jsos3.Groups.Logic;
 using Jsos3.Groups.Services;
 using Jsos3.Groups.ViewModels.Builders;
 using Jsos3.Shared.Db;
@@ -13,7 +14,7 @@ public static class GroupsModule
 {
     public static void AddGroupsModule(this IServiceCollection services)
     {
-        services.AddProxed<IStudentGroupRepository, CachedStudentGroupRepository, StudentGroupRepository>(
+        services.AddProxed<IGroupRepository, CachedGroupRepository, GroupRepository>(
             (p, impl) => new(impl, p.GetRequiredService<IMemoryCache>()),
             p => new(p.GetRequiredService<IDbConnectionFactory>()));
 
@@ -24,9 +25,10 @@ public static class GroupsModule
         services.AddTransient<IViewHelper, ViewHelper>();
         services.AddScoped<IGradeRepository, GradeRepository>();
         services.AddScoped<ISemesterSummaryViewModelBuilder, SemesterSummaryViewModelBuilder>();
-        services.AddScoped<IStudentService, StudentService>();
+        services.AddScoped<IGroupFilter, GroupFilter>();
+        services.AddScoped<IGroupService, GroupService>();
         services.AddScoped<ISemesterService, SemesterService>();
-        services.AddScoped<IStudentGroupDtoMapper, StudentGroupDtoMapper>();
+        services.AddScoped<ILecturerIndexViewModelBuilder, LecturerIndexViewModelBuilder>();
         services.AddScoped<IStudentIndexViewModelBuilder, StudentIndexViewModelBuilder>();
     }
 }
