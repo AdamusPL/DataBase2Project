@@ -27,7 +27,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jsos3.Shared", "Jsos3.Share
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jsos3.Absences", "Jsos3.Absences\Jsos3.Absences.csproj", "{3685DFBF-ED30-4B44-BC72-3E9B1AB1EA8C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jsos3.TranslateModule", "Jsos3.TranslateModule\Jsos3.TranslateModule.csproj", "{86A5AE95-B2C0-44B0-9599-7A976384E28D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jsos3.TranslateModule", "Jsos3.TranslateModule\Jsos3.TranslateModule.csproj", "{86A5AE95-B2C0-44B0-9599-7A976384E28D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jsos3.User", "Jsos3.User\Jsos3.User.csproj", "{87C4A1B0-0292-49F3-A542-FEC9BBC35C12}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -71,6 +73,10 @@ Global
 		{86A5AE95-B2C0-44B0-9599-7A976384E28D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{86A5AE95-B2C0-44B0-9599-7A976384E28D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{86A5AE95-B2C0-44B0-9599-7A976384E28D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{87C4A1B0-0292-49F3-A542-FEC9BBC35C12}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{87C4A1B0-0292-49F3-A542-FEC9BBC35C12}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{87C4A1B0-0292-49F3-A542-FEC9BBC35C12}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{87C4A1B0-0292-49F3-A542-FEC9BBC35C12}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -83,6 +89,7 @@ Global
 		{5A1789FF-7B35-44FD-85CB-3B38D5D623D9} = {20AB5DE1-30F7-4918-BA78-9E1BC5FE1C7F}
 		{3685DFBF-ED30-4B44-BC72-3E9B1AB1EA8C} = {20AB5DE1-30F7-4918-BA78-9E1BC5FE1C7F}
 		{86A5AE95-B2C0-44B0-9599-7A976384E28D} = {20AB5DE1-30F7-4918-BA78-9E1BC5FE1C7F}
+		{87C4A1B0-0292-49F3-A542-FEC9BBC35C12} = {20AB5DE1-30F7-4918-BA78-9E1BC5FE1C7F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {227CB16A-A47A-4393-BB87-4B0D9F5B26F8}

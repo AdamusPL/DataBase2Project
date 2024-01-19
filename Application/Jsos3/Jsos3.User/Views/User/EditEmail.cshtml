@@ -1,0 +1,91 @@
+﻿@model Jsos3.User.ViewModels.EditEmailViewModel
+
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    Zarządzaznie emailami
+                </div>
+                <div class="card-body">
+                    @if (!ViewData.ModelState.IsValid)
+                    {
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach (var value in ViewData.ModelState.Values)
+                                {
+                                    foreach (var error in value.Errors)
+                                    {
+                                        <li>@error.ErrorMessage</li>
+                                    }
+                                }
+                            </ul>
+                        </div>
+                    }
+                    @using (Html.BeginForm("AddEmail", "User", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                    {
+                        @Html.AntiForgeryToken()
+
+                        <div class="mb-3">
+                            @Html.LabelFor(m => m.NewEmail, new { @class = "form-label" })
+                            @Html.TextBoxFor(m => m.NewEmail, new { @class = "form-control", placeholder = "Wprowadź nowy email", id = "newEmail" })
+                            @Html.ValidationMessageFor(m => m.NewEmail, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="mb-3">
+                            <button type="submit" class="btn btn-primary">Add Email</button>
+                        </div>
+                    }
+                    <div id="errorContainer" class="alert alert-danger" style="display: none;"></div>
+
+                    <div id="currentEmailsContainer" class="mb-3">
+                        @foreach (var email in Model.CurrentEmails)
+                        {
+                            <span class="badge bg-primary me-2" data-email="@email">
+                                @email
+                                <i class="bi bi-x-circle" style="cursor: pointer;" onclick="removeEmail('@email')"></i>
+                            </span>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function removeEmail(email) {
+            $.ajax({
+                url: '/User/RemoveEmail',
+                type: 'POST',
+                data: { email: email },
+                success: function (result) {
+                    var emailChip = document.querySelector(`#currentEmailsContainer span[data-email='${email}']`);
+                    if (emailChip) {
+                        emailChip.remove();
+                    }
+                    clearErrors();
+                },
+                error: function (xhr, status, error) {
+                    displayError("An error occurred while removing the email.");
+                }
+            });
+        }
+
+        function displayError(errorMessage) {
+            var errorContainer = document.getElementById("errorContainer");
+            errorContainer.innerText = errorMessage;
+            errorContainer.style.display = "block";
+        }
+
+        function clearErrors() {
+            var errorContainer = document.getElementById("errorContainer");
+            errorContainer.innerText = "";
+            errorContainer.style.display = "none";
+            var textBox = document.getElementById("newEmail");
+            textBox.value = "";
+        }
+    </script>
+}

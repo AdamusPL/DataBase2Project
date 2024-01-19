@@ -10,7 +10,7 @@ public static class SharedModule
     public static void AddSharedModule(this IServiceCollection services)
     {
         services.AddTransient<IDbConnectionFactory, SqlConnectionFactory>();
-        services.AddScoped<IUserAccessor, DummyUserAccessor>();
+        services.AddScoped<IUserAccessor, UserAccessor>();
         services.AddTransient(_ => TimeProvider.System);
     }
 }
