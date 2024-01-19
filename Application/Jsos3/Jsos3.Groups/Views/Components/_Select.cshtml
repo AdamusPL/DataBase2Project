@@ -1,0 +1,30 @@
+@model Jsos3.Groups.ViewModels.Models.SelectViewModel
+
+<div class="form-group">
+    @if (!string.IsNullOrEmpty(Model.Label))
+    {
+        <label>@Model.Label</label>
+    }
+
+    <select onchange="optionSelected(this.value)" class="form-control">
+        @foreach (var item in Model.Options)
+        {
+            <option value="@item.Key"
+            @{
+                if (item.Key == Model.Selected)
+                {
+                    <text>selected</text>
+                }
+            }
+            >@item.Value</option>
+        }
+    </select>
+</div>
+
+<script>
+    function optionSelected(selected) {
+        const searchParams = new URLSearchParams(window.location.search);
+        searchParams.set("@Model.QueryParameterName", selected);
+        window.location.search = searchParams.toString();
+    }
+</script>

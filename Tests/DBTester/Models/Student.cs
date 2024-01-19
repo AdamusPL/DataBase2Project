@@ -1,7 +1,8 @@
-﻿namespace Models;
-
-public class Student
+﻿namespace DataProducer.Generators
 {
-    public int Id { get; set; }
-    public int UserId { get; set; }
+    public class Student
+    {
+        public int Id { get; set; }
+        public int UserId { get; set; }
+    }
 }

@@ -1,11 +1,15 @@
-CREATE OR ALTER PROCEDURE GetStudentAbsencesInGroup (@GroupId varchar(20), @StudentId INT)
+CREATE OR ALTER PROCEDURE GetStudentAbsencesInGroup (@GroupId nvarchar(20), @StudentId INT)
 AS
 BEGIN
-    SELECT Student.Id, u.Name, u.Surname, Absence.Date AbsenceDate
-    FROM Student
-    INNER JOIN Student_Group ON Student.Id = Student_Group.StudentId
-    INNER JOIN [Group] g ON Student_Group.GroupId = g.Id
-    INNER JOIN [User] u ON Student.UserId = u.Id
-    INNER JOIN Absence ON Student_Group.Id = Absence.StudentInGroupId
-    WHERE @GroupId = g.Id AND @StudentId = Student.Id;
+SELECT
+    sg.GroupId AS GroupId,
+    s.Id AS StudentId,
+    u.Name AS StudentName,
+    u.Surname AS StudentSurname,
+    a.Date AS AbsenceDate
+FROM [Student_Group] sg
+INNER JOIN [Student] s ON sg.StudentId = s.Id
+INNER JOIN [User] u ON s.UserId = u.Id
+INNER JOIN [Absence] a ON a.StudentInGroupId = sg.Id
+WHERE s.Id = @StudentId AND sg.GroupId LIKE @GroupId
 END;
