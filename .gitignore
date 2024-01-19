@@ -9,3 +9,6 @@ Tests/DBTester/DataProducer/bin
 Tests/DBTester/DataProducer/obj
 Tests/DBTester/Shared/bin
 Tests/DBTester/Shared/obj
+**/.vs
+**/bin
+**/obj

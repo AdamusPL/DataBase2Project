@@ -12,6 +12,7 @@ namespace DBUnitTests.Tests
     {
         private IDbConnection _unitOfWork;
         private IDbTransaction _transaction;
+        private int _userIdentity;
 
         [SetUp]
         public void Setup()
@@ -19,6 +20,7 @@ namespace DBUnitTests.Tests
             _unitOfWork = DBConnectionProvider.SuperAdminConnection();
             _unitOfWork.Open();
             _transaction = _unitOfWork.BeginTransaction();
+            _userIdentity = _unitOfWork.Query<int>("SELECT IDENT_CURRENT('User')", transaction: _transaction).Single();
         }
 
         [Test]
@@ -142,7 +144,7 @@ namespace DBUnitTests.Tests
         public void Teardown()
         {
             _transaction.Rollback();
-            _unitOfWork.Execute("DBCC CHECKIDENT ('User', RESEED, 0);");
+            _unitOfWork.Execute("DBCC CHECKIDENT ('User', RESEED, @identity);", new { identity = _userIdentity });
             _unitOfWork.Dispose();
         }
     }

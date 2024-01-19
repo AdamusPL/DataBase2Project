@@ -1,0 +1,29 @@
+@using Jsos3.Groups.ViewModels.Builders
+@model Jsos3.Groups.ViewModels.Models.FilterViewModel
+
+@{
+    var viewModelBuilder = new SelectViewModelBuilder();
+}
+
+<div class="filters">
+    @Html.Partial("../Components/_Select", viewModelBuilder.BuildForSemesters(Model.SelectedSemester, Model.Semesters))
+    <div class="form-group">
+        <label>Nazwa kursu</label>
+        <input id="course-name" class="form-control" type="text" placeholder="Miernictwo...">
+    </div>
+
+    <div style="display: flex; align-items: flex-end">
+        <button type="submit" class="btn btn-primary" onclick="search()">Filtruj</button>
+    </div>
+</div>
+
+<script>
+    const searchParams = new URLSearchParams(window.location.search);
+    const courseName = document.querySelector("#course-name");
+    courseName.value = searchParams.get("courseName");
+
+    function search() {
+        searchParams.set("courseName", courseName.value);
+        window.location.search = searchParams.toString();
+    }
+</script>
