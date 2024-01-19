@@ -71,7 +71,7 @@ INNER JOIN [Course] c ON g.CourseId = c.Id
 LEFT JOIN [Grade] gr ON sg.Id = gr.StudentInGroupId
 WHERE s.Id = @StudentId
         AND SemesterId LIKE @SemesterId
-        AND gr.isFinal = 1 AND gr.Grade >= @GradeRequiredToPass
+        AND gr.isFinal = 1 AND gr.Grade >= @GradeRequiredToPass AND gr.Accepted = 1
 ";
 
         return await connection.ExecuteScalarAsync<int>(query, new { studentId, semesterId, gradeRequiredToPass });

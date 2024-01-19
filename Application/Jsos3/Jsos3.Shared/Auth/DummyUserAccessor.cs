@@ -2,11 +2,11 @@
 
 internal class DummyUserAccessor : IUserAccessor
 {
-    public int Id => 295;
+    public int Id => 163;
 
     public int UserId => 2;
 
-    public UserType Type => UserType.Lecturer;
+    public UserType Type => UserType.Student;
 
     public string Email => "TestEmail@test.pl";
 

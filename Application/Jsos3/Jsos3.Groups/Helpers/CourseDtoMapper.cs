@@ -6,20 +6,26 @@ namespace Jsos3.Groups.Helpers;
 
 internal static class CourseDtoMapper
 {
-    internal static IEnumerable<StudentCourseDto> ToStudentCourseDto(this IEnumerable<Group> course, Dictionary<int, decimal> grades) => course
-        .GroupBy(x => new StudentCourseKey(
+    internal static IEnumerable<StudentCourseDto> ToStudentCourseDto(this IEnumerable<Group> course, Dictionary<int, Grade> grades) => course
+        .GroupBy(x =>
+        {
+            Grade? result = grades.TryGetValue(x.CourseId, out var grade) ? grade : null;
+            return new StudentCourseKey(
                 x.CourseId,
                 x.Course,
                 x.Ects,
                 $"{x.CourseLecturerName} {x.CourseLecturerSurname}",
-                grades.TryGetValue(x.CourseId, out var grade) ? grade : null))
+                result?.Value,
+                result?.Accepted);
+        })
         .Select(x => new StudentCourseDto
         {
             Id = x.Key.Id,
             Name = x.Key.Name,
             Lecturer = x.Key.Lecturer,
             Ects = x.Key.Ects,
-            Grade = grades.ContainsKey(x.Key.Id) ? grades[x.Key.Id] : null,
+            Grade = x.Key.Grade,
+            GradeAccepted = x.Key.GradeAccepted,
             Groups = x
                 .ToGroupDto()
                 .Select(x => new GroupViewModel

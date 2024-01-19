@@ -4,3 +4,15 @@
     justify-content: center;
     align-items: flex-start;
 }
+
+.warn {
+    color: orange;
+}
+
+.success {
+    color: green;
+}
+
+.error {
+    color: red;
+}
