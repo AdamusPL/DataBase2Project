@@ -1,0 +1,9 @@
+@using Jsos3.Groups.Helpers
+@model Jsos3.Groups.Models.StudentCourseDto
+@inject IViewHelper viewHelper
+
+<div class="course-info">
+    <div>Prowadzący kurs: @Model.Lecturer</div>
+    <div>Punkty ECTS: @Model.Ects</div>
+    <div>Ocena końcowa: @viewHelper.DashWhenZero(Model.Grade ?? decimal.Zero)</div>
+</div>

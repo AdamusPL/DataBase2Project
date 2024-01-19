@@ -7,22 +7,16 @@ using System.Threading.Tasks;
 namespace Models
 {
     public class Group
-    { 
+    {
         public string Id { get; set; }
-        public string DayOfWeek { get; set; }
-        public System.TimeOnly StartTime { get; set; }
-        public System.TimeOnly EndTime { get; set;}
+        public int DayOfTheWeek { get; set; }
+        public TimeSpan StartTime { get; set; }
+        public TimeSpan EndTime { get; set; }
         public string Classroom { get; set; }
         public int Capacity { get; set; }
-
-        public Group(string id, string dayOfWeek, TimeOnly startTime, TimeOnly endTime, string classroom, int capacity)
-        {
-            Id = id;
-            DayOfWeek = dayOfWeek;
-            StartTime = startTime;
-            EndTime = endTime;
-            Classroom = classroom;
-            Capacity = capacity;
-        }
+        public int RegularityId { get; set; }
+        public int TypeId { get; set; }
+        public int CourseId { get; set; }
+        public string SemesterId { get; set; }
     }
 }

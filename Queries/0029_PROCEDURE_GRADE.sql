@@ -1,4 +1,4 @@
-CREATE OR ALTER PROCEDURE GetStudentGradesInGroup (@StudentId int, @GroupId VARCHAR)
+CREATE OR ALTER PROCEDURE GetStudentGradesInGroup (@StudentId int, @GroupId varchar(20))
 AS
 BEGIN
     SELECT Grade 

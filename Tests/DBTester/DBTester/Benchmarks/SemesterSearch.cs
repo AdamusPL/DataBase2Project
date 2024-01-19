@@ -1,54 +1,57 @@
-﻿using DBTester.Db;
-using Microsoft.EntityFrameworkCore;
+﻿using Dapper;
 using Models;
+using Shared;
+using System.Data;
 
 namespace DBTester.Benchmarks;
 
 public class SemesterSearch : BenchmarkBase
 {
-    private int _numberOfSemesters = 1_000_000;
+    private const int _numberOfSemesters = 1_000_000;
     private const int BatchSize = 2000;
-    private readonly DateTime _now;
+    private readonly DateTime _now = new(2023, 12, 21);
+    private readonly DateTime _oldTime = new(1753, 1, 1);
 
-    public SemesterSearch(TestingContext testingContext)
-        : base(testingContext)
+    public SemesterSearch()
+        : base(DBConnectionProvider.SuperAdminConnection())
+    { }
+
+    protected override async Task Benchmark(IDbTransaction transaction)
     {
-        _now = DateTime.Now;
+        await RunTest("Search added first", async () =>
+        {
+            var foundEntity = await _dbConnection.QueryFirstOrDefaultAsync<Semester>(@"
+SELECT *
+FROM Semester
+WHERE StartDate = @StartDate
+", new { StartDate = _oldTime }, transaction);
+        }, 100);
+
+        await RunTest("Search added last", async () =>
+        {
+            var foundEntity = await _dbConnection.QueryFirstOrDefaultAsync<Semester>(@"
+SELECT *
+FROM Semester
+WHERE StartDate = @StartDate
+", new { StartDate = _now }, transaction);
+        }, 100);
     }
 
-    protected override async Task Benchmark()
-    {
-        await RunTest("Search newest", async () =>
-        {
-            var findEntity = await _testingContext.Semesters
-                .FirstOrDefaultAsync(x => x.StartDate == _now);
-        });
-
-        await RunTest("Search oldest", async () =>
-        {
-            var now = new DateTime();
-            var findEntity = await _testingContext.Semesters
-                .FirstOrDefaultAsync(x => x.StartDate == now);
-        });
-    }
-
-    protected override async Task PrepareData()
+    protected override async Task PrepareData(IDbTransaction transaction)
     {
         var rnd = new Random();
 
-        await _testingContext.AddAsync(new Semester
-        {
-            Id = RandomId,
-            StartDate = new DateTime(),
-            EndDate = new DateTime()
-        });
+        await Insert(
+            new { Id = RandomId, StartDate = _oldTime, EndDate = _oldTime },
+            transaction);
 
+        var semesters = new List<Semester>();
         for (int i = 0; i < _numberOfSemesters; ++i)
         {
             var year = rnd.Next(2000, 2020);
             var month = rnd.Next(1, 12);
 
-            await _testingContext.AddAsync(new Semester
+            semesters.Add(new Semester
             {
                 Id = RandomId,
                 StartDate = new DateTime(year, month, 1),
@@ -58,20 +61,23 @@ public class SemesterSearch : BenchmarkBase
             if ((i + 1) % BatchSize == 0)
             {
                 Console.WriteLine($"Inserting {(i + 1) / BatchSize}/{_numberOfSemesters / BatchSize}");
-                await _testingContext.SaveChangesAsync();
+
+                await Insert(
+                    semesters,
+                    transaction);
+                semesters.Clear();
             }
         }
 
-        await _testingContext.AddAsync(new Semester
-        {
-            Id = RandomId,
-            StartDate = _now,
-            EndDate = _now
-        });
-
-        await _testingContext.SaveChangesAsync();
+        await Insert(
+            new { Id = RandomId, StartDate = _now, EndDate = _now },
+            transaction);
     }
 
     private string RandomId =>
         Guid.NewGuid().ToString().Substring(0, 20);
+
+    private Task Insert(object entity, IDbTransaction transaction) => _dbConnection.ExecuteAsync(@"
+INSERT INTO dbo.Semester (Id, StartDate, EndDate)
+VALUES (@Id, @StartDate, @EndDate)", entity, transaction);
 }
