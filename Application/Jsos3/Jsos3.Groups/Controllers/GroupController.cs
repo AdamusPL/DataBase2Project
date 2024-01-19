@@ -14,11 +14,11 @@ public class GroupController : Controller
 
     public IActionResult Index()
     {
-        return Redirect(_userAccessor.Type switch
+        return _userAccessor.Type switch
         {
-            UserType.Student => "/Student",
-            UserType.Lecturer => "/Lecturer",
-            _ => "/Error"
-        });
+            UserType.Student => RedirectToAction("Index", "Student"),
+            UserType.Lecturer => RedirectToAction("Index", "Lecturer"),
+            _ => RedirectToAction("Error", "Home")
+        };
     }
 }

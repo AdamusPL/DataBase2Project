@@ -26,6 +26,7 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\Jsos3.Shared\Jsos3.Shared.csproj" />
+	  <ProjectReference Include="..\Jsos3.TranslateModule\Jsos3.TranslateModule.csproj" />
 	</ItemGroup>
 
 </Project>

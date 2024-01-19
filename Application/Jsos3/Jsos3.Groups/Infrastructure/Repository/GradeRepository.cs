@@ -1,6 +1,5 @@
 ﻿using Dapper;
 using Jsos3.Groups.Infrastructure.Models;
-using Jsos3.Groups.Models;
 using Jsos3.Shared.Db;
 using Jsos3.Shared.Models;
 
@@ -8,7 +7,7 @@ namespace Jsos3.Groups.Infrastructure.Repository;
 
 internal interface IGradeRepository
 {
-    Task<Dictionary<int, decimal>> GetStudentCoursesGrades(int studentId, string semesterId);
+    Task<Dictionary<int, Grade>> GetStudentCoursesGrades(int studentId, string semesterId);
     Task<decimal> GetAverageGrade(int studentId, string semesterId);
 }
 
@@ -30,18 +29,19 @@ EXEC [dbo].[GetStudentWeightedAverageGradeInSemester]
     @StudentId = @StudentId,
     @SemesterId = @SemesterId
 ";
-    
+
         return await connection.ExecuteScalarAsync<decimal>(query, new { studentId, semesterId });
     }
 
-    public async Task<Dictionary<int, decimal>> GetStudentCoursesGrades(int studentId, string semesterId)
+    public async Task<Dictionary<int, Grade>> GetStudentCoursesGrades(int studentId, string semesterId)
     {
         using var connection = await _dbConnectionFactory.GetOpenStudentConnectionAsync();
 
         var query = @$"
 SELECT
     c.Id AS [{nameof(CourseGrade.CourseId)}],
-    gr.Grade AS [{nameof(CourseGrade.Value)}]
+    gr.Grade AS [{nameof(CourseGrade.Value)}],
+    gr.Accepted AS [{nameof(CourseGrade.Accepted)}]
 FROM [dbo].[Course] c
 INNER JOIN [dbo].[Group] g ON g.CourseId = c.Id
 INNER JOIN [dbo].[Student_Group] sg ON sg.GroupId = g.Id
@@ -53,8 +53,9 @@ WHERE gr.IsFinal = 1
 ";
 
         var queryResult = await connection.QueryAsync<CourseGrade>(query, new { studentId, semesterId });
-    
+
         return queryResult
-            .ToDictionary(x => x.CourseId, x => x.Value);
+            .GroupBy(x => x.CourseId)
+            .ToDictionary(x => x.Key, x => x.Select(x => new Grade(x.Value, x.Accepted)).Last());
     }
 }

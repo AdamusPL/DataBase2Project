@@ -1,6 +1,5 @@
 ﻿namespace Jsos3.Groups.Infrastructure.Models;
 
-internal readonly record struct CourseGrade(
-    int CourseId,
+internal readonly record struct Grade(
     decimal Value,
     bool? Accepted);

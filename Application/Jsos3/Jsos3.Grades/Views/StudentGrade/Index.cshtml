@@ -1,9 +1,12 @@
 ﻿@model GradeIndexViewModel
-@using Jsos3.Grades.VievModels
-@using Jsos3.Grades.Models
+@using Jsos3.Grades.ViewModels
+@using Jsos3.Shared.Models
+@using Jsos3.TranslateModule
+
+@inject ITranslationService translationService
 
 @{
-    ViewBag.Title = "Grupy studenta";
+    ViewBag.Title = "Oceny";
 }
 <!--/StudentGrade?groupId=3fb7106c-d9e5-40f4-9-->
 
@@ -21,8 +24,8 @@
             <tr>
                 <td>@grade.Text</td>
                 <td class="text-center">@grade.Grade</td>
-                <td class="text-center">@grade.IsFinal</td>
-                @if (grade.IsFinal == GradeType.Cząstkowa)
+                <td class="text-center">@translationService.Translate(grade.IsFinal)</td>
+                @if (grade.IsFinal == GradeType.Partial)
                     {
                     <td class="text-center">--</td>
                 }
@@ -52,13 +55,7 @@
 <script>
     async function accept(gradeId) {
         try {
-            await fetch('/StudentGrade/Accept', {
-                method: "POST",
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(gradeId),
-            })
+            await changeGradeStatus(gradeId, '/StudentGrade/Accept');
             window.location.reload();
         } catch (error) {
             console.error('Error:', error);
@@ -67,16 +64,20 @@
 
     async function decline(gradeId) {
         try {
-            await fetch('/StudentGrade/Decline', {
-                method:"POST",
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(gradeId),
-            })
+            await changeGradeStatus(gradeId, '/StudentGrade/Decline');
             window.location.reload();
         } catch (error) {
             console.error('Error:', error);
         }
+    }
+
+    async function changeGradeStatus(gradeId, url) {
+        await fetch(url, {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(gradeId),
+        });
     }
 </script>

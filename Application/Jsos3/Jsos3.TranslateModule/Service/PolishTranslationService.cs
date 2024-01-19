@@ -38,4 +38,12 @@ internal class PolishTranslationService : ITranslationService
         Regularity.Every => "Co tydzień",
         _ => throw new ArgumentOutOfRangeException(nameof(regularity), regularity, null)
     };
+
+    public string Translate(GradeType gradeType) =>
+        gradeType switch
+        {
+            GradeType.Final => "Końcowa",
+            GradeType.Partial => "Cząstkowa",
+            _ => throw new ArgumentOutOfRangeException(nameof(gradeType), gradeType, null)
+        };
 }

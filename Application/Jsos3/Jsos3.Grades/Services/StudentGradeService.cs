@@ -1,36 +1,28 @@
-﻿using Jsos3.Grades.Models;
-using Jsos3.Grades.Repository;
-using Jsos3.Grades.Helpers;
+﻿using Jsos3.Grades.Helpers;
+using Jsos3.Grades.Infrastructure.Repository;
+using Jsos3.Grades.Models;
 
 namespace Jsos3.Grades.Services;
 
 public interface IStudentGradeService
 {
-    Task<List<StudentGrupGradeDto>> GetStudentGrades(int userId, string groupId);
+    Task<List<StudentGradeDto>> GetStudentGrades(int userId, string groupId);
 }
 internal class StudentGradeService : IStudentGradeService
 {
-    private readonly IStudentGradeRepository _studentGradeRepository;
+    private readonly IGradeRepository _gradeRepository;
 
-    public StudentGradeService(IStudentGradeRepository studentGradeRepository)
+    public StudentGradeService(IGradeRepository gradeRepository)
     {
-        _studentGradeRepository = studentGradeRepository;
+        _gradeRepository = gradeRepository;
     }
 
-    public async Task<List<StudentGrupGradeDto>> GetStudentGrades(int userId, string groupId)
+    public async Task<List<StudentGradeDto>> GetStudentGrades(int userId, string groupId)
     {
-        var grades = await _studentGradeRepository.GetStudentGrade(userId, groupId);
-        var mapper = new GradeDtoMapper();
-
+        var grades = await _gradeRepository.GetStudentsGrades(groupId, [userId]);
         return grades
-                    .Select(grade => new StudentGrupGradeDto
-                    {
-                        Id = grade.Id,
-                        Text = grade.Text,
-                        Grade = grade.Grade,
-                        IsFinal = mapper.mapType(grade),
-                        Accepted = grade.Accepted
-                    })
-                    .ToList();
+            .SelectMany(x => x.Value)
+            .Select(grade => grade.ToDto())
+            .ToList();
     }
 }

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Jsos3.Grades.Repository;
+﻿using Jsos3.Grades.Infrastructure.Repository;
 
 namespace Jsos3.Grades.Services;
 
@@ -12,22 +7,19 @@ public interface IGradeAccepter
     Task Accept(int gradeId);
     Task Decline(int gradeId);
 }
+
 internal class GradeAccepter : IGradeAccepter
 {
-    private readonly IStudentGradeRepository _studentGradeRepository;
+    private readonly IGradeRepository _gradeRepository;
 
-    public GradeAccepter(IStudentGradeRepository studentGradeRepository)
+    public GradeAccepter(IGradeRepository gradeRepository)
     {
-        _studentGradeRepository = studentGradeRepository;
+        _gradeRepository = gradeRepository;
     }
 
-    public async Task Accept(int gradeId)
-    {
-        await _studentGradeRepository.AcceptGrade(gradeId);
-    }
+    public async Task Accept(int gradeId) =>
+        await _gradeRepository.AcceptGrade(gradeId);
 
-    public async Task Decline(int gradeId)
-    {
-        await _studentGradeRepository.DeclineGrade(gradeId);
-    }
+    public async Task Decline(int gradeId) =>
+        await _gradeRepository.DeclineGrade(gradeId);
 }

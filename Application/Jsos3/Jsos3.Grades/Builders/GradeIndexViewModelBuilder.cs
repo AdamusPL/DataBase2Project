@@ -1,5 +1,5 @@
 ﻿using Jsos3.Shared.Auth;
-using Jsos3.Grades.VievModels;
+using Jsos3.Grades.ViewModels;
 using Jsos3.Grades.Services;
 
 namespace Jsos3.Grades.Builders;

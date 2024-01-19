@@ -1,6 +1,4 @@
-﻿
-
-using Jsos3.Grades.Builders;
+﻿using Jsos3.Grades.Builders;
 using Jsos3.Grades.Helpers;
 using Jsos3.Grades.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -11,6 +9,7 @@ public class LecturerGradeController : Controller
 {
     private readonly ILecturerGradeIndexViewModelBuilder _lecturerGradeIndexViewModelBuilder;
     private readonly IGradeAdder _gradeAdder;
+
     public LecturerGradeController(ILecturerGradeIndexViewModelBuilder lecturerGradeIndexViewModelBuilder, IGradeAdder gradeAdder)
     {
         _lecturerGradeIndexViewModelBuilder = lecturerGradeIndexViewModelBuilder;

@@ -8,4 +8,5 @@ public interface ITranslationService
     string Translate(DayOfWeek dayOfWeek);
     string Translate(GroupType groupType);
     string Translate(Regularity regularity);
+    string Translate(GradeType gradeType);
 }

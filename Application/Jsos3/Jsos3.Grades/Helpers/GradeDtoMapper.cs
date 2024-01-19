@@ -1,24 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Jsos3.Grades.Infrastructure.Models;
 using Jsos3.Grades.Models;
+using Jsos3.Shared.Models;
 
-namespace Jsos3.Grades.Helpers
+namespace Jsos3.Grades.Helpers;
+
+internal static class GradeDtoMapper
 {
-    public class GradeDtoMapper
-    {
-        public GradeType mapType(StudentGrade studentGrade)
+    internal static StudentGradeDto ToDto(this StudentGrade grade) =>
+        new()
         {
-            if (studentGrade.IsFinal)
-            {
-                return GradeType.Końcowa;
-            }
-            else
-            {
-                return GradeType.Cząstkowa;
-            }
-        }
-    }
+            Id = grade.Id,
+            Text = grade.Text,
+            Grade = grade.Grade,
+            IsFinal = grade.IsFinal ? GradeType.Final : GradeType.Partial,
+            Accepted = grade.Accepted
+        };
 }
