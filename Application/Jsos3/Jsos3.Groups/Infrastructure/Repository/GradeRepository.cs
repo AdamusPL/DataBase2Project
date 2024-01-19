@@ -1,6 +1,5 @@
 ﻿using Dapper;
 using Jsos3.Groups.Infrastructure.Models;
-using Jsos3.Groups.Models;
 using Jsos3.Shared.Db;
 using Jsos3.Shared.Models;
 
@@ -30,7 +29,7 @@ EXEC [dbo].[GetStudentWeightedAverageGradeInSemester]
     @StudentId = @StudentId,
     @SemesterId = @SemesterId
 ";
-    
+
         return await connection.ExecuteScalarAsync<decimal>(query, new { studentId, semesterId });
     }
 
@@ -53,7 +52,7 @@ WHERE gr.IsFinal = 1
 ";
 
         var queryResult = await connection.QueryAsync<CourseGrade>(query, new { studentId, semesterId });
-    
+
         return queryResult
             .ToDictionary(x => x.CourseId, x => x.Value);
     }

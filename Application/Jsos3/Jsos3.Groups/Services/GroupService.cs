@@ -36,7 +36,7 @@ internal class GroupService : IGroupService
 
     public async Task<List<StudentCourseDto>> GetStudentCourses(int studentId, string? semesterId, string? courseName)
     {
-        var grades = await _gradeRepository.GetStudentCoursesGrades(studentId, await _semesterRepository.GetLatestSemesterId());
+        var grades = await _gradeRepository.GetStudentCoursesGrades(studentId, semesterId ?? await _semesterRepository.GetLatestSemesterId());
 
         return await GetCourses(
             semesterId,

@@ -1,5 +1,6 @@
 ﻿using Jsos3.Groups.Infrastructure.Models;
 using Jsos3.Groups.Models;
+using Jsos3.Groups.ViewModels.Models;
 
 namespace Jsos3.Groups.Helpers;
 
@@ -19,7 +20,14 @@ internal static class CourseDtoMapper
             Lecturer = x.Key.Lecturer,
             Ects = x.Key.Ects,
             Grade = grades.ContainsKey(x.Key.Id) ? grades[x.Key.Id] : null,
-            Groups = x.ToGroupDto().ToList()
+            Groups = x
+                .ToGroupDto()
+                .Select(x => new GroupViewModel
+                {
+                    ShowAbsenceLink = false,
+                    Group = x
+                })
+                .ToList()
         });
 
     internal static IEnumerable<LecturerCourseDto> ToLecturerCourseDto(this IEnumerable<Group> course) => course
@@ -30,6 +38,13 @@ internal static class CourseDtoMapper
         {
             Id = x.Key.Id,
             Name = x.Key.Name,
-            Groups = x.ToGroupDto().ToList()
+            Groups = x
+                .ToGroupDto()
+                .Select(x => new GroupViewModel
+                {
+                    ShowAbsenceLink = true,
+                    Group = x
+                })
+                .ToList()
         });
 }

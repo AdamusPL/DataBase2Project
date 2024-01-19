@@ -1,8 +1,12 @@
-﻿using Jsos3.Grades.Models;
+﻿using Jsos3.Shared.Models;
+
 namespace Jsos3.Grades.Models;
 
 public class StudentGradeDto
 {
-    public required Student Student { get; set; }
-    public required List<StudentGrupGradeDto> Grade { get; set; }
+    public required int Id { get; set; }
+    public required string Text { get; set; }
+    public required decimal Grade { get; set; }
+    public required GradeType IsFinal { get; set; }
+    public required bool? Accepted { get; set; }
 }

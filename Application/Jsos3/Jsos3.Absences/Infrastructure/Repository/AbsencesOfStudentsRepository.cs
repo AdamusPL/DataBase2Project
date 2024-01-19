@@ -2,7 +2,6 @@
 using Jsos3.Absences.Infrastructure.Models;
 using Jsos3.Shared.Db;
 
-
 namespace Jsos3.Absences.Infrastructure.Repository;
 
 internal interface IAbsencesOfStudentsRepository

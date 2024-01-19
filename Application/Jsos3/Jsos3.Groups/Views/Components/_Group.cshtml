@@ -1,17 +1,31 @@
 @using Jsos3.TranslateModule
 
-@model Jsos3.Groups.Models.GroupDto
+@model Jsos3.Groups.ViewModels.Models.GroupViewModel
 
 @inject ITranslationService translationService
 
+@{
+    var showAbsence = Model.ShowAbsenceLink;
+    var group = Model.Group;
+}
+
 <div class="card group-card">
     <div class="card-body">
-        <h5 class="card-title">@translationService.Translate(Model.Type)</h5>
-        <h6 class="card-subtitle mb-2 text-muted">@Model.Lecturer</h6>
-        <h6 class="card-subtitle mb-2 text-muted">@Model.Id</h6>
+        <h5 class="card-title">@translationService.Translate(group.Type)</h5>
+        <h6 class="card-subtitle mb-2 text-muted">@group.Lecturer</h6>
+        <h6 class="card-subtitle mb-2 text-muted">@group.Id</h6>
         <p class="card-text">
-            <div>@translationService.Translate(Model.DayOfTheWeek)</div>
-            <div>@Model.StartTime - @Model.EndTime</div>
+            <div>@translationService.Translate(group.DayOfTheWeek)</div>
+            <div>@group.StartTime - @group.EndTime</div>
         </p>
+
+        <div class="btn-group" role="group">
+            <a href="/Grade?groupId=@group.Id" class="btn btn-primary">Oceny</a>
+            @if (showAbsence)
+            {
+                <a href="/Absences?groupId=@group.Id" class="btn btn-primary">Obecnoœci</a>
+            }
+        </div>
+        
     </div>
 </div>

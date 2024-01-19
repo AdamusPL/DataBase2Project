@@ -1,5 +1,5 @@
 ﻿using Jsos3.Grades.Services;
-using Jsos3.Grades.VievModels;
+using Jsos3.Grades.ViewModels;
 
 namespace Jsos3.Grades.Builders;
 
@@ -7,6 +7,7 @@ public interface ILecturerGradeIndexViewModelBuilder
 {
     Task<LecturerGradeIndexViewModel> Build(string groupId);
 }
+
 public class LecturerGradeIndexViewModelBiulder : ILecturerGradeIndexViewModelBuilder
 {
     private readonly ILecturerGroupGradeService _service;
