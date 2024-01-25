@@ -8,6 +8,7 @@ internal interface IStudentRepository
 {
     Task<List<Student>> GetStudents(string groupId);
     Task<int> GetStudentInGroupId(string groupId, int studentId);
+    Task<int> GetUserStudentId(int userId);
 }
 
 internal class StudentRepository : IStudentRepository
@@ -49,5 +50,18 @@ WHERE sg.GroupId = @groupId
         var queryResult = await connection.QueryAsync<Student>(query, new { groupId });
 
         return queryResult.ToList();
+    }
+
+    public async Task<int> GetUserStudentId(int userId)
+    {
+        using var connection = await _dbConnectionFactory.GetOpenStudentConnectionAsync();
+
+        var query = @"
+SELECT s.Id
+FROM [dbo].[Student] s
+INNER JOIN [dbo].[User] u ON u.Id = s.UserId
+WHERE u.Id = @UserId";
+
+        return await connection.ExecuteScalarAsync<int>(query, new { userId });
     }
 }

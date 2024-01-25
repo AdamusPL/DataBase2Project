@@ -68,7 +68,9 @@ SELECT
     sg.StudentId AS [{nameof(StudentGrade.StudentId)}]
 FROM [dbo].[Grade] g
 INNER JOIN [dbo].[Student_Group] sg ON g.StudentInGroupId = sg.Id
-WHERE sg.GroupId = @groupId AND sg.StudentId IN @studentIds
+INNER JOIN [dbo].[Student] s ON s.Id = sg.StudentId
+INNER JOIN [dbo].[User] u ON u.Id = s.UserId
+WHERE sg.GroupId = @groupId AND s.Id IN @studentIds
 ";
         var queryResult = await connection.QueryAsync<StudentGrade>(query, new { studentIds, groupId });
 

@@ -2,7 +2,8 @@
 @model Jsos3.LecturerInformations.ViewModels.LecturerInformationIndexViewModel
 @{
     ViewBag.Title = "Lista Prowadzących";
-    var startNumber = Model.PageNumber != 1 ? Model.PageNumber - 1 : 1;
+    var startNumber = Model.PageNumber == 1 ? 1 : Model.PageNumber - 1;
+    var numberOfPages = Model.NumberOfPages == 0 ? 1 : Model.NumberOfPages;
 }
 
 <h1>Wyszukaj prowadzącego</h1>
@@ -59,7 +60,7 @@
 
         @foreach (var pageNumber in Enumerable.Range(startNumber, 3))
         {
-            if (pageNumber > Model.NumberOfPages)
+            if (pageNumber > numberOfPages)
             {
                 break;
             }
@@ -68,7 +69,7 @@
             </li>
         }
         
-        <li class="page-item @(@Model.PageNumber == Model.NumberOfPages ? "disabled" : null)">
+        <li class="page-item @(@Model.PageNumber == numberOfPages ? "disabled" : null)">
             <a class="page-link" onclick="changePage(@Model.PageNumber + 1)" href="#">Następna</a>
         </li>
     </ul>

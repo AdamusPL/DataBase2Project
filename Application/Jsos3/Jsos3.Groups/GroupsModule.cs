@@ -24,6 +24,7 @@ public static class GroupsModule
 
         services.AddTransient<IViewHelper, ViewHelper>();
         services.AddScoped<IGradeRepository, GradeRepository>();
+        services.AddScoped<IStudentRepository, StudentRepository>();
         services.AddScoped<ISemesterSummaryViewModelBuilder, SemesterSummaryViewModelBuilder>();
         services.AddScoped<IGroupFilter, GroupFilter>();
         services.AddScoped<IGroupService, GroupService>();

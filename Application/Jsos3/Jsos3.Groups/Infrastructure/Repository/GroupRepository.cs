@@ -25,7 +25,7 @@ internal class GroupRepository : IGroupRepository
 
         var query = @$"
 {BaseQueryForGroups}
-WHERE gl.LecturerId = @LecturerId AND sem.Id LIKE @SemesterId
+WHERE u.Id = @LecturerId AND sem.Id LIKE @SemesterId
 ORDER BY c.Name
 ";
         var queryResult = await connection.QueryAsync<Group>(query, new { lecturerId, semesterId });
@@ -40,7 +40,9 @@ ORDER BY c.Name
         var query = @$"
 {BaseQueryForGroups}
 INNER JOIN [dbo].[Student_Group] sg ON sg.GroupId = g.Id
-WHERE sg.StudentId = @StudentId AND sem.Id LIKE @SemesterId
+INNER JOIN [dbo].[Student] s ON s.Id = sg.StudentId
+INNER JOIN [dbo].[User] su ON su.Id = s.UserId
+WHERE su.Id = @StudentId AND sem.Id LIKE @SemesterId
 ORDER BY c.Name
 ";
         var queryResult = await connection.QueryAsync<Group>(query, new { studentId, semesterId });

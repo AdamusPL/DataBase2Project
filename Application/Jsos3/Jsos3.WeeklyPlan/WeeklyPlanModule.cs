@@ -21,5 +21,6 @@ public static class WeeklyPlanModule
         services.AddTransient<IWeekDataCalculator, WeekDataCalculator>();
         services.AddTransient<IPlanService, PlanService>();
         services.AddTransient<IWeeklyPlanIndexViewModelBuilder, WeeklyPlanIndexViewModelBuilder>();
+        services.AddScoped<IUserRepository, UserRepository>();
     }
 }

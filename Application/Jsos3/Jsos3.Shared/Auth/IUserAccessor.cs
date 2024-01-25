@@ -6,7 +6,6 @@ public interface IUserAccessor
     UserType Type { get; }
     string NameAndSurname { get; }
     bool IsAuthenticated => Id > 0;
-    
     string Login { get; }
 
 }
