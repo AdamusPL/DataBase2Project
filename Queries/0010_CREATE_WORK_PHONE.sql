@@ -1,5 +1,5 @@
 CREATE TABLE WorkPhone (
+    Id int NOT NULL IDENTITY(1, 1) PRIMARY KEY,
     UserId int NOT NULL FOREIGN KEY REFERENCES [User](Id) ON DELETE CASCADE,
-    Phone nvarchar(12) NOT NULL,
-    PRIMARY KEY (UserId)
+    Phone nvarchar(12) NOT NULL
 );

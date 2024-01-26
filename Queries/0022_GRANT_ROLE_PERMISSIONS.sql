@@ -102,6 +102,10 @@ GRANT SELECT ON dbo.Administrator TO LecturerRole;
 GRANT SELECT, INSERT ON dbo.Absence TO LecturerRole;
 GRANT SELECT, INSERT ON dbo.Grade TO LecturerRole;
 
+--delete na nieobecności
+GRANT DELETE ON dbo.Absence TO LecturerRole;
+
+
 --update na haslo
 GRANT SELECT, UPDATE ON dbo.UserLoginInformation TO LecturerRole;
 
