@@ -13,11 +13,13 @@
 
 	<ItemGroup>
 		<PackageReference Include="Dapper" Version="2.1.28" />
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.1" />
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.ViewFeatures" Version="2.2.0" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Views\" />
+	  <ProjectReference Include="..\Jsos3.Shared\Jsos3.Shared.csproj" />
+	  <ProjectReference Include="..\Jsos3.TranslateModule\Jsos3.TranslateModule.csproj" />
 	</ItemGroup>
 
 </Project>

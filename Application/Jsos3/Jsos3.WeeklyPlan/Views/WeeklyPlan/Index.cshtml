@@ -1,0 +1,65 @@
+@using Jsos3.TranslateModule
+@using Jsos3.WeeklyPlan.Models
+
+@model Jsos3.WeeklyPlan.ViewModels.Models.WeeklyPlanIndexViewModel
+
+@inject ITranslationService translationService
+
+@{
+    ViewBag.Title = "Plan zajêæ";
+    var week = Model.Week;
+    var previousWeekOffset = Model.WeekOffset - 1;
+    var nextWeekOffset = Model.WeekOffset + 1;
+}
+
+<div class="date-range-form">
+    <button class="btn btn-primary" onclick="changeWeek(@previousWeekOffset)">&laquo;</button>
+    <span>@week.StartOfWeek.ToString("dd.MM.yyyy") - @week.EndOfWeek.ToString("dd.MM.yyyy")</span>
+    <button class="btn btn-primary" onclick="changeWeek(@nextWeekOffset)">&raquo;</button>
+</div>
+
+<div class="calendar-container">
+    @foreach (var day in week.Days)
+    {
+        var todayGroups = Model.Occurences.GetValueOrDefault(day) ?? new List<WeeklyPlanDto>();
+        <div class="day-column">
+            <h3>@translationService.Translate(day.DayOfWeek)</h3>
+            <div class="day-hours">
+                @foreach (var hour in week.Hours)
+                {
+                    <div class="hour-box">
+                        @if (day.DayOfWeek == DayOfWeek.Monday)
+                        {
+                            <h5>@hour.ToString("hh\\:mm")</h5>
+                        }
+                        <div style="hour-at-day-card">
+                            <div class="card group-cards">
+                                @foreach (var group in todayGroups)
+                                {
+                                    if (group.StartTime <= hour && group.EndTime > hour.Add(week.TimeGap))
+                                    {
+                                        <div class="card-body group-card">
+                                            <h5 class="card-title text-truncate" data-toggle="tooltip" title="@group.Course">@group.Course</h5>
+                                            <h6 class="card-subtitle mb-2 text-muted text-truncate" data-toggle="tooltip" title="@group.Lecturer">@group.Lecturer</h6>
+                                            <p class="card-text">@group.Classroom</p>
+                                        </div>
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+
+    }
+</div>
+
+<script>
+    function changeWeek(weekOffset) {
+        const urlParams = new URLSearchParams(window.location.search);
+        urlParams.set('weekOffset', weekOffset);
+        window.location.search = urlParams;
+    }
+</script>

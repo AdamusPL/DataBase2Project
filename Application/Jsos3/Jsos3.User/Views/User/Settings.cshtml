@@ -1,0 +1,15 @@
+﻿@using Jsos3.Shared.Auth
+@{
+    ViewBag.Title = "User Settings";
+}
+@inject IUserAccessor _userAccessor
+
+<h1 class="display-4">Ustawienia konta</h1>
+
+<ul class="list-group">
+    <li class="list-group-item"><a class="btn btn-primary" href="@Url.Action("ChangePassword", "Authorization")">Zmień hasło</a></li>
+    @if (_userAccessor.Type == UserType.Lecturer)
+    {
+        <li class="list-group-item"><a class="btn btn-primary" href="@Url.Action("EditEmail", "User")">Zmień maile</a></li>
+    }
+</ul>

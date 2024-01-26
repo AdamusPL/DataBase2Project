@@ -3,8 +3,10 @@
 public interface IUserAccessor
 {
     int Id { get; }
-    int UserId { get; }
-    string Email { get; }
-    string Name { get; }
-    string Surname { get; }
+    UserType Type { get; }
+    string NameAndSurname { get; }
+    bool IsAuthenticated => Id > 0;
+    
+    string Login { get; }
+
 }

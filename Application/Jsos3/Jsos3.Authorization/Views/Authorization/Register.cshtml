@@ -1,0 +1,88 @@
+﻿@model Jsos3.Authorization.ViewModels.RegisterViewModel
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    Rejestracja
+                </div>
+                <div class="card-body">
+                    @if (!ViewData.ModelState.IsValid)
+                    {
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach (var value in ViewData.ModelState.Values)
+                                {
+                                    foreach (var error in value.Errors)
+                                    {
+                                        <li>@error.ErrorMessage</li>
+                                    }
+                                }
+                            </ul>
+                        </div>
+                    }
+
+                    @using (Html.BeginForm("Register", "Authorization", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                    {
+                        @Html.AntiForgeryToken()
+
+                        <div class="mb-3">
+                            @Html.LabelFor(m => m.Name, new { @class = "form-label" })
+                            @Html.TextBoxFor(m => m.Name, new { @class = "form-control", placeholder = "Imię" })
+                            @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="mb-3">
+                            @Html.LabelFor(m => m.Surname, new { @class = "form-label" })
+                            @Html.TextBoxFor(m => m.Surname, new { @class = "form-control", placeholder = "Nazwisko" })
+                            @Html.ValidationMessageFor(m => m.Surname, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="mb-3">
+                            @Html.LabelFor(m => m.Login, new { @class = "form-label" })
+                            @Html.TextBoxFor(m => m.Login, new { @class = "form-control", placeholder = "Login" })
+                            @Html.ValidationMessageFor(m => m.Login, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="mb-3">
+                            @Html.Label("FieldsOfStudies", "Kierunek/Kierunki studiów", new { @class = "form-label" })
+                            @Html.ListBoxFor(m => m.FieldsOfStudies, Model.FieldsOfStudiesOptions, new { @class = "form-control", @id = "multiSelectDropdown", multiple = "multiple" })
+                            @Html.ValidationMessageFor(m => m.FieldsOfStudies, "", new { @class = "text-danger" })
+                        </div>
+                        <div id="validationMessage" class="text-danger"></div>
+
+                        <div class="mb-3">
+                            @Html.LabelFor(m => m.Password, new { @class = "form-label" })
+                            @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "Hasło" })
+                            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="mb-3">
+                            @Html.LabelFor(m => m.PasswordConfirmation, new { @class = "form-label" })
+                            @Html.PasswordFor(m => m.PasswordConfirmation, new { @class = "form-control", placeholder = "Potwierdź hasło" })
+                            @Html.ValidationMessageFor(m => m.PasswordConfirmation, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="mb-3">
+                            <button type="submit" class="btn btn-primary">Zarejestruj</button>
+                        </div>
+                        @Html.HiddenFor(m => m.FieldsOfStudiesOptions, new { value = Model.FieldsOfStudiesOptions })
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            var $multiSelectDropdown = $('#multiSelectDropdown').select2();
+
+            $multiSelectDropdown.on('select2:select select2:unselect', function (e) {
+                updateChipsDisplay();
+            });
+        });
+    </script>
+}

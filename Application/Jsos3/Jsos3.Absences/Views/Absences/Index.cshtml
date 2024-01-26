@@ -3,44 +3,71 @@
 @using Jsos3.Absences.Models
 @model Jsos3.Absences.ViewModels.AbsenceIndexViewModel
 @{
-    
+    ViewBag.Title = "Lista Obecności";
 }
 
 <h1>Lista obecności grupy @Model.GroupId</h1>
 
-<table>
+<table class="table">
     <tr>
         <th>Indeks studenta</th>
         <th>Imię</th>
         <th>Nazwisko</th>
-            @foreach (var date in Model.Days)
-            {
-                <th>@date.ToString("dd/MM/yyyy")</th>
-            }
+        @foreach (var date in Model.Days)
+        {
+            <th class="date-column">@date.ToString("dd/MM/yyyy")</th>
+        }
     </tr>
 
 
     @foreach (var student in Model.StudentsInGroup)
     {
         <tr>
-            <td>@student.StudentId</td>
+            <td class="index-row">@student.StudentId</td>
             <td>@student.Name</td>
             <td>@student.Surname</td>
-                @foreach (var date in Model.Days)
+            @foreach (var date in Model.Days)
+            {
+                var absence = Model.AbsenceOfStudents.GetValueOrDefault(new AbsenceKey(student.StudentId, date));
+
+                @if (absence == default(StudentAbsenceDto))
                 {
-                    var absence = Model.AbsenceOfStudents.GetValueOrDefault(new AbsenceKey(student.StudentId, date));
-
-                    @if(absence == default(StudentAbsenceDto))
-                    {
-                        <td style="color: green; font-weight: bold;">+</td>
-                    }
-
-                    else
-                    {
-                        <td style="color: red; font-weight: bold;">-</td>
-                    }
-
+                    <td>
+                        <input onchange="updateAbsence('@Model.GroupId', @student.StudentId, '@date.ToString("yyyy-MM-dd")', this.checked);" type="checkbox" class="absence-checkbox" checked>
+                    </td>
                 }
+
+                else
+                {
+                    <td>
+                        <input onchange="updateAbsence('@Model.GroupId', @student.StudentId, '@date.ToString("yyyy-MM-dd")', this.checked);" type="checkbox" class="absence-checkbox">
+                    </td>
+                }
+
+            }
         </tr>
     }
 </table>
+
+<script>
+    async function updateAbsence(groupId, studentId, date, isChecked) {
+        try {
+            const request = {
+                GroupId: groupId,
+                StudentId: studentId,
+                Date: date,
+                IsChecked: isChecked
+            };
+
+            await fetch('/Absences/ToggleAbsence', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(request),
+            })
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+</script>

@@ -13,7 +13,9 @@
     <ProjectReference Include="..\Jsos3.Groups\Jsos3.Groups.csproj" />
     <ProjectReference Include="..\Jsos3.LecturerInformations\Jsos3.LecturerInformations.csproj" />
     <ProjectReference Include="..\Jsos3.Shared\Jsos3.Shared.csproj" />
+    <ProjectReference Include="..\Jsos3.TranslateModule\Jsos3.TranslateModule.csproj" />
     <ProjectReference Include="..\Jsos3.WeeklyPlan\Jsos3.WeeklyPlan.csproj" />
+    <ProjectReference Include="..\Jsos3.User\Jsos3.User.csproj" />
   </ItemGroup>
 
 </Project>

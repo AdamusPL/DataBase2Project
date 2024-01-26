@@ -1,0 +1,83 @@
+﻿@model GradeIndexViewModel
+@using Jsos3.Grades.ViewModels
+@using Jsos3.Shared.Models
+@using Jsos3.TranslateModule
+
+@inject ITranslationService translationService
+
+@{
+    ViewBag.Title = "Oceny";
+}
+<!--/StudentGrade?groupId=3fb7106c-d9e5-40f4-9-->
+
+<div>
+    <h3>Oceny Wybrana Grupa</h3>
+    <table class ="table">
+        <tr>
+            <th>Opis</th>
+            <th class="text-center">Ocena</th>
+            <th class="text-center">Kategoria</th>
+            <th class="text-center">Akceptacja</th>
+        </tr>
+        @foreach (var grade in Model.Grade)
+        {
+            <tr>
+                <td>@grade.Text</td>
+                <td class="text-center">@grade.Grade</td>
+                <td class="text-center">@translationService.Translate(grade.IsFinal)</td>
+                @if (grade.IsFinal == GradeType.Partial)
+                    {
+                    <td class="text-center">--</td>
+                }
+                else
+                {
+                    if(grade.Accepted == true)
+                    {
+                        <td class="text-center">Zaakceptowano</td>
+                    }
+                    else if (grade.Accepted == null)
+                    {
+                        <td class="text-center">
+                            <button type="button" class="btn btn-outline-success" onclick="accept(@grade.Id)">Akceptuj</button>
+                            <button type="button" class="btn btn-outline-danger" onclick="decline(@grade.Id)">Reklamuj</button>
+                        </td>
+                    }
+                    else
+                    {
+                        <td class="text-center">Zareklamowano</td>
+                    }
+                }
+            </tr>
+        }
+    </table>
+</div>
+
+<script>
+    async function accept(gradeId) {
+        try {
+            await changeGradeStatus(gradeId, '/StudentGrade/Accept');
+            window.location.reload();
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+
+    async function decline(gradeId) {
+        try {
+            await changeGradeStatus(gradeId, '/StudentGrade/Decline');
+            window.location.reload();
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+
+    async function changeGradeStatus(gradeId, url) {
+        await fetch(url, {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(gradeId),
+        });
+    }
+</script>

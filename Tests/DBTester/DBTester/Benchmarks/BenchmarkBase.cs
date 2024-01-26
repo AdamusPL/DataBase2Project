@@ -1,24 +1,25 @@
-﻿using DBTester.Db;
+﻿using System.Data;
 
 namespace DBTester.Benchmarks;
 
 public abstract class BenchmarkBase : IBenchmark
 {
-    protected readonly TestingContext _testingContext;
+    protected readonly IDbConnection _dbConnection;
 
-    protected BenchmarkBase(TestingContext testingContext)
+    protected BenchmarkBase(IDbConnection dbConnection)
     {
-        _testingContext = testingContext;
+        _dbConnection = dbConnection;
+        _dbConnection.Open();
     }
 
     public async Task Run()
     {
-        using var transaction = _testingContext.Database.BeginTransaction();
+        using var transaction = _dbConnection.BeginTransaction();
 
         try
         {
-            await PrepareData();
-            await Benchmark();
+            await PrepareData(transaction);
+            await Benchmark(transaction);
         }
         catch (Exception ex)
         {
@@ -30,19 +31,26 @@ public abstract class BenchmarkBase : IBenchmark
         }
     }
 
-    protected async Task RunTest(string name, Func<Task> actionToTest)
+    protected async Task RunTest(string name, Func<Task> actionToTest, int testsCount)
     {
         Console.WriteLine($"{name} started");
 
-        var start = CurrentTimestamp;
-        await actionToTest();
-        var elapsed = CurrentTimestamp - start;
+        var result = 0;
+        for (var i = 0; i < testsCount; i++)
+        {
+            var start = CurrentTimestamp;
+            await actionToTest();
+            var elapsed = CurrentTimestamp - start;
+            result += (int)elapsed;
+            Console.WriteLine($"{name} test {i + 1}/{testsCount} took {elapsed} ms");
+        }
 
-
-        Console.WriteLine($"{name} ended after {elapsed / 1000_000} seconds");
+        Console.WriteLine($"{name} ended after {result / testsCount} ms");
     }
 
-    protected long CurrentTimestamp => DateTime.Now.ToFileTime();
-    protected abstract Task PrepareData();
-    protected abstract Task Benchmark();
+    protected long CurrentTimestamp => DateTimeOffset.Now.ToUnixTimeMilliseconds();
+    protected abstract Task PrepareData(IDbTransaction transaction);
+    protected abstract Task Benchmark(IDbTransaction transaction);
+
+    public void Dispose() => _dbConnection.Dispose();
 }

@@ -1,4 +1,4 @@
-CREATE VIEW GroupInfo AS
+CREATE OR ALTER VIEW GroupInfo AS
 SELECT 
     g.DayOfTheWeek, 
     g.StartTime, 

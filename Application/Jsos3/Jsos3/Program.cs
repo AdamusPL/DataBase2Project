@@ -1,22 +1,31 @@
 using Jsos3.Absences;
 using Jsos3.Authorization;
+using Jsos3.Authorization.Models;
 using Jsos3.Grades;
 using Jsos3.Groups;
 using Jsos3.LecturerInformations;
-using Jsos3.WeeklyPlan;
 using Jsos3.Shared;
+using Jsos3.TranslateModule;
+using Jsos3.WeeklyPlan;
+using Microsoft.AspNetCore.Identity;
+using Jsos3.User;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddMemoryCache();
 builder.Services.AddAbsencesModule();
-builder.Services.AddAuthorizationModule();
+builder.Services.AddAuthorizationModule(builder.Configuration);
 builder.Services.AddGradesModule();
 builder.Services.AddGroupsModule();
 builder.Services.AddLecturerInformationsModule();
 builder.Services.AddWeeklyPlanModule();
 builder.Services.AddSharedModule();
+builder.Services.AddTranslateModule();
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddUserModule();
+
 
 
 var app = builder.Build();
@@ -35,6 +44,7 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+app.UseAuthentication();
 
 app.MapControllerRoute(
     name: "default",

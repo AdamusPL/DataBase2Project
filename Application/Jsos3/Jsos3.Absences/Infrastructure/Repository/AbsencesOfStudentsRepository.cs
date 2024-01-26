@@ -1,18 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Jsos3.Shared.Db;
-using Dapper;
+﻿using Dapper;
 using Jsos3.Absences.Infrastructure.Models;
-
+using Jsos3.Shared.Db;
 
 namespace Jsos3.Absences.Infrastructure.Repository;
 
 internal interface IAbsencesOfStudentsRepository
 {
     Task<List<AbsenceOfStudent>> GetAbsencesOfStudentsInGroup(string groupId);
+    Task AddPresence(int studentInGroupId, DateTime date);
+    Task DeletePresence(int studentInGroupId, DateTime date);
 }
 
 internal class AbsencesOfStudentsRepository : IAbsencesOfStudentsRepository
@@ -22,6 +18,38 @@ internal class AbsencesOfStudentsRepository : IAbsencesOfStudentsRepository
     public AbsencesOfStudentsRepository(IDbConnectionFactory dbConnectionFactory)
     {
         _dbConnectionFactory = dbConnectionFactory;
+    }
+
+    public async Task DeletePresence(int studentInGroupId, DateTime date)
+    {
+        using var connection = await _dbConnectionFactory.GetOpenLecturerConnectionAsync();
+
+        var query = $@" 
+INSERT INTO Absence (Absence.Date, StudentInGroupId) VALUES (@Date, @studentInGroupId);
+";
+
+        var parameters = new DynamicParameters();
+        parameters.Add("Date", date.Date.ToString("yyyy-MM-dd"));
+        parameters.Add("StudentInGroupId", studentInGroupId);
+
+        await connection.ExecuteAsync(query, parameters);
+
+    }
+
+    public async Task AddPresence(int studentInGroupId, DateTime date)
+    {
+        using var connection = await _dbConnectionFactory.GetOpenLecturerConnectionAsync();
+        var query = $@" 
+DELETE FROM Absence WHERE StudentInGroupId = @studentInGroupId AND Date = @Date;
+
+";
+
+        var parameters = new DynamicParameters();
+        parameters.Add("Date", date.Date.ToString("yyyy-MM-dd"));
+        parameters.Add("StudentInGroupId", studentInGroupId);
+
+        await connection.ExecuteAsync(query, parameters);
+
     }
 
     public async Task<List<AbsenceOfStudent>> GetAbsencesOfStudentsInGroup(string groupId)

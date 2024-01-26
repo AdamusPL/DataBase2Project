@@ -1,0 +1,105 @@
+﻿@using Jsos3.Grades.ViewModels
+@using Jsos3.Shared.Models
+@using Jsos3.TranslateModule
+
+@inject ITranslationService translationService
+
+@model LecturerGradeIndexViewModel
+
+@{
+    ViewBag.Title = "Oceny";
+}
+
+<!--/LecturerGrade?groupId=3fb7106c-d9e5-40f4-9-->
+
+<div>
+    <h3>Oceny w grupie: @Model.GroupId</h3>
+</div>
+
+<div class="accordion" id="accordionPage">
+    @foreach (var student in Model.Students)
+    {
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="header-@student.Id">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#grade-@student.Id" aria-expanded="false" aria-controls="grade-@student.Id">
+                    <div>@student.Id | @student.FirstName @student.LastName</div>
+                </button>
+            </h2>
+
+            <div id="grade-@student.Id" class="accordion-collapse collapse show" aria-labelledby="accordionPage">
+                <div class="accordion-body">
+                    <table class="table">
+                        <tr>
+                            <th>Opis</th>
+                            <th class="text-center">Ocena</th>
+                            <th class="text-center">Kategoria</th>
+                            <th class="text-center">Akceptacja</th>
+                        </tr>
+                        @foreach (var grade in student.Grade)
+                        {
+                            <tr>
+                                <td>@grade.Text</td>
+                                <td class="text-center">@grade.Grade</td>
+                                <td class="text-center">@translationService.Translate(grade.IsFinal)</td>
+                                @if (grade.IsFinal == GradeType.Final)
+                                {
+                                    @if (grade.Accepted == null)
+                                    {
+                                        <td class="text-center">Oczekiwanie na akceptację</td>
+                                    }
+                                    @if (grade.Accepted == true)
+                                    {
+                                        <td class="text-center">Zaakceptowana</td>
+                                    }
+                                    @if (grade.Accepted == false)
+                                    {
+                                        <td class="text-center">Zareklamowana</td>
+                                    }
+                                }
+                                else
+                                {
+                                    <td class="text-center">nie dotyczy</td>
+                                }
+                            </tr>
+                        }
+                        <tr>
+                            <form id="newGradeForm-@student.Id">
+                                <td><input type="text" placeholder="Opis oceny" id="gradeText" name="gradeText" class="form-control"></td>
+                                <td class="text-center"><input type="number" placeholder="5.0" id="grade" step="0.5" min="2.0" max="5.5" name="grade" class="form-control"></td>
+                                <td class="text-center"><input class="form-check-input mt-0" type="checkbox" value="" aria-label="isFinal" name="isFinal"></td>
+                                <td class="text-center"><button type="button" class="btn btn-outline-success" onclick="addGrade('#newGradeForm-@student.Id', @student.Id, '@Model.GroupId')">Dodaj ocene</button></td>
+                            </form>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<script>
+    async function addGrade(formId, studentId, groupId) {
+        const gradeForm = document.querySelector(formId);
+        const formData = new FormData(gradeForm);
+        const formProps = Object.fromEntries(formData);
+        try {
+            const request = {
+                GroupId: groupId,
+                StudentId: studentId,
+                GradeText: formProps.gradeText,
+                Grade: formProps.grade,
+                IsFinal: formProps.isFinal == ""
+            }
+            await fetch('/LecturerGrade/AddGrade', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(request)
+            })
+            window.location.reload();
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+</script>
