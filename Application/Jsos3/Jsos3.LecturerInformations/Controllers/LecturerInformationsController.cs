@@ -1,4 +1,5 @@
-﻿using Jsos3.LecturerInformations.Services;
+﻿using Jsos3.LecturerInformations.Extensions;
+using Jsos3.LecturerInformations.Services;
 using Jsos3.LecturerInformations.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,14 +17,10 @@ public class LecturerInformationsController : Controller
     public async Task<ActionResult> Index([FromQuery] string? searchTerm, [FromQuery] int? pageNumber)
     {
         var lecturersPages = await _lecturerService.GetLecturersPagesCount(searchTerm);
+        pageNumber = pageNumber.Clamp(1, lecturersPages);
+        var pageIndex = pageNumber.Value == 0 ? 0 : pageNumber.Value - 1;
 
-        pageNumber ??= 1;
-        if (pageNumber.Value > lecturersPages)
-        {
-            pageNumber = lecturersPages;
-        }
-
-        var lecturersData = await _lecturerService.GetLecturersAtPage(searchTerm, pageNumber - 1);
+        var lecturersData = await _lecturerService.GetLecturersAtPage(searchTerm, pageIndex);
 
         var lecturerInformationsViewModel = new LecturerInformationIndexViewModel()
         {

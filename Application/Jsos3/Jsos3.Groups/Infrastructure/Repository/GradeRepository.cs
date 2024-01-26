@@ -33,7 +33,7 @@ EXEC [dbo].[GetStudentWeightedAverageGradeInSemester]
         return await connection.ExecuteScalarAsync<decimal>(query, new { studentId, semesterId });
     }
 
-    public async Task<Dictionary<int, Grade>> GetStudentCoursesGrades(int studentId, string semesterId)
+    public async Task<Dictionary<int, Grade>> GetStudentCoursesGrades(int userId, string semesterId)
     {
         using var connection = await _dbConnectionFactory.GetOpenStudentConnectionAsync();
 
@@ -46,13 +46,15 @@ FROM [dbo].[Course] c
 INNER JOIN [dbo].[Group] g ON g.CourseId = c.Id
 INNER JOIN [dbo].[Student_Group] sg ON sg.GroupId = g.Id
 INNER JOIN [dbo].[Grade] gr ON gr.StudentInGroupId = sg.Id
+INNER JOIN [dbo].[Student] s ON s.Id = sg.StudentId
+INNER JOIN [dbo].[User] u ON u.Id = s.UserId
 WHERE gr.IsFinal = 1
         AND g.TypeId = {(int)GroupType.Lecture}
-        AND sg.StudentId = @StudentId
+        AND u.Id = @UserId
         AND g.SemesterId LIKE @SemesterId
 ";
 
-        var queryResult = await connection.QueryAsync<CourseGrade>(query, new { studentId, semesterId });
+        var queryResult = await connection.QueryAsync<CourseGrade>(query, new { userId, semesterId });
 
         return queryResult
             .GroupBy(x => x.CourseId)

@@ -52,6 +52,9 @@ namespace DataProducer
             query = "DELETE FROM [User]";
             connection.Query(query);
 
+            query = "DELETE FROM [Semester]";
+            connection.Query(query);
+
             Console.WriteLine("Records Cleaned");
         }
     }

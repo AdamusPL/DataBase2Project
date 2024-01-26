@@ -12,14 +12,23 @@ public interface IPlanService
 internal class PlanService : IPlanService
 {
     private readonly IWeeklyPlanRepository _weeklyPlanRepository;
+    private readonly IUserRepository _userRepository;
 
-    public PlanService(IWeeklyPlanRepository weeklyPlanRepository)
+    public PlanService(IWeeklyPlanRepository weeklyPlanRepository, IUserRepository userRepository)
     {
         _weeklyPlanRepository = weeklyPlanRepository;
+        _userRepository = userRepository;
     }
 
-    public async Task<Dictionary<DateTime, List<WeeklyPlanDto>>> GetPlanForUser(int userObjectId, UserType userType, DateTime startOfWeek, DateTime endOfWeek)
+    public async Task<Dictionary<DateTime, List<WeeklyPlanDto>>> GetPlanForUser(int userId, UserType userType, DateTime startOfWeek, DateTime endOfWeek)
     {
+        var userObjectId = userType switch
+        {
+            UserType.Student => await _userRepository.GetUserStudentId(userId),
+            UserType.Lecturer => await _userRepository.GetUserLecturerId(userId),
+            _ => throw new ArgumentOutOfRangeException(nameof(userType), userType, null)
+        };
+
         var weeklyPlan = userType switch
         {
             UserType.Student => await _weeklyPlanRepository.GetStudentWeeklyPlan(userObjectId, startOfWeek, endOfWeek),

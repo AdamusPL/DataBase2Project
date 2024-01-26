@@ -65,7 +65,7 @@ public class AuthorizationController(IAuthorizationService _authorizationService
 
     public async Task<IActionResult> Register()
     {
-        var options = (await _fieldsOfStudiesRepository.GetFieldsOfStudies()).Select(f => new SelectListItem() { Text = f.Name, Value = f.Id.ToString() }).ToList();
+        var options = await GetFieldsOfStudies();
         var model = new RegisterViewModel
         {
             FieldsOfStudiesOptions = options
@@ -79,16 +79,16 @@ public class AuthorizationController(IAuthorizationService _authorizationService
     {
         var fieldsOfStudiesJson = JsonConvert.SerializeObject(registerViewModel.FieldsOfStudies);
 
+        registerViewModel.FieldsOfStudiesOptions = await GetFieldsOfStudies();
+
         if (!ModelState.IsValid)
         {
-            var options =
-            registerViewModel.FieldsOfStudiesOptions = (await _fieldsOfStudiesRepository.GetFieldsOfStudies()).Select(f => new SelectListItem() { Text = f.Name, Value = f.Id.ToString() }).ToList();
             View(registerViewModel);
         }
 
         var success = await _authorizationService.Register(registerViewModel);
 
-        if(!success)
+        if (!success)
         {
             ModelState.AddModelError("", "Registration unsuccessful.");
             return View(registerViewModel);
@@ -111,12 +111,17 @@ public class AuthorizationController(IAuthorizationService _authorizationService
             return View(changePasswordViewModel);
         }
 
-        if(!await _authorizationService.ChangePassword(_userAccessor.Login, changePasswordViewModel.OldPassword, changePasswordViewModel.NewPassword))
+        if (!await _authorizationService.ChangePassword(_userAccessor.Login, changePasswordViewModel.OldPassword, changePasswordViewModel.NewPassword))
         {
             ModelState.AddModelError("", "Wystąpił nieoczekiwany błąd.");
             return View(changePasswordViewModel);
         }
 
         return View();
+    }
+
+    private async Task<List<SelectListItem>> GetFieldsOfStudies() 
+    {
+        return (await _fieldsOfStudiesRepository.GetFieldsOfStudies()).Select(f => new SelectListItem() { Text = $"{f.Name} stopień {f.Degree} wydział {f.FacultyId}", Value = f.Id.ToString() }).ToList();
     }
 }

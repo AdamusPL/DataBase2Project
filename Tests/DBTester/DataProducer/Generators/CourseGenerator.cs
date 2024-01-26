@@ -42,8 +42,8 @@ namespace DataProducer.Generators
                 query = "INSERT INTO FieldOfStudy_Course (FieldOfStudyId, CourseId) VALUES (@fieldOfStudyId,@courseId)";
                 connection.Query(query, new { fieldOfStudyId, courseId });
 
-                Console.WriteLine("New course inserted.");
             }
+            Console.WriteLine($"{courses.Count} Courses inserted.");
         }
     }
 }

@@ -33,8 +33,8 @@ namespace DataProducer.Generators
             {
                 var query = "INSERT INTO Faculty (Id, Name) VALUES (@Id, @Name)";
                 connection.Query(query, faculty);
-                Console.WriteLine("New faculty inserted.");
             }
+            Console.WriteLine($"{faculties.Count} Faculties inserted.");
         }
     }
 }

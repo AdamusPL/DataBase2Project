@@ -1,5 +1,5 @@
 ﻿namespace Jsos3.Groups.Models;
 
-public readonly record struct LecturerCourseKey(
+internal readonly record struct LecturerCourseKey(
     int Id,
     string Name);

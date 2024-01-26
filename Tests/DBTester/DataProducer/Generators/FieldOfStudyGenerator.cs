@@ -29,8 +29,8 @@ namespace DataProducer.Generators
             {
                 var query = "INSERT INTO FieldOfStudy (Name, Degree, FacultyId) VALUES (@Name, @Degree, @FacultyId)";
                 connection.Query(query, field);
-                Console.WriteLine("New Field Of Study inserted.");
             }
+            Console.WriteLine($"{fieldsOfStudies.Count} Fields Of Studies inserted.");
         }
     }
 }

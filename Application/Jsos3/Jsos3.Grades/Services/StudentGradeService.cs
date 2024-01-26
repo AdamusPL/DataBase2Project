@@ -11,15 +11,18 @@ public interface IStudentGradeService
 internal class StudentGradeService : IStudentGradeService
 {
     private readonly IGradeRepository _gradeRepository;
+    private readonly IStudentRepository _studentRepository;
 
-    public StudentGradeService(IGradeRepository gradeRepository)
+    public StudentGradeService(IGradeRepository gradeRepository, IStudentRepository studentRepository)
     {
         _gradeRepository = gradeRepository;
+        _studentRepository = studentRepository;
     }
 
     public async Task<List<StudentGradeDto>> GetStudentGrades(int userId, string groupId)
     {
-        var grades = await _gradeRepository.GetStudentsGrades(groupId, [userId]);
+        var studentId  = await _studentRepository.GetUserStudentId(userId);
+        var grades = await _gradeRepository.GetStudentsGrades(groupId, [studentId]);
         return grades
             .SelectMany(x => x.Value)
             .Select(grade => grade.ToDto())

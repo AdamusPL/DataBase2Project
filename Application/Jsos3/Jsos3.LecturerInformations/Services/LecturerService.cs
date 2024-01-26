@@ -5,7 +5,7 @@ namespace Jsos3.LecturerInformations.Services;
 
 public interface ILecturerService
 {
-    Task<List<LecturerDataDto>> GetLecturersAtPage(string? searchTerm, int? pageIndex);
+    Task<List<LecturerDataDto>> GetLecturersAtPage(string? searchTerm, int pageIndex);
     Task<int> GetLecturersPagesCount(string? searchTerm);
 }
 
@@ -20,10 +20,9 @@ internal class LecturerService : ILecturerService
         _lecturersDataRepository = lecturersDataRepository;
     }
 
-    public async Task<List<LecturerDataDto>> GetLecturersAtPage(string? searchTerm, int? pageIndex)
+    public async Task<List<LecturerDataDto>> GetLecturersAtPage(string? searchTerm, int pageIndex)
     {
-        pageIndex ??= 0;
-        var lecturers = await _lecturersDataRepository.GetPagedLecturers(searchTerm, pageIndex.Value * PageSize, PageSize);
+        var lecturers = await _lecturersDataRepository.GetPagedLecturers(searchTerm, pageIndex * PageSize, PageSize);
         var lecturerIds = lecturers.Select(x => x.Id);
 
         var phones = await _lecturersDataRepository.GetLecturersPhones(lecturerIds);
