@@ -15,7 +15,7 @@ namespace DataProducer.Generators
             using var connection = DBConnectionProvider.SuperAdminConnection();
             connection.Open();
 
-            for (int i = 2010; i <= 2023; i++)
+            for (int i = 2010; i <= 2025; i++)
             {
                 string id = $"Zimowy {i}/{i + 1}";
                 DateTime beginWinter = new System.DateTime(i, 10, 1, 0, 0, 0, 0);

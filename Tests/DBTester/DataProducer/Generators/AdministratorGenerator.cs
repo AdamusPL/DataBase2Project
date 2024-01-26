@@ -44,8 +44,8 @@ namespace DataProducer.Generators
                 query = "INSERT INTO Administrator (USerId) VALUES (@userId)";
                 connection.Query(query, new { userId });
 
-                Console.WriteLine("New administrator inserted.");
             }
+            Console.WriteLine($"{_users.Count} Administrators inserted.");
         }
     }
 }

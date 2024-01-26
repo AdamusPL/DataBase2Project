@@ -25,7 +25,8 @@ public class GradeIndexViewModelBuilder : IGradeIndexViewModelBuilder
         var grades = await _studentGradeService.GetStudentGrades(_userAccessor.Id, groupId);
         return new GradeIndexViewModel
         {
-            Grade = grades
+            Grade = grades,
+            GroupId = groupId
         };
     }
 }

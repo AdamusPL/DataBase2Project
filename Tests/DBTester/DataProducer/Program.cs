@@ -6,13 +6,14 @@ var cleaner = new Cleaner();
 //Kolejność ma znaczenie!!!
 var generator = new Generator([
                 new FacultyGenerator(),
+    new SemesterGenerator(),
     new FieldOfStudyGenerator(),
     new AdministratorGenerator(),
     new LecturerGenerator(),
     new StudentGenerator(),
     new CourseGenerator(),
     new GroupGenerator(),
-                ]);
+]);
 
 //var generator = new Generator([new CSVGenerator()]);
 

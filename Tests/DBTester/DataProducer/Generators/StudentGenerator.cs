@@ -1,5 +1,8 @@
 ﻿using Dapper;
+using Microsoft.AspNetCore.Identity;
+using Models;
 using Shared;
+using System.ComponentModel.DataAnnotations;
 
 
 namespace DataProducer.Generators
@@ -8,6 +11,7 @@ namespace DataProducer.Generators
     {
         public void Generate()
         {
+            var passwordHasher = new PasswordHasher<HashUser>();
             List<UserExtended> _users = [];
             string path = Path.Combine(Environment.CurrentDirectory, @"Files\", "students.csv");
             using (var reader = new StreamReader(path))
@@ -17,7 +21,14 @@ namespace DataProducer.Generators
                     var line = reader.ReadLine();
                     var values = line.Split(';');
 
-                    _users.Add(new UserExtended(values[0], values[1], values[2], values[3], values[4], string.Empty));
+                    var hashuser = new HashUser()
+                    {
+                        Login = values[3],
+                    };
+
+                    var hashedPasword = passwordHasher.HashPassword(hashuser, values[4]);
+
+                    _users.Add(new UserExtended(values[0], values[1], values[2], values[3], hashedPasword, string.Empty));
                 }
             }
 
@@ -43,8 +54,8 @@ namespace DataProducer.Generators
                 query = "INSERT INTO Student_FieldOfStudy (StudentId, FieldOfStudyId) VALUES (@studentId, @fieldOfStudyId)";
                 connection.Query(query, new { studentId, fieldOfStudyId });
 
-                Console.WriteLine("New student inserted.");
             }
+            Console.WriteLine($"{_users.Count} Students inserted.");
         }
     }
 }
