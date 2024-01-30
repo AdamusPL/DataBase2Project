@@ -9,7 +9,7 @@ Projekt na przedmiocie Bazy Danych 2, implementujący studencki indeks elektroni
 
 ## Stworzenie bazy
 Aby skorzystać z aplikacji należy najpierw stworzyć serwer Microsoft SQL Server np. uruchamiając go lokalnie na dockerze: https://hub.docker.com/_/microsoft-mssql-server
-Następnie w pliku appsettings.json należy podać connection string do bazy w nowow utworzonym serwerze. Uruchomienie pliku ScriptsExecutor.exe powinno wykonać wszystkie skrypty z katalogu Queries i stworzyć struktury bazy.
+Następnie w pliku appsettings.json należy podać connection string do bazy w nowo utworzonym serwerze. Uruchomienie pliku ScriptsExecutor.exe powinno wykonać wszystkie skrypty z katalogu Queries i stworzyć struktury bazy.
 
 ## Uruchomienie aplikacji
 
